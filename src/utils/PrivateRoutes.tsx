@@ -9,7 +9,7 @@ const PrivateRoutes = () => {
     <DefaultLayout>
       <Outlet />
     </DefaultLayout>
-  ) : (
+  ) : ( 
     <Navigate to="/login" />
   )
 }

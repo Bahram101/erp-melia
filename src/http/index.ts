@@ -33,7 +33,7 @@ $api.interceptors.response.use(
         localStorage.setItem("auth-token", response?.data?.accessToken);
         localStorage.setItem("refresh-token", response?.data?.refreshToken);
         return $api.request(originalRequest);
-      } catch (error) {
+      } catch (error:any) {
         if (error.response.status == 403) {
           localStorage.removeItem("auth-token");
           window.location.href = "/";

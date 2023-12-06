@@ -40,7 +40,7 @@ import Login from './pages/Login'
 import Home from './pages/Home'
 import PrivateRoutes from './utils/PrivateRoutes'
 import {routes} from './routes/index'
-import './scss/style.scss'
+import './scss/style.scss' 
 
 function App() {
   return (

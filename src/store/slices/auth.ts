@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "../../http";
 
-export const login = createAsyncThunk(
+export const logIn = createAsyncThunk(
   "auth/login",
   async (params: { username: string; password: string }) => {
     try {
@@ -27,14 +27,14 @@ const authSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(login.pending, (state, action) => {
+    builder.addCase(logIn.pending, (state, action) => {
       state.status = "loading";
     });
-    builder.addCase(login.fulfilled, (state, action: any) => {
+    builder.addCase(logIn.fulfilled, (state, action: any) => {
       state.status = "loaded";
       state.data = action.payload;
     });
-    builder.addCase(login.rejected, (state, action: any) => {
+    builder.addCase(logIn.rejected, (state, action: any) => {
       state.status = "error";
       state.data = action.payload;
     });

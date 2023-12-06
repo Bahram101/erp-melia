@@ -1,5 +1,5 @@
 import React, {FC, ReactElement } from 'react'
-import { AppContent, AppSidebar, AppFooter, AppHeader } from '../components/index'
+import { AppSidebar, AppFooter, AppHeader } from '../components/index'
 
 interface MainLayoutProps {
   children: ReactElement

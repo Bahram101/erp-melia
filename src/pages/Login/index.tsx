@@ -1,10 +1,23 @@
-import { FC, useEffect } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-// import { useForm } from "react-hook-form";
+import { useForm } from 'react-hook-form'
 import { useSelector, useDispatch } from 'react-redux'
-// import { login } from "../../store/slices/auth";
-// import Spinner from "../../components/Spinner";
-// import styles from "./Login.module.scss";
+import {
+  CButton,
+  CCard,
+  CCardBody,
+  CCardGroup,
+  CCol,
+  CContainer,
+  CForm,
+  CFormInput,
+  CInputGroup,
+  CInputGroupText,
+  CRow,
+} from '@coreui/react'
+import CIcon from '@coreui/icons-react'
+import { cilLockLocked, cilUser } from '@coreui/icons'
+import { logIn } from '../../store/slices/auth'
 
 type LoginProps = {
   username: string
@@ -12,15 +25,14 @@ type LoginProps = {
 }
 
 const Login: FC = () => {
-  const navigate = useNavigate()
-  const dispatch = useDispatch<any>()
-  // const { data, status } = useSelector((state: any) => state.auth)
+  const navigate = useNavigate();
+  const dispatch = useDispatch<any>();
 
-  // const {
-  //   register,
-  //   handleSubmit,
-  //   formState: { errors },
-  // } = useForm<LoginProps>();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginProps>()
 
   useEffect(() => {
     if (localStorage.getItem('auth-token')) {
@@ -28,19 +40,71 @@ const Login: FC = () => {
     }
   }, [])
 
-  // const onSubmit = async (val: LoginProps) => {
-  //   const res = await dispatch(login(val));
-  //   if (res?.payload?.accessToken) {
-  //     localStorage.setItem("auth-token", res?.payload?.accessToken);
-  //     localStorage.setItem("refresh-token", res?.payload?.refreshToken);
-  //     localStorage.setItem("display-name", res?.payload?.displayName);
-  //     navigate("/");
-  //   }
-  // };
+  const onSubmit = async (val: LoginProps) => {
+    const res = await dispatch(logIn(val))
+  }
 
-  const required = 'Поле обязательно для заполнения'
-
-  return <div>Login</div>
+  return (
+    <div className="bg-light min-vh-100 d-flex flex-row align-items-center">
+      <CContainer>
+        <CRow className="justify-content-center">
+          <CCol xl={4} lg={5} md={6}>
+            <CCardGroup>
+              <CCard className="p-4">
+                <CCardBody>
+                  <form onSubmit={handleSubmit(onSubmit)}>
+                    <input type="text" {...register('username', {})} />
+                    <input type="text" {...register('password', {})} />
+                    <input type="submit" />
+                  </form>
+                  {/* <form onSubmit={handleSubmit(onSubmit)}>
+                    <h1>Login new</h1>
+                    <p className="text-medium-emphasis">Sign In to your account</p>
+                    <CInputGroup className="mb-3">
+                      <CInputGroupText>
+                        <CIcon icon={cilUser} />
+                      </CInputGroupText>
+                      <CFormInput
+                        type="text"
+                        placeholder="Username"
+                        autoComplete="username"
+                        name="username"
+                        onChange={(e) => onInputChange(e)}
+                      />
+                    </CInputGroup>
+                    <CInputGroup className="mb-4">
+                      <CInputGroupText>
+                        <CIcon icon={cilLockLocked} />
+                      </CInputGroupText>
+                      <CFormInput
+                        type="password"
+                        placeholder="Password"
+                        autoComplete="current-password"
+                        name="password"
+                        onChange={(e) => onInputChange(e)}
+                      />
+                    </CInputGroup>
+                    <CRow>
+                      <CCol xs={6}>
+                        <CButton color="primary" className="px-4"  type="submit" >
+                          Login
+                        </CButton>
+                      </CCol>
+                      <CCol xs={6} className="text-right">
+                        <CButton color="link" className="px-0" >
+                          Forgot password?
+                        </CButton>
+                      </CCol>
+                    </CRow>
+                  </form> */}
+                </CCardBody>
+              </CCard>
+            </CCardGroup>
+          </CCol>
+        </CRow>
+      </CContainer>
+    </div>
+  )
 }
 
 export default Login
