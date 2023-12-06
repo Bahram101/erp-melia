@@ -26,7 +26,7 @@ type LoginProps = {
 
 const Login: FC = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch<any>();
+  const dispatch = useDispatch();
 
   const {
     register,
@@ -41,7 +41,7 @@ const Login: FC = () => {
   }, [])
 
   const onSubmit = async (val: LoginProps) => {
-    const res = await dispatch(logIn(val))
+    const res = dispatch(logIn(val))
   }
 
   return (
