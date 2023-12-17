@@ -1,17 +1,15 @@
-import React, {FC, ReactElement } from 'react'
-import { AppSidebar, AppFooter, AppHeader } from '../components/index'
+import React from 'react'
+import { AppContent, AppSidebar, AppFooter, AppHeader } from '../components/index'
 
-interface MainLayoutProps {
-  children: ReactElement
-}
-
-const DefaultLayout: FC<MainLayoutProps> = ({ children }) => {
+const DefaultLayout = () => {
   return (
     <div>
       <AppSidebar />
       <div className="wrapper d-flex flex-column min-vh-100 bg-light">
         <AppHeader />
-        <div className="body flex-grow-1 px-3">{children}</div>
+        <div className="body flex-grow-1 px-3">
+          <AppContent />
+        </div>
         <AppFooter />
       </div>
     </div>

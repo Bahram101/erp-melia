@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-import { CLink } from '@coreui/react'
+import { CLink } from '@coreui/react-pro'
 
 const DocsLink = (props: any) => {
   const { href, name, text, ...rest } = props

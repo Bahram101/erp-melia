@@ -10,11 +10,11 @@ import {
   CHeaderToggler,
   CNavLink,
   CNavItem,
-} from '@coreui/react'
+} from '@coreui/react-pro'
 import CIcon from '@coreui/icons-react'
 import { cilBell, cilEnvelopeOpen, cilList, cilMenu } from '@coreui/icons'
 
-// import { AppBreadcrumb } from './index'
+import { AppBreadcrumb } from './index'
 import { AppHeaderDropdown } from './header/index'
 import { logo } from '../assets/brand/logo'
 
@@ -70,7 +70,7 @@ const AppHeader: FC = () => {
       </CContainer>
       <CHeaderDivider />
       <CContainer fluid>
-        {/* <AppBreadcrumb /> */}
+        <AppBreadcrumb />
       </CContainer>
     </CHeader>
   )
