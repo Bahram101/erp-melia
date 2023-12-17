@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import { CFooter } from '@coreui/react'
+import { CFooter } from '@coreui/react-pro'
 
 const AppFooter: FC = () => {
   return (

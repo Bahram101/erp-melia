@@ -1,15 +1,25 @@
-import ReactDOM from 'react-dom/client'
+import 'react-app-polyfill/stable'
+import 'core-js'
+import React from 'react'
+import { createRoot } from 'react-dom/client'
 import App from './App'
-import { BrowserRouter } from 'react-router-dom'
+// import reportWebVitals from './reportWebVitals'
 import { Provider } from 'react-redux'
-import store  from './store'
+import store from './store'
+import { QueryClientProvider } from 'react-query'
+import { queryClient } from './http/QueryClient'
 
-const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
+const root = createRoot(document.getElementById('root') as HTMLElement)
 
 root.render(
   <Provider store={store}>
-    <BrowserRouter>
+    <QueryClientProvider client={queryClient}>
       <App />
-    </BrowserRouter>
+    </QueryClientProvider>
   </Provider>,
 )
+
+// If you want to start measuring performance in your app, pass a function
+// to log results (for example: reportWebVitals(console.log))
+// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+// reportWebVitals()

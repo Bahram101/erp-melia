@@ -8,7 +8,7 @@ import {
   CDropdownItem,
   CDropdownMenu,
   CDropdownToggle,
-} from '@coreui/react'
+} from '@coreui/react-pro'
 import {
   cilBell,
   cilCreditCard,
@@ -84,9 +84,15 @@ const AppHeaderDropdown = () => {
           </CBadge>
         </CDropdownItem>
         <CDropdownDivider />
-        <CDropdownItem href="#">
+        <CDropdownItem
+          href="/login"
+          onClick={() => {
+            localStorage.removeItem('access_token')
+            localStorage.removeItem('refresh_token')
+          }}
+        >
           <CIcon icon={cilLockLocked} className="me-2" />
-          Lock Account
+          Выйти
         </CDropdownItem>
       </CDropdownMenu>
     </CDropdown>
