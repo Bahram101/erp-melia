@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { useCurrentEmployeesQuery } from '../../../hooks/hr/employeeQueries'
 import { CCard, CCardHeader, CCardBody, CSmartTable, CButton } from '@coreui/react-pro'
 import { FaPen, FaEye } from 'react-icons/fa'
@@ -35,6 +35,20 @@ const EmployeeGridPage = () => {
       _style: { width: '10%' },
     },
   ]
+
+  console.log('data', currentEmpListQuery.data)
+
+  const rows = useMemo(() => {
+    return currentEmpListQuery?.data?.flatMap((item: any, index: number) => {
+      return item.posts.map((post: any, subIndex: number) => ({
+        ...item,
+        id: post.id,
+        positionName: post.positionName,
+        branchName: post.branchName,
+      }))
+    })
+  }, [currentEmpListQuery?.data])
+
   return (
     <CCard>
       <CCardHeader>
@@ -48,7 +62,7 @@ const EmployeeGridPage = () => {
       <CCardBody>
         <CSmartTable
           columns={columns}
-          items={currentEmpListQuery.data || []}
+          items={rows || []}
           loading={currentEmpListQuery.isLoading}
           itemsPerPage={30}
           pagination

@@ -8,6 +8,7 @@ import { Provider } from 'react-redux'
 import store from './store'
 import { QueryClientProvider } from 'react-query'
 import { queryClient } from './http/QueryClient'
+import "./App.css"
 
 const root = createRoot(document.getElementById('root') as HTMLElement)
 

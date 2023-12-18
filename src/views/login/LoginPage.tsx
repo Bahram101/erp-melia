@@ -35,7 +35,6 @@ const LoginPage = () => {
     loginPromise
       .then((response: any) => {
         localStorage.setItem('access_token', response?.data?.accessToken)
-
         localStorage.setItem('refresh_token', response?.data?.refreshToken)
         localStorage.setItem('display_name', response?.data?.displayName)
         navigate('/')

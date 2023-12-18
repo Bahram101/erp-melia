@@ -6,7 +6,6 @@ export const useCurrentEmployeesQuery = () => {
     ['hr-get-curren-employees-list'],
     async () => {
       const { data } = await request.get('/hr/employees/current')
-
       return data
     },
     { enabled: true },

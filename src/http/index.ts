@@ -5,7 +5,7 @@ const { REACT_APP_BACK_URL } = process.env
 // Login and Registration
 export const requestWithoutAuth = axios.create({
   baseURL: REACT_APP_BACK_URL,
-  timeout: 30000,
+  // timeout: 30000,
 })
 
 // Если у вас есть Токен (Acsess and Refresh)
@@ -15,7 +15,7 @@ export const requestWithoutAuth = axios.create({
 
 export const request = axios.create({
   baseURL: REACT_APP_BACK_URL,
-  timeout: 20000,
+  // timeout: 20000,
   headers: {
     Authorization: `Bearer ${localStorage.getItem('access_token')}`,
   },
