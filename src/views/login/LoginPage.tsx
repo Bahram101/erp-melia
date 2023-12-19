@@ -30,7 +30,7 @@ const LoginPage = () => {
     }
 
     const loginPromise = loginQuery.mutateAsync({
-      data: data,
+      data,
     })
     loginPromise
       .then((response: any) => {

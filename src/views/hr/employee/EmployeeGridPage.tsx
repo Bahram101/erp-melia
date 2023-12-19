@@ -36,8 +36,6 @@ const EmployeeGridPage = () => {
     },
   ]
 
-  console.log('data', currentEmpListQuery.data)
-
   const rows = useMemo(() => {
     return currentEmpListQuery?.data?.flatMap((item: any, index: number) => {
       return item.posts.map((post: any, subIndex: number) => ({
