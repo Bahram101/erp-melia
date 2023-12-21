@@ -36,17 +36,6 @@ const EmployeeGridPage = () => {
     },
   ]
 
-  const rows = useMemo(() => {
-    return currentEmpListQuery?.data?.flatMap((item: any, index: number) => {
-      return item.posts.map((post: any, subIndex: number) => ({
-        ...item,
-        id: post.id,
-        positionName: post.positionName,
-        branchName: post.branchName,
-      }))
-    })
-  }, [currentEmpListQuery?.data])
-
   return (
     <CCard>
       <CCardHeader>
@@ -60,7 +49,7 @@ const EmployeeGridPage = () => {
       <CCardBody>
         <CSmartTable
           columns={columns}
-          items={rows || []}
+          items={currentEmpListQuery.data || []}
           loading={currentEmpListQuery.isLoading}
           itemsPerPage={30}
           pagination

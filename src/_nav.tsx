@@ -114,8 +114,8 @@ const _nav = [
   },
   {
     component: CNavGroup,
-    name: 'Логистика',
-    icon: <CIcon icon={cilTruck} customClassName="nav-icon" />,
+    name: 'Склад',
+    icon: <CIcon icon={cilHouse} customClassName="nav-icon" />,
     items: [
       {
         component: CNavItem,
@@ -166,8 +166,8 @@ const _nav = [
   },
   {
     component: CNavGroup,
-    name: 'Логистика',
-    icon: <CIcon icon={cilTruck} customClassName="nav-icon" />,
+    name: 'Склад',
+    icon: <CIcon icon={cilHouse} customClassName="nav-icon" />,
     items: [
       {
         component: CNavItem,
