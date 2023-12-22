@@ -16,6 +16,8 @@ import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilUser } from '@coreui/icons'
 import { useLogin } from '../../hooks/login/loginQueries'
 import toaster from 'toastify-react'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 const LoginPage = () => {
   const [error, setError] = useState<string | undefined>(undefined)
@@ -29,9 +31,8 @@ const LoginPage = () => {
       password: event.target.password.value,
     }
 
-    const loginPromise = loginQuery.mutateAsync({
-      data,
-    })
+    const loginPromise = loginQuery.mutateAsync({ data })
+
     loginPromise
       .then((response: any) => {
         localStorage.setItem('access_token', response?.data?.accessToken)
@@ -42,15 +43,17 @@ const LoginPage = () => {
       .catch((err: any) => {
         if (err.response && err.response.data) {
           if (err.response.data.message && err.response.data.message.length > 0) {
+            toast.error(err.response.data.message)
             // toaster.error(err.response.data.message, {
             //   position: 'top-right',
             // })
-            setError(err.response.data.message)
+            // setError(err.response.data.message)
           }
         } else {
-          toaster.error('Warning Notification !', {
-            position: 'top-right',
-          })
+          toast.error(err.response.data.message)
+          // toaster.error('Warning Notification !', {
+          //   position: 'top-right',
+          // })
         }
       })
   }
@@ -64,7 +67,8 @@ const LoginPage = () => {
               <CCardBody>
                 <CForm onSubmit={onSubmit}>
                   <h3>Вход в систему</h3>
-                  {error && <div className="text-medium-emphasis">{error}</div>}
+                  {/* {error && <div className="text-medium-emphasis">{error}</div>} */}
+                  <ToastContainer />
                   <CInputGroup className="mb-3">
                     <CInputGroupText>
                       <CIcon icon={cilUser} />
@@ -83,7 +87,7 @@ const LoginPage = () => {
                     />
                   </CInputGroup>
                   <CRow>
-                    <CCol xs={6}>
+                    <CCol xs={12}>
                       <CButton
                         type={'submit'}
                         disabled={loginQuery.isLoading}
@@ -93,7 +97,6 @@ const LoginPage = () => {
                         {loginQuery.isLoading ? 'Ждите...' : 'Войти'}
                       </CButton>
                     </CCol>
-                    <CCol xs={6} className="text-right"></CCol>
                   </CRow>
                 </CForm>
               </CCardBody>
