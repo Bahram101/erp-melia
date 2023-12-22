@@ -42,9 +42,11 @@ const EmployeeGridPage = () => {
       <CCardHeader>
         <h4 className="float-start">Список сотрудников</h4>
         <div className="float-end">
-          <CButton color={'primary'} shape="square" href={'/hr/employees/add'}>
-            Добавить
-          </CButton>
+          <Link to={'/hr/employees/add'}>
+            <CButton color={'primary'} shape="square">
+              Добавить
+            </CButton>
+          </Link>
         </div>
       </CCardHeader>
       <CCardBody>
