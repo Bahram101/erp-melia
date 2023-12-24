@@ -1,13 +1,13 @@
 import { useQuery } from 'react-query'
-import { request, requestWithoutAuth } from '../../http'
+import { request } from '../../http'
 
-export const useEmployeeCard = (id: any) => {
+export const useEmployeeDetailedQuery = (id: any, enabled: boolean) => {
   return useQuery(
-    ['hr/getEmployeeCard'],
+    ['hr-get-employee-detailed'],
     async () => {
       const { data } = await request.get(`/hr/employees/${id}/detailed`)
       return data
     },
-    { enabled: true },
+    { enabled: enabled },
   )
 }
