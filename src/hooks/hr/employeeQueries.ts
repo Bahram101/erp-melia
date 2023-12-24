@@ -11,3 +11,14 @@ export const useCurrentEmployeesQuery = () => {
     { enabled: true },
   )
 }
+
+export const useEmployeeDetailedQuery = (id: any, enabled: boolean) => {
+  return useQuery(
+    ['hr-get-employee-detailed'],
+    async () => {
+      const { data } = await request.get(`/hr/employees/${id}/detailed`)
+      return data
+    },
+    { enabled: enabled },
+  )
+}

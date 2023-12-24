@@ -2,24 +2,24 @@ import { CNavItem, CNavLink } from '@coreui/react-pro'
 import React from 'react'
 
 type TabNavItemProps = {
-  text: string
-  number: number
-  activeKey: number
-  setActiveKey: (tabNumber: number) => void
+  label: string
+  itemKey: string
+  activeKey: string
+  setActiveKey: (tabKey: string) => void
 }
 
-const TabNavItem = ({ text, number, activeKey, setActiveKey }: TabNavItemProps) => {
+const TabNavItem = ({ label, itemKey, activeKey, setActiveKey }: TabNavItemProps) => {
   return (
     <CNavItem role="presentation">
       <CNavLink
-        active={activeKey === number}
+        active={activeKey === itemKey}
         component="button"
         role="tab"
         aria-controls="home-tab-pane"
-        aria-selected={activeKey === number}
-        onClick={() => setActiveKey(number)}
+        aria-selected={activeKey === itemKey}
+        onClick={() => setActiveKey(itemKey)}
       >
-        {text}
+        {label}
       </CNavLink>
     </CNavItem>
   )
