@@ -13,10 +13,22 @@ export const useCurrentEmployeesQuery = () => {
 }
 
 export const useEmployeeDetailedQuery = (id: any, enabled: boolean) => {
-  return useQuery(
+  return useQuery<any>(
     ['hr-get-employee-detailed'],
     async () => {
       const { data } = await request.get(`/hr/employees/${id}/detailed`)
+      return data
+    },
+    { enabled: enabled },
+  )
+}
+
+export const useCustomerAdressesQuery = (customerId: string, enabled: boolean) => {
+  console.log('aaaaaaaaaa')
+  return useQuery<any>(
+    ['reference-customer-addresses'],
+    async () => {
+      const { data } = await request.get(`/reference/customer-addresses/${customerId}`)
       return data
     },
     { enabled: enabled },

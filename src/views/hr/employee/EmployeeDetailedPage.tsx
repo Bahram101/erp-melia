@@ -7,24 +7,29 @@ import {
   CNav,
   CTabContent,
   CTabPane,
-  CTable,
-  CTableRow,
-  CTableBody,
-  CTableDataCell,
   CSpinner,
 } from '@coreui/react-pro'
 import { Link, useParams } from 'react-router-dom'
-import { useEmployeeDetailedQuery } from 'hooks/hr/employeeQueries'
+import { useEmployeeDetailedQuery, useCustomerAdressesQuery } from 'hooks/hr/employeeQueries'
 import { FaAngleLeft } from 'react-icons/fa6'
 import TabNavItem from './components/TabNavItem'
+import TabPane from './components/EmployeeMainData'
+import EmployeeMainData from './components/EmployeeMainData'
+import EmployeeContacts from './components/EmployeeContacts'
+import { request } from '../../../http'
 
 const EmployeeDetailedPage = () => {
   const [activeKey, setActiveKey] = useState('MAIN_DATA')
   const params = useParams()
   const employeeDetailedQuery = useEmployeeDetailedQuery(params.id, true)
-  if (employeeDetailedQuery.data) {
-    var { iin, lastname, middlename, firstname, birthDate, addresses } = employeeDetailedQuery?.data
-  }
+  const customerDataQuery = useCustomerAdressesQuery(employeeDetailedQuery?.data?.customerId, true)
+
+  useEffect(() => {
+    // Fetch customer data when employee data changes
+    if (employeeDetailedQuery?.data?.customerId) {
+      customerDataQuery.refetch() // Optionally refetch the data
+    }
+  }, [employeeDetailedQuery.data, customerDataQuery.refetch])
 
   const tabs = [
     {
@@ -60,6 +65,8 @@ const EmployeeDetailedPage = () => {
       label: 'Иерархия',
     },
   ]
+
+  // console.log('customerData', customerData)
 
   return (
     <CCard>
@@ -98,44 +105,8 @@ const EmployeeDetailedPage = () => {
           </div>
         ) : (
           <CTabContent>
-            <CTabPane
-              role="tabpanel"
-              aria-labelledby="home-tab-pane"
-              visible={activeKey === 'MAIN_DATA'}
-            >
-              <CTable striped>
-                <CTableBody>
-                  <CTableRow>
-                    <CTableDataCell className="col-4 fw-bold">Фамилия</CTableDataCell>
-                    <CTableDataCell>{lastname}</CTableDataCell>
-                  </CTableRow>
-                  <CTableRow>
-                    <CTableDataCell className="fw-bold">Имя</CTableDataCell>
-                    <CTableDataCell>{firstname}</CTableDataCell>
-                  </CTableRow>
-                  <CTableRow>
-                    <CTableDataCell className="fw-bold">Отчество</CTableDataCell>
-                    <CTableDataCell>{middlename}</CTableDataCell>
-                  </CTableRow>
-                  <CTableRow>
-                    <CTableDataCell className="fw-bold">ИИН</CTableDataCell>
-                    <CTableDataCell>{iin}</CTableDataCell>
-                  </CTableRow>
-                  <CTableRow>
-                    <CTableDataCell className="fw-bold">Дата рождения</CTableDataCell>
-                    <CTableDataCell>{birthDate}</CTableDataCell>
-                  </CTableRow>
-                </CTableBody>
-              </CTable>
-            </CTabPane>
-            <CTabPane
-              role="tabpanel"
-              aria-labelledby="profile-tab-pane"
-              visible={activeKey === 'CONTACTS'}
-            >
-              Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee
-              squid.
-            </CTabPane>
+            <EmployeeMainData activeKey={activeKey} data={employeeDetailedQuery?.data} />
+            {/* <EmployeeContacts activeKey={activeKey} data={customerData} /> */}
             <CTabPane
               role="tabpanel"
               aria-labelledby="contact-tab-pane"
