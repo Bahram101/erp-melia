@@ -24,12 +24,13 @@ export const useEmployeeDetailedQuery = (id: any, enabled: boolean) => {
 }
 
 export const useCustomerAdressesQuery = (customerId: string, enabled: boolean) => {
-  console.log('aaaaaaaaaa')
   return useQuery<any>(
     ['reference-customer-addresses'],
     async () => {
-      const { data } = await request.get(`/reference/customer-addresses/${customerId}`)
-      return data
+      if (customerId) {
+        const { data } = await request.get(`/reference/customer-addresses/${customerId}`)
+        return data
+      }
     },
     { enabled: enabled },
   )

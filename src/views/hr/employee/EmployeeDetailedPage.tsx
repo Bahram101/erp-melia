@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   CCard,
   CCardHeader,
@@ -13,23 +13,26 @@ import { Link, useParams } from 'react-router-dom'
 import { useEmployeeDetailedQuery, useCustomerAdressesQuery } from 'hooks/hr/employeeQueries'
 import { FaAngleLeft } from 'react-icons/fa6'
 import TabNavItem from './components/TabNavItem'
-import TabPane from './components/EmployeeMainData'
 import EmployeeMainData from './components/EmployeeMainData'
 import EmployeeContacts from './components/EmployeeContacts'
-import { request } from '../../../http'
+import EmployeePositions from './components/EmployeePositions'
+import EmployeeBalance from './components/EmployeeBalance'
+import EmployeeDeposit from './components/EmployeeDeposit'
+import EmployeeUnPaidDeposits from './components/EmployeeUnPaidDeposits'
+import EmployeeUserBranches from './components/EmployeeUserBranches'
+import EmployeeHierarchy from './components/EmployeeUserHierarchy'
 
 const EmployeeDetailedPage = () => {
   const [activeKey, setActiveKey] = useState('MAIN_DATA')
   const params = useParams()
   const employeeDetailedQuery = useEmployeeDetailedQuery(params.id, true)
-  const customerDataQuery = useCustomerAdressesQuery(employeeDetailedQuery?.data?.customerId, true)
+  const customerDataQuery = useCustomerAdressesQuery(employeeDetailedQuery?.data?.customerId, false)
 
   useEffect(() => {
-    // Fetch customer data when employee data changes
     if (employeeDetailedQuery?.data?.customerId) {
-      customerDataQuery.refetch() // Optionally refetch the data
+      customerDataQuery.refetch()
     }
-  }, [employeeDetailedQuery.data, customerDataQuery.refetch])
+  }, [employeeDetailedQuery.data])
 
   const tabs = [
     {
@@ -65,8 +68,6 @@ const EmployeeDetailedPage = () => {
       label: 'Иерархия',
     },
   ]
-
-  // console.log('customerData', customerData)
 
   return (
     <CCard>
@@ -106,49 +107,13 @@ const EmployeeDetailedPage = () => {
         ) : (
           <CTabContent>
             <EmployeeMainData activeKey={activeKey} data={employeeDetailedQuery?.data} />
-            {/* <EmployeeContacts activeKey={activeKey} data={customerData} /> */}
-            <CTabPane
-              role="tabpanel"
-              aria-labelledby="contact-tab-pane"
-              visible={activeKey === 'POSITIONS'}
-            >
-              Etsy mixtape wayfarers, ethical wes anderson tofu before they sold out mcsweeney's
-            </CTabPane>
-            <CTabPane
-              role="tabpanel"
-              aria-labelledby="disabled-tab-pane"
-              visible={activeKey === 'BALANCE'}
-            >
-              Etsy mixtape wayfarers, ethical wes anderson tofu before they sold out mcsweeney's
-            </CTabPane>
-            <CTabPane
-              role="tabpanel"
-              aria-labelledby="disabled-tab-pane"
-              visible={activeKey === 'DEPOSIT'}
-            >
-              Etsy mixtape wayfarers, ethical wes anderson tofu before they sold out mcsweeney's
-            </CTabPane>
-            <CTabPane
-              role="tabpanel"
-              aria-labelledby="disabled-tab-pane"
-              visible={activeKey === 'UNPAID DEPOSITS'}
-            >
-              Etsy mixtape wayfarers, ethical wes anderson tofu before they sold out mcsweeney's
-            </CTabPane>
-            <CTabPane
-              role="tabpanel"
-              aria-labelledby="disabled-tab-pane"
-              visible={activeKey === 'USER BRANCHES'}
-            >
-              Etsy mixtape wayfarers, ethical wes anderson tofu before they sold out mcsweeney's
-            </CTabPane>
-            <CTabPane
-              role="tabpanel"
-              aria-labelledby="disabled-tab-pane"
-              visible={activeKey === 'HIERARCHY'}
-            >
-              Etsy mixtape wayfarers, ethical wes anderson tofu before they sold out mcsweeney's
-            </CTabPane>
+            <EmployeeContacts activeKey={activeKey} data={customerDataQuery} />
+            <EmployeePositions activeKey={activeKey} data={{}} />
+            <EmployeeBalance activeKey={activeKey} data={{}} />
+            <EmployeeDeposit activeKey={activeKey} data={{}} />
+            <EmployeeUnPaidDeposits activeKey={activeKey} data={{}} />
+            <EmployeeUserBranches activeKey={activeKey} data={{}} />
+            <EmployeeHierarchy activeKey={activeKey} data={{}} />
           </CTabContent>
         )}
       </CCardBody>

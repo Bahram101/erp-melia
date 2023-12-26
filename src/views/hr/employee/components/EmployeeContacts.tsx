@@ -1,16 +1,5 @@
 import React from 'react'
-import {
-  CTabPane,
-  CTable,
-  CTableRow,
-  CTableBody,
-  CTableDataCell,
-  CSpinner,
-  CSmartTable,
-  CButton,
-} from '@coreui/react-pro'
-import { Link } from 'react-router-dom'
-import { FaEye, FaPen } from 'react-icons/fa'
+import { CTabPane, CSmartTable } from '@coreui/react-pro'
 
 type TabPaneProps = {
   activeKey: string
@@ -18,32 +7,55 @@ type TabPaneProps = {
 }
 
 const EmployeeContacts = ({ activeKey, data }: TabPaneProps) => {
+  const columns = [
+    {
+      key: 'regionName',
+      label: 'Область',
+      filter: false,
+      _style: { width: '10%' },
+    },
+    {
+      key: 'districtName',
+      label: 'Район',
+    },
+    {
+      key: 'cityName',
+      label: 'Город',
+    },
+    {
+      key: 'cityDistrict',
+      label: 'Район в горорде',
+    },
+    {
+      key: 'microDistrict',
+      label: 'Район',
+    },
+    {
+      key: 'name',
+      label: 'Адрес регистрации',
+    },
+    {
+      key: 'street',
+      label: 'Улица',
+    },
+    {
+      key: 'houseNumber',
+      label: 'Номер дома',
+    },
+    {
+      key: 'flatNumber',
+      label: 'Номер квартиры',
+    },
+  ]
   return (
     <CTabPane role="tabpanel" aria-labelledby="home-tab-pane" visible={activeKey === 'CONTACTS'}>
       <CSmartTable
-        columns={[]}
-        items={[]}
-        loading={data.isLoading}
+        columns={columns}
+        items={data.data || []}
+        loading={data?.isLoading}
         itemsPerPage={30}
         pagination
-        columnFilter
-        scopedColumns={{
-          actions: (item: any) => (
-            <td>
-              <Link to={`/hr/employees/view/${item.employeeId}`}>
-                <CButton color={'primary'} variant="outline" shape="square" size="sm">
-                  <FaEye />
-                </CButton>
-                &nbsp;
-              </Link>
-              <Link to={`/hr/employees/edit/${item.employeeId}`}>
-                <CButton color={'primary'} variant="outline" shape="square" size="sm">
-                  <FaPen />
-                </CButton>
-              </Link>
-            </td>
-          ),
-        }}
+        columnFilter={false}
       />
     </CTabPane>
   )
