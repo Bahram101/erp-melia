@@ -1,37 +1,34 @@
-import React from 'react'
 import { CTabPane, CTable, CTableRow, CTableBody, CTableDataCell } from '@coreui/react-pro'
 
 type TabPaneProps = {
-  activeKey: string
-  data: any
-  isLoading?: Boolean
+  mainData: any
 }
 
-const EmployeeMainData = ({ activeKey, data }: TabPaneProps) => {
+const EmployeeMainData = ({ mainData }: TabPaneProps) => {
   return (
     <>
-      <CTabPane role="tabpanel" aria-labelledby="home-tab-pane" visible={activeKey === 'MAIN_DATA'}>
+      <CTabPane role="tabpanel" aria-labelledby="home-tab-pane" visible={true}>
         <CTable striped>
           <CTableBody>
             <CTableRow>
               <CTableDataCell className="col-4 fw-bold">Фамилия</CTableDataCell>
-              <CTableDataCell>{data?.lastname}</CTableDataCell>
+              <CTableDataCell>{mainData?.lastname}</CTableDataCell>
             </CTableRow>
             <CTableRow>
               <CTableDataCell className="fw-bold">Имя</CTableDataCell>
-              <CTableDataCell>{data?.firstname}</CTableDataCell>
+              <CTableDataCell>{mainData?.firstname}</CTableDataCell>
             </CTableRow>
             <CTableRow>
               <CTableDataCell className="fw-bold">Отчество</CTableDataCell>
-              <CTableDataCell>{data?.middlename}</CTableDataCell>
+              <CTableDataCell>{mainData?.middlename}</CTableDataCell>
             </CTableRow>
             <CTableRow>
               <CTableDataCell className="fw-bold">ИИН</CTableDataCell>
-              <CTableDataCell>{data?.iin}</CTableDataCell>
+              <CTableDataCell>{mainData?.iin}</CTableDataCell>
             </CTableRow>
             <CTableRow>
               <CTableDataCell className="fw-bold">Дата рождения</CTableDataCell>
-              <CTableDataCell>{data?.birthDate}</CTableDataCell>
+              <CTableDataCell>{mainData?.birthDate}</CTableDataCell>
             </CTableRow>
           </CTableBody>
         </CTable>

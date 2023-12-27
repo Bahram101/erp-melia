@@ -1,14 +1,14 @@
 import { CNavItem, CNavLink } from '@coreui/react-pro'
 import React from 'react'
 
-type TabNavItemProps = {
+type Props = {
   label: string
   itemKey: string
   activeKey: string
   setActiveKey: (tabKey: string) => void
 }
 
-const TabNavItem = ({ label, itemKey, activeKey, setActiveKey }: TabNavItemProps) => {
+const TabNavItem = ({ label, itemKey, activeKey, setActiveKey }: Props) => {
   return (
     <CNavItem role="presentation">
       <CNavLink

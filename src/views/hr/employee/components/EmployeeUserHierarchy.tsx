@@ -1,14 +1,12 @@
-import React from 'react'
-import { CTabPane, CSmartTable } from '@coreui/react-pro'
+import { CTabPane } from '@coreui/react-pro'
 
-type TabPaneProps = {
-  activeKey: string
-  data: any
+type Props = {
+  hierarchy: any
 }
 
-const EmployeeHierarchy = ({ activeKey, data }: TabPaneProps) => {
+const EmployeeHierarchy = ({ hierarchy }: Props) => {
   return (
-    <CTabPane role="tabpanel" aria-labelledby="home-tab-pane" visible={activeKey === 'HIERARCHY'}>
+    <CTabPane role="tabpanel" aria-labelledby="home-tab-pane" visible={true}>
       Иерархия
     </CTabPane>
   )

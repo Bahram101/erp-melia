@@ -1,18 +1,12 @@
-import React from 'react'
-import { CTabPane, CSmartTable } from '@coreui/react-pro'
+import { CTabPane } from '@coreui/react-pro'
 
-type TabPaneProps = {
-  activeKey: string
-  data: any
+type Props = {
+  unpaidDeposits: any
 }
 
-const EmployeeUnPaidDeposits = ({ activeKey, data }: TabPaneProps) => {
+const EmployeeUnPaidDeposits = ({ unpaidDeposits }: Props) => {
   return (
-    <CTabPane
-      role="tabpanel"
-      aria-labelledby="home-tab-pane"
-      visible={activeKey === 'UNPAID DEPOSITS'}
-    >
+    <CTabPane role="tabpanel" aria-labelledby="home-tab-pane" visible={true}>
       Не оплаченные депозиты
     </CTabPane>
   )

@@ -1,18 +1,12 @@
-import React from 'react'
-import { CTabPane, CSmartTable } from '@coreui/react-pro'
+import { CTabPane } from '@coreui/react-pro'
 
-type TabPaneProps = {
-  activeKey: string
-  data: any
+type Props = {
+  userBranches: any
 }
 
-const EmployeeUserBranches = ({ activeKey, data }: TabPaneProps) => {
+const EmployeeUserBranches = ({ userBranches }: Props) => {
   return (
-    <CTabPane
-      role="tabpanel"
-      aria-labelledby="home-tab-pane"
-      visible={activeKey === 'USER BRANCHES'}
-    >
+    <CTabPane role="tabpanel" aria-labelledby="home-tab-pane" visible={true}>
       Филиалы пользователя
     </CTabPane>
   )

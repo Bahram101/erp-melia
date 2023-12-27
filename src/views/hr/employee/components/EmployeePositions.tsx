@@ -1,14 +1,13 @@
 import React from 'react'
 import { CTabPane, CSmartTable } from '@coreui/react-pro'
 
-type TabPaneProps = {
-  activeKey: string
-  data: any
+type Props = {
+  positions: any
 }
 
-const EmployeePositions = ({ activeKey, data }: TabPaneProps) => {
+const EmployeePositions = ({ positions }: Props) => {
   return (
-    <CTabPane role="tabpanel" aria-labelledby="home-tab-pane" visible={activeKey === 'POSITIONS'}>
+    <CTabPane role="tabpanel" aria-labelledby="home-tab-pane" visible={true}>
       Должности
     </CTabPane>
   )

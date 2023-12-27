@@ -1,14 +1,12 @@
-import React from 'react'
-import { CTabPane, CSmartTable } from '@coreui/react-pro'
+import { CTabPane } from '@coreui/react-pro'
 
-type TabPaneProps = {
-  activeKey: string
-  data: any
+type Props = {
+  balance: any
 }
 
-const EmployeeBalance = ({ activeKey, data }: TabPaneProps) => {
+const EmployeeBalance = ({ balance }: Props) => {
   return (
-    <CTabPane role="tabpanel" aria-labelledby="home-tab-pane" visible={activeKey === 'BALANCE'}>
+    <CTabPane role="tabpanel" aria-labelledby="home-tab-pane" visible={true}>
       Баланс
     </CTabPane>
   )

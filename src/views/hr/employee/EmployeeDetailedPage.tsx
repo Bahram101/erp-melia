@@ -26,11 +26,14 @@ const EmployeeDetailedPage = () => {
   const [activeKey, setActiveKey] = useState('MAIN_DATA')
   const params = useParams()
   const employeeDetailedQuery = useEmployeeDetailedQuery(params.id, true)
-  const customerDataQuery = useCustomerAdressesQuery(employeeDetailedQuery?.data?.customerId, false)
+  const customerAddressesQuery = useCustomerAdressesQuery(
+    employeeDetailedQuery?.data?.customerId,
+    false,
+  )
 
   useEffect(() => {
     if (employeeDetailedQuery?.data?.customerId) {
-      customerDataQuery.refetch()
+      customerAddressesQuery.refetch()
     }
   }, [employeeDetailedQuery.data])
 
@@ -56,11 +59,11 @@ const EmployeeDetailedPage = () => {
       label: 'Депозит',
     },
     {
-      key: 'UNPAID DEPOSITS',
+      key: 'UNPAID_DEPOSITS',
       label: 'Не оплаченные депозиты',
     },
     {
-      key: 'USER BRANCHES',
+      key: 'USER_BRANCHES',
       label: ' Филиалы пользователя',
     },
     {
@@ -106,14 +109,18 @@ const EmployeeDetailedPage = () => {
           </div>
         ) : (
           <CTabContent>
-            <EmployeeMainData activeKey={activeKey} data={employeeDetailedQuery?.data} />
-            <EmployeeContacts activeKey={activeKey} data={customerDataQuery} />
-            <EmployeePositions activeKey={activeKey} data={{}} />
-            <EmployeeBalance activeKey={activeKey} data={{}} />
-            <EmployeeDeposit activeKey={activeKey} data={{}} />
-            <EmployeeUnPaidDeposits activeKey={activeKey} data={{}} />
-            <EmployeeUserBranches activeKey={activeKey} data={{}} />
-            <EmployeeHierarchy activeKey={activeKey} data={{}} />
+            {activeKey === 'MAIN_DATA' && (
+              <EmployeeMainData mainData={employeeDetailedQuery?.data} />
+            )}
+            {activeKey === 'CONTACTS' && (
+              <EmployeeContacts addresses={customerAddressesQuery?.data} />
+            )}
+            {activeKey === 'POSITIONS' && <EmployeePositions positions={{}} />}
+            {activeKey === 'BALANCE' && <EmployeeBalance balance={{}} />}
+            {activeKey === 'DEPOSIT' && <EmployeeDeposit deposit={{}} />}
+            {activeKey === 'UNPAID_DEPOSITS' && <EmployeeUnPaidDeposits unpaidDeposits={{}} />}
+            {activeKey === 'USER_BRANCHES' && <EmployeeUserBranches userBranches={{}} />}
+            {activeKey === 'HIERARCHY' && <EmployeeHierarchy hierarchy={{}} />}
           </CTabContent>
         )}
       </CCardBody>

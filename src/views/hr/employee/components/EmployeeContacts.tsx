@@ -1,12 +1,10 @@
-import React from 'react'
-import { CTabPane, CSmartTable } from '@coreui/react-pro'
+import { CTabPane, CSmartTable, CTable } from '@coreui/react-pro'
 
-type TabPaneProps = {
-  activeKey: string
-  data: any
+type Props = {
+  addresses: any
 }
 
-const EmployeeContacts = ({ activeKey, data }: TabPaneProps) => {
+const EmployeeContacts = ({ addresses }: Props) => {
   const columns = [
     {
       key: 'regionName',
@@ -48,15 +46,8 @@ const EmployeeContacts = ({ activeKey, data }: TabPaneProps) => {
     },
   ]
   return (
-    <CTabPane role="tabpanel" aria-labelledby="home-tab-pane" visible={activeKey === 'CONTACTS'}>
-      <CSmartTable
-        columns={columns}
-        items={data.data || []}
-        loading={data?.isLoading}
-        itemsPerPage={30}
-        pagination
-        columnFilter={false}
-      />
+    <CTabPane role="tabpanel" aria-labelledby="home-tab-pane" visible={true}>
+      <CTable striped hover responsive columns={columns} items={addresses || []} />
     </CTabPane>
   )
 }
