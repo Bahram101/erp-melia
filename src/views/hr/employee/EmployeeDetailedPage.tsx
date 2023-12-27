@@ -10,7 +10,11 @@ import {
   CSpinner,
 } from '@coreui/react-pro'
 import { Link, useParams } from 'react-router-dom'
-import { useEmployeeDetailedQuery, useCustomerAdressesQuery } from 'hooks/hr/employeeQueries'
+import {
+  useEmployeeDetailedQuery,
+  useCustomerAdressesQuery,
+  useEmployeePositionsQuery,
+} from 'hooks/hr/employeeQueries'
 import { FaAngleLeft } from 'react-icons/fa6'
 import TabNavItem from './components/TabNavItem'
 import EmployeeMainData from './components/EmployeeMainData'
@@ -30,10 +34,12 @@ const EmployeeDetailedPage = () => {
     employeeDetailedQuery?.data?.customerId,
     false,
   )
+  const employeePositionsQuery = useEmployeePositionsQuery(params.id, false)
 
   useEffect(() => {
-    if (employeeDetailedQuery?.data?.customerId) {
+    if (employeeDetailedQuery.data) {
       customerAddressesQuery.refetch()
+      employeePositionsQuery.refetch()
     }
   }, [employeeDetailedQuery.data])
 
@@ -71,6 +77,8 @@ const EmployeeDetailedPage = () => {
       label: 'Иерархия',
     },
   ]
+
+  console.log('employeePositionsQuery', employeePositionsQuery)
 
   return (
     <CCard>
@@ -115,7 +123,9 @@ const EmployeeDetailedPage = () => {
             {activeKey === 'CONTACTS' && (
               <EmployeeContacts addresses={customerAddressesQuery?.data} />
             )}
-            {activeKey === 'POSITIONS' && <EmployeePositions positions={{}} />}
+            {activeKey === 'POSITIONS' && (
+              <EmployeePositions positions={employeePositionsQuery?.data} />
+            )}
             {activeKey === 'BALANCE' && <EmployeeBalance balance={{}} />}
             {activeKey === 'DEPOSIT' && <EmployeeDeposit deposit={{}} />}
             {activeKey === 'UNPAID_DEPOSITS' && <EmployeeUnPaidDeposits unpaidDeposits={{}} />}

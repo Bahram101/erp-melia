@@ -1,4 +1,4 @@
-import { CTabPane, CSmartTable, CTable } from '@coreui/react-pro'
+import { CTabPane, CTable } from '@coreui/react-pro'
 
 type Props = {
   addresses: any
@@ -6,6 +6,12 @@ type Props = {
 
 const EmployeeContacts = ({ addresses }: Props) => {
   const columns = [
+    {
+      key: 'index',
+      label: '#',
+      filter: false,
+      _style: { width: '40px' },
+    },
     {
       key: 'regionName',
       label: 'Область',
@@ -45,9 +51,14 @@ const EmployeeContacts = ({ addresses }: Props) => {
       label: 'Номер квартиры',
     },
   ]
+  const addressesWithIndex = addresses.map((item: any, index: number) => ({
+    ...item,
+    index: index + 1,
+  }))
+
   return (
     <CTabPane role="tabpanel" aria-labelledby="home-tab-pane" visible={true}>
-      <CTable striped hover responsive columns={columns} items={addresses || []} />
+      <CTable striped hover responsive columns={columns} items={addressesWithIndex || []} />
     </CTabPane>
   )
 }

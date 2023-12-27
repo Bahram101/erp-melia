@@ -35,3 +35,16 @@ export const useCustomerAdressesQuery = (customerId: string, enabled: boolean) =
     { enabled: enabled },
   )
 }
+
+export const useEmployeePositionsQuery = (employeeId: string | undefined, enabled: boolean) => {
+  return useQuery<any>(
+    ['hr-employees-posts'],
+    async () => {
+      if (employeeId) {
+        const { data } = await request.get(`/hr/employees/${employeeId}/posts`)
+        return data
+      }
+    },
+    { enabled: enabled },
+  )
+}
