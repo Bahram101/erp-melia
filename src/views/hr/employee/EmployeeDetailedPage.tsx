@@ -6,7 +6,6 @@ import {
   CCardBody,
   CNav,
   CTabContent,
-  CTabPane,
   CSpinner,
 } from '@coreui/react-pro'
 import { Link, useParams } from 'react-router-dom'
@@ -27,7 +26,7 @@ import EmployeeUserBranches from './components/EmployeeUserBranches'
 import EmployeeHierarchy from './components/EmployeeUserHierarchy'
 
 const EmployeeDetailedPage = () => {
-  const [activeKey, setActiveKey] = useState('MAIN_DATA')
+  const [activeKey, setActiveKey] = useState('MAIN_DATA') //
   const params = useParams()
   const employeeDetailedQuery = useEmployeeDetailedQuery(params.id, true)
   const customerAddressesQuery = useCustomerAdressesQuery(
@@ -94,7 +93,7 @@ const EmployeeDetailedPage = () => {
         </div>
       </CCardHeader>
       <CCardBody>
-        <CNav variant="pills" role="tablist" className="mb-4">
+        <CNav variant="pills" role="tablist" className="mb-3">
           {tabs.map((item: { label: string; key: string }) => {
             return (
               <TabNavItem
