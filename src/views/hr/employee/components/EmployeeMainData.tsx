@@ -1,10 +1,15 @@
 import { CTabPane, CTable, CTableRow, CTableBody, CTableDataCell } from '@coreui/react-pro'
+import { EmployeeDetailedModel } from '../../../../models/hr/HrModels'
 
 type TabPaneProps = {
-  mainData: any
+  mainData: EmployeeDetailedModel | undefined
 }
 
 const EmployeeMainData = ({ mainData }: TabPaneProps) => {
+  if (!mainData) {
+    return null
+  }
+
   return (
     <>
       <CTabPane role="tabpanel" aria-labelledby="home-tab-pane" visible={true}>

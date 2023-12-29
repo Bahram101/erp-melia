@@ -62,8 +62,8 @@ const _nav = [
     items: [
       {
         component: CNavItem,
-        name: 'Buttons',
-        to: '/buttons/buttons',
+        name: 'Список договоров',
+        to: '/marketing/contracts',
       },
     ],
   },

@@ -15,32 +15,41 @@ import { FaPlus } from 'react-icons/fa6'
 import { useState } from 'react'
 import FormModal from 'components/FormModal'
 import PostForm from 'views/hr/components/PostForm'
+import { useBranchOptionsQuery, usePositionOptionsQuery } from 'hooks/reference/refOptionsQueries'
 
 type Props = {
-  positions: any
+  posts: any
 }
 
-const EmployeePositions = ({ positions }: Props) => {
-  const [visible, setVisible] = useState<boolean>(false)
-  const [validated, setValidated] = useState<boolean>(false)
-  const positionsWithIndex = positions.map((item: any, index: number) => ({
-    ...item,
-    index: index + 1,
-  }))
+const EmployeePosts = ({ posts }: Props) => {
+  const branchOptionsQuery = useBranchOptionsQuery(true)
+  const positionOptionsQuery = usePositionOptionsQuery(true)
+  const [visibleFormModal, setVisibleFormModal] = useState<boolean>(false)
+  const [state, setState] = useState<any>({})
 
-  const handleSubmit = () => {
-    console.log('handle')
+  const handleChange = (e: any) => {
+    const { name, value } = e.target
+    // setErrors({ ...errors, [name]: null })
+    setState({ ...state, [name]: value })
   }
 
+  const handleSubmit = () => {
+    console.log('handleSubmit')
+  }
+  console.log('state', state)
   return (
     <>
       <FormModal
-        visible={visible}
-        setVisible={setVisible}
-        handleSubmit={handleSubmit}
         title={'Добавление должности сотруднику'}
+        visibleFormModal={visibleFormModal}
+        onClose={() => setVisibleFormModal(false)}
+        handleSubmit={handleSubmit}
       >
-        <PostForm validated={validated} setValidated={setValidated} />
+        <PostForm
+          branchOptions={branchOptionsQuery.data}
+          positionOptions={positionOptionsQuery.data}
+          handleChange={handleChange}
+        />
       </FormModal>
       <CTabPane role="tabpanel" aria-labelledby="home-tab-pane" visible={true}>
         <div className="float-end">
@@ -49,7 +58,7 @@ const EmployeePositions = ({ positions }: Props) => {
               <CButton
                 color="success mb-2"
                 className="text-white"
-                onClick={() => setVisible(!visible)}
+                onClick={() => setVisibleFormModal(!visibleFormModal)}
               >
                 <FaPlus className="mb-1 me-2" />
                 Добавить должность
@@ -71,7 +80,7 @@ const EmployeePositions = ({ positions }: Props) => {
             </CTableRow>
           </CTableHead>
           <CTableBody>
-            {positionsWithIndex.map((position: any) => (
+            {posts.map((position: any) => (
               <CTableRow key={position.id}>
                 <CTableDataCell>{position.index}</CTableDataCell>
                 <CTableDataCell>{position.branchName}</CTableDataCell>
@@ -79,7 +88,7 @@ const EmployeePositions = ({ positions }: Props) => {
                 <CTableDataCell>{position.beginDate}</CTableDataCell>
                 <CTableDataCell>{position.endDate}</CTableDataCell>
                 <CTableDataCell>{position.salary}</CTableDataCell>
-                <CTableDataCell>{position.hasAccess}</CTableDataCell>
+                <CTableDataCell>{position.hasAccess ? 'Да' : 'Нет'}</CTableDataCell>
                 <CTableDataCell>
                   <Link to={{}}>
                     <CButton color={'primary'} variant="outline" shape="square" size="sm">
@@ -96,4 +105,4 @@ const EmployeePositions = ({ positions }: Props) => {
   )
 }
 
-export default EmployeePositions
+export default EmployeePosts

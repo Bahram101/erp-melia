@@ -1,5 +1,7 @@
 import { useQuery } from 'react-query'
 import { request } from '../../http'
+import { EmployeeDetailedModel } from '../../models/hr/HrModels'
+import { PositionModel } from 'models/reference/positionModels'
 
 export const useCurrentEmployeesQuery = () => {
   return useQuery<any[]>(
@@ -13,7 +15,7 @@ export const useCurrentEmployeesQuery = () => {
 }
 
 export const useEmployeeDetailedQuery = (id: any, enabled: boolean) => {
-  return useQuery<any>(
+  return useQuery<EmployeeDetailedModel>(
     ['hr-get-employee-detailed'],
     async () => {
       const { data } = await request.get(`/hr/employees/${id}/detailed`)
@@ -23,22 +25,9 @@ export const useEmployeeDetailedQuery = (id: any, enabled: boolean) => {
   )
 }
 
-export const useCustomerAdressesQuery = (customerId: string, enabled: boolean) => {
-  return useQuery<any>(
-    ['reference-customer-addresses'],
-    async () => {
-      if (customerId) {
-        const { data } = await request.get(`/reference/customer-addresses/${customerId}`)
-        return data
-      }
-    },
-    { enabled: enabled },
-  )
-}
-
-export const useEmployeePositionsQuery = (employeeId: string | undefined, enabled: boolean) => {
-  return useQuery<any>(
-    ['hr-employees-posts'],
+export const useEmployeePostsQuery = (employeeId: string | undefined, enabled: boolean) => {
+  return useQuery<PositionModel>(
+    ['hr-get-employee-posts'],
     async () => {
       if (employeeId) {
         const { data } = await request.get(`/hr/employees/${employeeId}/posts`)

@@ -1,29 +1,36 @@
 import { CCol, CDatePicker, CForm, CFormInput, CFormSelect } from '@coreui/react-pro'
+import { RefOptionsField } from 'components/fields/RefOptionsField'
+import { PositionModel } from 'models/reference/positionModels'
 
 type Props = {
-  validated: boolean
-  setValidated: (status: boolean) => void
+  branchOptions: { id: string; label: string }[]
+  positionOptions: { id: string; name: string }[]
+  handleChange: (e: any) => void
 }
 
-const PostForm = ({ validated, setValidated }: Props) => {
+const PostForm = ({ branchOptions, positionOptions, handleChange }: Props) => {
   return (
-    <CForm
-      className="row g-3 needs-validation"
-      noValidate
-      // validated={validated}
-    >
+    <CForm className="row g-3 needs-validation">
       <CCol md={12}>
-        <CFormSelect label="Филиал" aria-label="Default select example" options={['Не выбрано']} />
-      </CCol>
-      <CCol md={12}>
-        <CFormSelect
-          label="Должность"
-          aria-label="Default select example"
-          options={['Не выбрано']}
+        <RefOptionsField
+          optionLabel={'Филиал'}
+          label={'Филиал'}
+          fieldName={'branchId'}
+          options={branchOptions || []}
+          handleChange={handleChange}
         />
       </CCol>
       <CCol md={12}>
-        <CDatePicker locale="en-US" label="Дата начала" />
+        <RefOptionsField
+          optionLabel={'Должность'}
+          label={'Должность'}
+          fieldName={'positionId'}
+          options={positionOptions || []}
+          handleChange={handleChange}
+        />
+      </CCol>
+      <CCol md={12}>
+        {/* <CDatePicker locale="en-US" label="Дата начала" handleChange={handleChange}  /> */}
       </CCol>
       <CCol md={12}>
         <CFormInput

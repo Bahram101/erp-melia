@@ -9,29 +9,23 @@ import {
 import React, { useState } from 'react'
 
 type Props = {
-  visible: boolean
-  setVisible: (status: boolean) => void
+  visibleFormModal: boolean
+  onClose: () => void
   title: string
   children: React.ReactNode
   handleSubmit: (data: any) => void
 }
 
-const FormModal = ({ visible, setVisible, title, children, handleSubmit }: Props) => {
+const FormModal = ({ visibleFormModal, onClose, title, children, handleSubmit }: Props) => {
   return (
     <>
-      <CModal
-        alignment="center"
-        scrollable
-        visible={visible}
-        onClose={() => setVisible(false)}
-        aria-labelledby="VerticallyCenteredScrollableExample"
-      >
+      <CModal alignment="center" scrollable visible={visibleFormModal} onClose={onClose}>
         <CModalHeader>
-          <CModalTitle id="VerticallyCenteredScrollableExample">{title}</CModalTitle>
+          <CModalTitle>{title}</CModalTitle>
         </CModalHeader>
         <CModalBody>{children}</CModalBody>
         <CModalFooter>
-          <CButton color="secondary" onClick={() => setVisible(false)}>
+          <CButton color="secondary" onClick={onClose}>
             Отмена
           </CButton>
           <CButton color="primary" onClick={handleSubmit}>
