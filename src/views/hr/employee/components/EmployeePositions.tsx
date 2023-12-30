@@ -25,7 +25,10 @@ const EmployeePosts = ({ posts }: Props) => {
   const branchOptionsQuery = useBranchOptionsQuery(true)
   const positionOptionsQuery = usePositionOptionsQuery(true)
   const [visibleFormModal, setVisibleFormModal] = useState<boolean>(false)
-  const [state, setState] = useState<any>({})
+  const [state, setState] = useState<any>({
+    branchId: null,
+
+  })
 
   const handleChange = (e: any) => {
     const { name, value } = e.target
@@ -36,7 +39,9 @@ const EmployeePosts = ({ posts }: Props) => {
   const handleSubmit = () => {
     console.log('handleSubmit')
   }
+
   console.log('state', state)
+  
   return (
     <>
       <FormModal
@@ -49,6 +54,7 @@ const EmployeePosts = ({ posts }: Props) => {
           branchOptions={branchOptionsQuery.data}
           positionOptions={positionOptionsQuery.data}
           handleChange={handleChange}
+          state={state}
         />
       </FormModal>
       <CTabPane role="tabpanel" aria-labelledby="home-tab-pane" visible={true}>

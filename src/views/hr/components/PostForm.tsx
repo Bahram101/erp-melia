@@ -6,9 +6,10 @@ type Props = {
   branchOptions: { id: string; label: string }[]
   positionOptions: { id: string; name: string }[]
   handleChange: (e: any) => void
+  state: any
 }
 
-const PostForm = ({ branchOptions, positionOptions, handleChange }: Props) => {
+const PostForm = ({ branchOptions, positionOptions, handleChange, state }: Props) => {
   return (
     <CForm className="row g-3 needs-validation">
       <CCol md={12}>
@@ -30,15 +31,15 @@ const PostForm = ({ branchOptions, positionOptions, handleChange }: Props) => {
         />
       </CCol>
       <CCol md={12}>
-        {/* <CDatePicker locale="en-US" label="Дата начала" handleChange={handleChange}  /> */}
+        <CDatePicker locale="en-US" label="Дата начала" onChange={handleChange} />
       </CCol>
       <CCol md={12}>
         <CFormInput
           type="text"
-          defaultValue="Mark"
-          feedbackValid="Looks good!"
-          id="validationCustom01"
-          label="First name"
+          value={state.salary}
+          name="salary"
+          onChange={handleChange}
+          label="Оклад"
           required
         />
       </CCol>
