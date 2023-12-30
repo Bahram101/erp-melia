@@ -26,14 +26,25 @@ const EmployeePosts = ({ posts }: Props) => {
   const positionOptionsQuery = usePositionOptionsQuery(true)
   const [visibleFormModal, setVisibleFormModal] = useState<boolean>(false)
   const [state, setState] = useState<any>({
-    branchId: null,
-
+    beginDate: null,
+    salary: null,
+    branchName: null,
+    positionName: null,
+    hasAccess: null,
+    accessAllBranches: null,
   })
 
   const handleChange = (e: any) => {
     const { name, value } = e.target
-    // setErrors({ ...errors, [name]: null })
-    setState({ ...state, [name]: value })
+    setState({
+      ...state,
+      [name]:
+        name == 'hasAccess' || name == 'accessAllBranches'
+          ? JSON.parse(value)
+          : name == 'salary'
+          ? +value
+          : value,
+    })
   }
 
   const handleSubmit = () => {
@@ -41,7 +52,7 @@ const EmployeePosts = ({ posts }: Props) => {
   }
 
   console.log('state', state)
-  
+
   return (
     <>
       <FormModal
@@ -97,7 +108,13 @@ const EmployeePosts = ({ posts }: Props) => {
                 <CTableDataCell>{position.hasAccess ? 'Да' : 'Нет'}</CTableDataCell>
                 <CTableDataCell>
                   <Link to={{}}>
-                    <CButton color={'primary'} variant="outline" shape="square" size="sm">
+                    <CButton
+                      color={'primary'}
+                      variant="outline"
+                      shape="square"
+                      size="sm"
+                      onClick={() => setVisibleFormModal(!visibleFormModal)}
+                    >
                       <FaPen />
                     </CButton>
                   </Link>

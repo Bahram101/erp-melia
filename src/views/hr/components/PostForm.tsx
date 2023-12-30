@@ -31,12 +31,18 @@ const PostForm = ({ branchOptions, positionOptions, handleChange, state }: Props
         />
       </CCol>
       <CCol md={12}>
-        <CDatePicker locale="en-US" label="Дата начала" onChange={handleChange} />
+        <CDatePicker
+          placeholder={'Дата начало'}
+          locale="en-US"
+          label="Дата начала"
+          onChange={handleChange}
+        />
       </CCol>
       <CCol md={12}>
         <CFormInput
+          placeholder="Оклад"
           type="text"
-          value={state.salary}
+          value={state.salary || ''}
           name="salary"
           onChange={handleChange}
           label="Оклад"
@@ -45,21 +51,31 @@ const PostForm = ({ branchOptions, positionOptions, handleChange, state }: Props
       </CCol>
       <CCol md={12}>
         <CCol md={12}>
-          <CFormSelect
-            label="Имеет доступ к системе"
-            aria-label="Default select example"
-            options={['Не выбрано']}
+          <RefOptionsField
+            label={'Филиал'}
+            fieldName={'hasAccess'}
+            options={
+              [
+                { id: true, label: 'Да' },
+                { id: false, label: 'Нет' },
+              ] || []
+            }
+            handleChange={handleChange}
           />
         </CCol>
       </CCol>
       <CCol md={12}>
-        <CCol md={12}>
-          <CFormSelect
-            label="Имеет доступ ко всем филиалам"
-            aria-label="Default select example"
-            options={['Не выбрано']}
-          />
-        </CCol>
+        <RefOptionsField
+          label={'Имеет доступ ко всем филиалам'}
+          fieldName={'accessAllBranches'}
+          options={
+            [
+              { id: true, label: 'Да' },
+              { id: false, label: 'Нет' },
+            ] || []
+          }
+          handleChange={handleChange}
+        />
       </CCol>
     </CForm>
   )

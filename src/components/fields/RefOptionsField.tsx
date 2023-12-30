@@ -5,7 +5,7 @@ import { CustomFieldProps } from 'models/customField/CustomFieldProps'
 interface Props extends CustomFieldProps {
   fieldLabel?: string
   optionLabel?: string
-  options: { id: string; label?: string; name?: string }[]
+  options: { id: string | boolean; label?: string; name?: string }[]
   handleChange: ChangeEventHandler<HTMLSelectElement>
 }
 
@@ -18,15 +18,19 @@ export const RefOptionsField = ({
   error,
   value,
 }: Props) => {
-  const preparedOptions: { label?: string; value?: string; name?: string }[] = [
+  const preparedOptions: {
+    label?: string
+    value?: string | number | undefined
+    name?: string
+  }[] = [
     {
       value: '',
       label: optionLabel || 'Не выбрано',
     },
-  ]
+  ] 
 
   if (options) {
-    options.forEach((value) => {
+    options.forEach((value: any) => {
       preparedOptions.push({
         value: value.id,
         label: value.label || value.name,
@@ -34,6 +38,7 @@ export const RefOptionsField = ({
     })
   }
   const invalid = error && error.length > 0 ? true : false
+
   return (
     <>
       {label && <CFormLabel>{label}</CFormLabel>}
@@ -43,15 +48,13 @@ export const RefOptionsField = ({
         value={value}
         onChange={handleChange}
       >
-        {preparedOptions
-          ? preparedOptions.map((option, index) => {
-              return (
-                <option key={index} value={option.value}>
-                  {option.label}
-                </option>
-              )
-            })
-          : null}
+        {preparedOptions?.map((option, index) => {
+          return (
+            <option key={index} value={option.value}>
+              {option.label}
+            </option>
+          )
+        })}
       </select>
       {invalid && <div className="invalid-feedback">{error}</div>}
     </>
