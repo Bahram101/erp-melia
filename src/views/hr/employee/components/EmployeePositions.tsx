@@ -38,8 +38,10 @@ const EmployeePosts = ({ posts }: Props) => {
   })
 
   const handleChange = (e: any) => {
-    console.log('eee', e)
     const { name, value } = e.target
+    console.log('name', name)
+    console.log('value', value)
+    // setState({...state, [name]: value})
     setState({
       ...state,
       [name]:
@@ -55,7 +57,7 @@ const EmployeePosts = ({ posts }: Props) => {
     console.log('handleSubmit')
   }
 
-  console.log('state', state)
+  console.log('state', state) 
 
   return (
     <>

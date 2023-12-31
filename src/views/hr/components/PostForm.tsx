@@ -1,7 +1,6 @@
 import { CCol, CForm, CFormInput, CFormSelect, CDatePicker } from '@coreui/react-pro'
 import { RefOptionsField } from 'components/fields/RefOptionsField'
-import { BranchModel, PositionModel } from 'models/reference/refModels'
-import '@coreui/coreui/dist/css/coreui.min.css'
+import { BranchModel, PositionModel } from 'models/reference/refModels' 
 type Props = {
   branchOptions: BranchModel[] | undefined
   positionOptions: PositionModel[] | undefined
@@ -9,33 +8,26 @@ type Props = {
   state: any
 }
 
-const PostForm = ({ branchOptions, positionOptions, handleChange, state }: Props) => {
+const PostForm = ({ branchOptions, positionOptions, handleChange, state }: Props) => { 
   return (
     <CForm className="row g-3 needs-validation">
       <CCol md={12}>
-        <RefOptionsField
-          optionLabel={'Филиал'}
+        <CFormSelect
           label={'Филиал'}
-          fieldName={'branchId'}
-          options={branchOptions || []}
-          handleChange={handleChange}
+          name={'branchId'}
+          options={branchOptions}
+          onChange={handleChange}
         />
       </CCol>
       <CCol md={12}>
-        <RefOptionsField
-          optionLabel={'Должность'}
+        <CFormSelect
           label={'Должность'}
-          fieldName={'positionId'}
-          options={positionOptions || []}
-          handleChange={handleChange}
+          name={'positionId'}
+          options={positionOptions}
+          onChange={handleChange}
         />
       </CCol>
       <CCol md={12}>
-        {/* <CDatePicker
-          placeholder={'Дата начало'}
-          locale="en-US"
-          label="Дата начала" 
-        /> */}
         <CDatePicker label="Date" locale="en-US" />
       </CCol>
       <CCol md={12}>
@@ -51,30 +43,28 @@ const PostForm = ({ branchOptions, positionOptions, handleChange, state }: Props
       </CCol>
       <CCol md={12}>
         <CCol md={12}>
-          <RefOptionsField
-            label={'Филиал'}
-            fieldName={'hasAccess'}
-            options={
-              [
-                { id: true, label: 'Да' },
-                { id: false, label: 'Нет' },
-              ] || []
-            }
-            handleChange={handleChange}
+          <CFormSelect
+            label={'Доступ к системе'}
+            name={'hasAccess'}
+            options={[
+              { value: '', label: 'Не выбрано' },
+              { value: 'true', label: 'Да' },
+              { value: 'false', label: 'Нет' },
+            ]}
+            onChange={handleChange}
           />
         </CCol>
       </CCol>
       <CCol md={12}>
-        <RefOptionsField
+        <CFormSelect
           label={'Имеет доступ ко всем филиалам'}
-          fieldName={'accessAllBranches'}
-          options={
-            [
-              { id: true, label: 'Да' },
-              { id: false, label: 'Нет' },
-            ] || []
-          }
-          handleChange={handleChange}
+          name={'accessAllBranches'}
+          options={[
+            { value: '', label: 'Не выбрано' },
+            { value: 'true', label: 'Да' },
+            { value: 'false', label: 'Нет' },
+          ]}
+          onChange={handleChange}
         />
       </CCol>
     </CForm>
