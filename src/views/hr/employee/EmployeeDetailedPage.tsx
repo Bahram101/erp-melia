@@ -9,7 +9,6 @@ import {
   CSpinner,
 } from '@coreui/react-pro'
 import { Link, useParams } from 'react-router-dom'
-import { useEmployeeDetailedQuery, useEmployeePostsQuery } from 'hooks/hr/employeeQueries'
 import { FaAngleLeft } from 'react-icons/fa6'
 import TabNavItem from './components/TabNavItem'
 import EmployeeMainData from './components/EmployeeMainData'
@@ -21,6 +20,7 @@ import EmployeeUnPaidDeposits from './components/EmployeeUnPaidDeposits'
 import EmployeeUserBranches from './components/EmployeeUserBranches'
 import EmployeeHierarchy from './components/EmployeeUserHierarchy'
 import { useCustomerAdressesQuery } from '../../../hooks/reference/refCustomerQueries'
+import { useEmployeeDetailedQuery, useEmployeePostsQuery } from 'hooks/hr/employeeQueries'
 
 const EmployeeDetailedPage = () => {
   const [activeKey, setActiveKey] = useState('MAIN_DATA') //

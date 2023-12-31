@@ -4,3 +4,8 @@ export interface PositionModel {
   createdAt: string
   updatedAt: string
 }
+
+export interface BranchModel {
+  id: 'string'
+  label: 'string'
+}

@@ -16,25 +16,29 @@ import { useState } from 'react'
 import FormModal from 'components/FormModal'
 import PostForm from 'views/hr/components/PostForm'
 import { useBranchOptionsQuery, usePositionOptionsQuery } from 'hooks/reference/refOptionsQueries'
+import { EmployeePostsModel } from 'models/hr/HrModels'
 
 type Props = {
-  posts: any
+  posts: EmployeePostsModel[] | undefined
 }
 
 const EmployeePosts = ({ posts }: Props) => {
   const branchOptionsQuery = useBranchOptionsQuery(true)
   const positionOptionsQuery = usePositionOptionsQuery(true)
   const [visibleFormModal, setVisibleFormModal] = useState<boolean>(false)
-  const [state, setState] = useState<any>({
-    beginDate: null,
-    salary: null,
-    branchName: null,
-    positionName: null,
-    hasAccess: null,
-    accessAllBranches: null,
+  const [state, setState] = useState<EmployeePostsModel>({
+    id: '',
+    beginDate: '',
+    endDate: '',
+    salary: 0,
+    branchName: '',
+    positionName: '',
+    hasAccess: false,
+    accessAllBranches: false,
   })
 
   const handleChange = (e: any) => {
+    console.log('eee', e)
     const { name, value } = e.target
     setState({
       ...state,
@@ -86,7 +90,6 @@ const EmployeePosts = ({ posts }: Props) => {
         <CTable striped>
           <CTableHead>
             <CTableRow>
-              <CTableHeaderCell scope="col">#</CTableHeaderCell>
               <CTableHeaderCell scope="col">Филиал</CTableHeaderCell>
               <CTableHeaderCell scope="col">Должность</CTableHeaderCell>
               <CTableHeaderCell scope="col">Дата начало</CTableHeaderCell>
@@ -97,9 +100,8 @@ const EmployeePosts = ({ posts }: Props) => {
             </CTableRow>
           </CTableHead>
           <CTableBody>
-            {posts.map((position: any) => (
+            {posts?.map((position) => (
               <CTableRow key={position.id}>
-                <CTableDataCell>{position.index}</CTableDataCell>
                 <CTableDataCell>{position.branchName}</CTableDataCell>
                 <CTableDataCell>{position.positionName}</CTableDataCell>
                 <CTableDataCell>{position.beginDate}</CTableDataCell>

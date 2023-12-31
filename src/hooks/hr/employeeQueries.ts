@@ -1,7 +1,7 @@
 import { useQuery } from 'react-query'
 import { request } from '../../http'
-import { EmployeeDetailedModel } from '../../models/hr/HrModels'
-import { PositionModel } from 'models/reference/positionModels'
+import { EmployeeDetailedModel, EmployeePostsModel } from '../../models/hr/HrModels'
+import { PositionModel } from 'models/reference/refModels'
 
 export const useCurrentEmployeesQuery = () => {
   return useQuery<any[]>(
@@ -26,7 +26,7 @@ export const useEmployeeDetailedQuery = (id: any, enabled: boolean) => {
 }
 
 export const useEmployeePostsQuery = (employeeId: string | undefined, enabled: boolean) => {
-  return useQuery<PositionModel>(
+  return useQuery<EmployeePostsModel[]>(
     ['hr-get-employee-posts'],
     async () => {
       if (employeeId) {

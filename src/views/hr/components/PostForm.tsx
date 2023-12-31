@@ -1,10 +1,10 @@
-import { CCol, CDatePicker, CForm, CFormInput, CFormSelect } from '@coreui/react-pro'
+import { CCol, CForm, CFormInput, CFormSelect, CDatePicker } from '@coreui/react-pro'
 import { RefOptionsField } from 'components/fields/RefOptionsField'
-import { PositionModel } from 'models/reference/positionModels'
-
+import { BranchModel, PositionModel } from 'models/reference/refModels'
+import '@coreui/coreui/dist/css/coreui.min.css'
 type Props = {
-  branchOptions: { id: string; label: string }[]
-  positionOptions: { id: string; name: string }[]
+  branchOptions: BranchModel[] | undefined
+  positionOptions: PositionModel[] | undefined
   handleChange: (e: any) => void
   state: any
 }
@@ -31,12 +31,12 @@ const PostForm = ({ branchOptions, positionOptions, handleChange, state }: Props
         />
       </CCol>
       <CCol md={12}>
-        <CDatePicker
+        {/* <CDatePicker
           placeholder={'Дата начало'}
           locale="en-US"
-          label="Дата начала"
-          onChange={handleChange}
-        />
+          label="Дата начала" 
+        /> */}
+        <CDatePicker label="Date" locale="en-US" />
       </CCol>
       <CCol md={12}>
         <CFormInput

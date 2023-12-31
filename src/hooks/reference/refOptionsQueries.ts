@@ -1,9 +1,9 @@
 import { useQuery } from 'react-query'
 import { request } from '../../http'
-import { PositionModel } from 'models/reference/positionModels'
+import { PositionModel, BranchModel } from 'models/reference/refModels'
 
 export const useBranchOptionsQuery = (enabled: boolean) => {
-  return useQuery(
+  return useQuery<BranchModel[]>(
     ['get-reference-branche-options'],
     async () => {
       const { data } = await request.get('/reference/branches/as-options')
@@ -14,7 +14,7 @@ export const useBranchOptionsQuery = (enabled: boolean) => {
 }
 
 export const usePositionOptionsQuery = (enabled: boolean) => {
-  return useQuery(
+  return useQuery<PositionModel[]>(
     ['get-reference-positions-options'],
     async () => {
       const { data } = await request.get('/reference/positions')
