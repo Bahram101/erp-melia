@@ -13,7 +13,6 @@ import { FaAngleLeft } from 'react-icons/fa6'
 import TabNavItem from './components/TabNavItem'
 import EmployeeMainData from './components/EmployeeMainData'
 import EmployeeContacts from './components/EmployeeContacts'
-import EmployeePositions from './components/EmployeePositions'
 import EmployeeBalance from './components/EmployeeBalance'
 import EmployeeDeposit from './components/EmployeeDeposit'
 import EmployeeUnPaidDeposits from './components/EmployeeUnPaidDeposits'
@@ -21,6 +20,7 @@ import EmployeeUserBranches from './components/EmployeeUserBranches'
 import EmployeeHierarchy from './components/EmployeeUserHierarchy'
 import { useCustomerAdressesQuery } from '../../../hooks/reference/refCustomerQueries'
 import { useEmployeeDetailedQuery, useEmployeePostsQuery } from 'hooks/hr/employeeQueries'
+import EmployeePosts from './components/EmployeePosts'
 
 const EmployeeDetailedPage = () => {
   const [activeKey, setActiveKey] = useState('MAIN_DATA') //
@@ -118,7 +118,7 @@ const EmployeeDetailedPage = () => {
               <EmployeeContacts addresses={customerAddressesQuery?.data} />
             )}
             {activeKey === 'POSITIONS' && (
-              <EmployeePositions posts={employeePositionsQuery?.data} />
+              <EmployeePosts employeeId={params.id || ''} posts={employeePositionsQuery?.data || []} />
             )}
             {activeKey === 'BALANCE' && <EmployeeBalance balance={{}} />}
             {activeKey === 'DEPOSIT' && <EmployeeDeposit deposit={{}} />}

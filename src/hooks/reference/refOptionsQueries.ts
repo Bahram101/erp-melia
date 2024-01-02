@@ -1,24 +1,24 @@
 import { useQuery } from 'react-query'
 import { request } from '../../http'
-import { PositionModel, BranchModel } from 'models/reference/refModels'
+import { RefOptionsModel } from '../../models/CommonModels'
 
 export const useBranchOptionsQuery = (enabled: boolean) => {
-  return useQuery<BranchModel[]>(
-    ['get-reference-branche-options'],
+  return useQuery<RefOptionsModel[]>(
+    ['get-reference-branches-as-options'],
     async () => {
-      let { data } = await request.get('/reference/branches/as-options')
-      return (data = data.map((item: any) => ({ value: item.id, label: item.label })))
+      const { data } = await request.get('/reference/branches/as-options')
+      return data
     },
     { enabled: enabled },
   )
 }
 
 export const usePositionOptionsQuery = (enabled: boolean) => {
-  return useQuery<PositionModel[]>(
-    ['get-reference-positions-options'],
+  return useQuery<RefOptionsModel[]>(
+    ['get-reference-positions-as-options'],
     async () => {
-      let { data } = await request.get('/reference/positions')
-      return (data = data.map((item: any) => ({ value: item.id, label: item.name })))
+      const { data } = await request.get('/reference/positions/as-options')
+      return data
     },
     { enabled: enabled },
   )

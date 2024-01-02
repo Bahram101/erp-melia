@@ -1,11 +1,12 @@
 import React, { ChangeEventHandler } from 'react'
-import { CFormLabel, CFormSelect } from '@coreui/react-pro'
+import { CFormLabel } from '@coreui/react-pro'
 import { CustomFieldProps } from 'models/customField/CustomFieldProps'
+import { RefOptionsModel } from '../../models/CommonModels'
 
 interface Props extends CustomFieldProps {
   fieldLabel?: string
   optionLabel?: string
-  options: { id: string | boolean; label?: string; name?: string }[]
+  options: RefOptionsModel[]
   handleChange: ChangeEventHandler<HTMLSelectElement>
 }
 
@@ -27,7 +28,7 @@ export const RefOptionsField = ({
       value: '',
       label: optionLabel || 'Не выбрано',
     },
-  ] 
+  ]
 
   if (options) {
     options.forEach((value: any) => {

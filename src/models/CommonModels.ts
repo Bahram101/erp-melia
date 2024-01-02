@@ -9,3 +9,8 @@ export enum DocStatus {
   ON_APPROVE = "ON_APPROVE",
   DELETED = "DELETED",
 }
+
+export interface RefOptionsModel {
+  id: string | null;
+  label: string;
+}

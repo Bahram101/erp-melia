@@ -8,7 +8,7 @@ export interface EmployeeDetailedModel {
   middlename: string
 }
 
-export interface EmployeePostsModel {
+export interface EmployeePostGridModel {
   id: string
   accessAllBranches: boolean
   beginDate: string
@@ -17,4 +17,23 @@ export interface EmployeePostsModel {
   hasAccess: boolean
   positionName: string
   salary: number
+}
+
+export interface EmployeePostFormModel {
+  branchId?: string;
+  positionId?: string;
+  beginDate?: string;
+  endDate: string | null;
+  salary: number;
+  note: string | null;
+  hasAccess: boolean;
+  accessAllBranches: boolean;
+}
+
+export const DefaultEmployeePostFormModel: EmployeePostFormModel = {
+  accessAllBranches: false,
+  endDate: null,
+  hasAccess: false,
+  note: null,
+  salary: 0,
 }

@@ -1,7 +1,6 @@
-import { useQuery } from 'react-query'
+import { useMutation, useQuery } from 'react-query'
 import { request } from '../../http'
-import { EmployeeDetailedModel, EmployeePostsModel } from '../../models/hr/HrModels'
-import { PositionModel } from 'models/reference/refModels'
+import { EmployeeDetailedModel, EmployeePostFormModel, EmployeePostGridModel } from '../../models/hr/HrModels'
 
 export const useCurrentEmployeesQuery = () => {
   return useQuery<any[]>(
@@ -26,7 +25,7 @@ export const useEmployeeDetailedQuery = (id: any, enabled: boolean) => {
 }
 
 export const useEmployeePostsQuery = (employeeId: string | undefined, enabled: boolean) => {
-  return useQuery<EmployeePostsModel[]>(
+  return useQuery<EmployeePostGridModel[]>(
     ['hr-get-employee-posts'],
     async () => {
       if (employeeId) {
@@ -36,4 +35,26 @@ export const useEmployeePostsQuery = (employeeId: string | undefined, enabled: b
     },
     { enabled: enabled },
   )
+}
+
+export const useEmployeePostFormQuery = (id: string, postId: string, enabled: boolean) => {
+  return useQuery<EmployeePostFormModel>(
+    ['hr-get-employee-post-form', postId],
+    async () => {
+      if (postId) {
+        const { data } = await request.get(`/hr/employees/${id}/posts/${postId}/as-form`)
+        return data
+      }
+    },
+    { enabled: enabled },
+  )
+}
+
+export const useEmployeePostSaveMutation = (id: string, postId: string | undefined) => {
+  if (postId) {
+    return useMutation(({ form }: {
+      form: EmployeePostFormModel
+    }) => request.put(`/hr/employees/${id}/posts/${postId}`, form))
+  }
+  return useMutation(({ form }: { form: EmployeePostFormModel }) => request.post(`/hr/employees/${id}/posts`, form))
 }

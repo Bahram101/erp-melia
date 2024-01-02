@@ -3,6 +3,6 @@ export interface CustomFieldProps {
     fieldName: string;
     label?: string;
     handleChange: any;
-    value?: string;
+    value?: string | any;
     error?: string
 }
