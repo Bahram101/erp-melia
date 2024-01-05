@@ -2,6 +2,7 @@ import React, { useMemo } from 'react'
 import { useCurrentEmployeesQuery } from '../../../hooks/hr/employeeQueries'
 import { CCard, CCardHeader, CCardBody, CSmartTable, CButton } from '@coreui/react-pro'
 import { FaPen, FaEye } from 'react-icons/fa'
+import { Link } from 'react-router-dom'
 
 const EmployeeGridPage = () => {
   const currentEmpListQuery = useCurrentEmployeesQuery()
@@ -36,31 +37,22 @@ const EmployeeGridPage = () => {
     },
   ]
 
-  const rows = useMemo(() => {
-    return currentEmpListQuery?.data?.flatMap((item: any, index: number) => {
-      return item.posts.map((post: any, subIndex: number) => ({
-        ...item,
-        id: post.id,
-        positionName: post.positionName,
-        branchName: post.branchName,
-      }))
-    })
-  }, [currentEmpListQuery?.data])
-
   return (
     <CCard>
       <CCardHeader>
-        <h4 style={{ float: 'left' }}>Список сотрудников</h4>
-        <div style={{ float: 'right' }}>
-          <CButton color={'primary'} shape="square" href={'/hr/employees/add'}>
-            Добавить
-          </CButton>
+        <h4 className="float-start">Список сотрудников</h4>
+        <div className="float-end">
+          <Link to={'/hr/employees/add'}>
+            <CButton color={'primary'} shape="square">
+              Добавить
+            </CButton>
+          </Link>
         </div>
       </CCardHeader>
       <CCardBody>
         <CSmartTable
           columns={columns}
-          items={rows || []}
+          items={currentEmpListQuery.data || []}
           loading={currentEmpListQuery.isLoading}
           itemsPerPage={30}
           pagination
@@ -68,25 +60,17 @@ const EmployeeGridPage = () => {
           scopedColumns={{
             actions: (item: any) => (
               <td>
-                <CButton
-                  color={'primary'}
-                  variant="outline"
-                  shape="square"
-                  size="sm"
-                  href={`/hr/employees/view/${item.employeeId}`}
-                >
-                  <FaEye />
-                </CButton>
-                &nbsp;
-                <CButton
-                  color={'primary'}
-                  variant="outline"
-                  shape="square"
-                  size="sm"
-                  href={`/hr/employees/edit/${item.employeeId}`}
-                >
-                  <FaPen />
-                </CButton>
+                <Link to={`/hr/employees/view/${item.employeeId}`}>
+                  <CButton color={'primary'} variant="outline" shape="square" size="sm">
+                    <FaEye />
+                  </CButton>
+                  &nbsp;
+                </Link>
+                <Link to={`/hr/employees/edit/${item.employeeId}`}>
+                  <CButton color={'primary'} variant="outline" shape="square" size="sm">
+                    <FaPen />
+                  </CButton>
+                </Link>
               </td>
             ),
           }}

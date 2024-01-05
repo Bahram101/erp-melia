@@ -6,8 +6,7 @@ type LoginType = {
   password: string
 }
 export const useLogin = () => {
-  console.log('useLogin')
-  return useMutation(({ data }: { data: LoginType }) =>
-    requestWithoutAuth.post(`/users/auth`, data),
-  )
+  return useMutation(({ data }: { data: LoginType }) => {
+    return requestWithoutAuth.post(`/users/auth`, data)
+  })
 }
