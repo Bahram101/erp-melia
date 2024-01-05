@@ -34,8 +34,8 @@ type Props = {
 
 const EmployeePosts = ({ employeeId, employeePositionsQuery }: Props) => {
   const [visibleFormModal, setVisibleFormModal] = useState<boolean>(false)
-  const [formValidated, setFormValidated] = useState(false)
-  const [error, setError] = useState(false)
+  const [formValidated, setFormValidated] = useState<boolean>(false)
+  const [error, setError] = useState<boolean>(false)
   const [model, setModel] = useState<EmployeePostFormModel>(DefaultEmployeePostFormModel)
   const [selectedPostId, setSelectedPostId] = useState<string | undefined>(undefined)
 

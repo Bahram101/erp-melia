@@ -20,10 +20,15 @@ import EmployeeUserBranches from './components/EmployeeUserBranches'
 import EmployeeHierarchy from './components/EmployeeUserHierarchy'
 import { useCustomerAdressesQuery } from '../../../hooks/reference/refCustomerQueries'
 import { useEmployeeDetailedQuery, useEmployeePostsQuery } from 'hooks/hr/employeeQueries'
+import { useCustomerBalanceQuery } from 'hooks/report/customerQueries'
 import EmployeePosts from './components/EmployeePosts'
 
 const EmployeeDetailedPage = () => {
-  const [activeKey, setActiveKey] = useState('POSITIONS') //MAIN_DATA
+  const [activeKey, setActiveKey] = useState('MAIN_DATA')
+  const [employeeInfo, setEmployeeInfo] = useState<{ firstname: string; lastname: string }>({
+    firstname: '',
+    lastname: '',
+  })
   const params = useParams()
   const employeeDetailedQuery = useEmployeeDetailedQuery(params.id, true)
   const customerAddressesQuery = useCustomerAdressesQuery(
@@ -31,11 +36,16 @@ const EmployeeDetailedPage = () => {
     false,
   )
   const employeePositionsQuery = useEmployeePostsQuery(params.id, false)
+  const customerBalanceQuery = useCustomerBalanceQuery(
+    employeeDetailedQuery?.data?.customerId,
+    false,
+  )
 
   useEffect(() => {
     if (employeeDetailedQuery.data) {
       customerAddressesQuery.refetch()
       employeePositionsQuery.refetch()
+      setEmployeeInfo(employeeDetailedQuery.data)
     }
   }, [employeeDetailedQuery.data])
 
@@ -74,10 +84,15 @@ const EmployeeDetailedPage = () => {
     },
   ]
 
+  console.log('customerBalanceQuery', customerBalanceQuery)
+  console.log('employeeInfo', employeeInfo)
+
   return (
     <CCard>
       <CCardHeader>
-        <h4 className="float-start">Карточка сотрудника</h4>
+        <h4 className="float-start">
+          Карточка сотрудника {employeeInfo.lastname} {employeeInfo?.firstname}
+        </h4>
         <div className="float-end">
           <Link to={'/hr/employees'}>
             <CButton color={'secondary'} variant="outline">
@@ -88,7 +103,7 @@ const EmployeeDetailedPage = () => {
         </div>
       </CCardHeader>
       <CCardBody>
-        <CNav variant="pills" role="tablist" className="mb-3">
+        <CNav variant="tabs" role="tablist" className="mb-3">
           {tabs.map((item: { label: string; key: string }) => {
             return (
               <TabNavItem
@@ -123,7 +138,12 @@ const EmployeeDetailedPage = () => {
                 employeePositionsQuery={employeePositionsQuery}
               />
             )}
-            {activeKey === 'BALANCE' && <EmployeeBalance balance={{}} />}
+            {activeKey === 'BALANCE' && (
+              <EmployeeBalance
+                customerId={employeeDetailedQuery?.data?.customerId}
+                employeeInfo={employeeInfo}
+              />
+            )}
             {activeKey === 'DEPOSIT' && <EmployeeDeposit deposit={{}} />}
             {activeKey === 'UNPAID_DEPOSITS' && <EmployeeUnPaidDeposits unpaidDeposits={{}} />}
             {activeKey === 'USER_BRANCHES' && <EmployeeUserBranches userBranches={{}} />}

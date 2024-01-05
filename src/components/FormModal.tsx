@@ -6,7 +6,7 @@ import {
   CModalHeader,
   CModalTitle,
 } from '@coreui/react-pro'
-import React, { useState } from 'react'
+import React from 'react'
 
 type Props = {
   visibleFormModal: boolean

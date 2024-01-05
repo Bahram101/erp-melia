@@ -64,3 +64,16 @@ export const useEmployeePostSaveMutation = (id: string, postId: string | undefin
     request.post(`/hr/employees/${id}/posts`, form),
   )
 }
+
+export const useEmployeeBalanceQuery = (employeeId: string | undefined, enabled: boolean) => {
+  return useQuery<EmployeePostGridModel[]>(
+    ['hr-get-employee-balances'],
+    async () => {
+      if (employeeId) {
+        const { data } = await request.get(`/hr/employees/${employeeId}/posts`)
+        return data
+      }
+    },
+    { enabled: enabled },
+  )
+}
