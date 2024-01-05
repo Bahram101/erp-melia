@@ -23,7 +23,7 @@ import { useEmployeeDetailedQuery, useEmployeePostsQuery } from 'hooks/hr/employ
 import EmployeePosts from './components/EmployeePosts'
 
 const EmployeeDetailedPage = () => {
-  const [activeKey, setActiveKey] = useState('MAIN_DATA') //
+  const [activeKey, setActiveKey] = useState('POSITIONS') //MAIN_DATA
   const params = useParams()
   const employeeDetailedQuery = useEmployeeDetailedQuery(params.id, true)
   const customerAddressesQuery = useCustomerAdressesQuery(
@@ -118,7 +118,10 @@ const EmployeeDetailedPage = () => {
               <EmployeeContacts addresses={customerAddressesQuery?.data} />
             )}
             {activeKey === 'POSITIONS' && (
-              <EmployeePosts employeeId={params.id || ''} posts={employeePositionsQuery?.data || []} />
+              <EmployeePosts
+                employeeId={params.id || ''}
+                employeePositionsQuery={employeePositionsQuery}
+              />
             )}
             {activeKey === 'BALANCE' && <EmployeeBalance balance={{}} />}
             {activeKey === 'DEPOSIT' && <EmployeeDeposit deposit={{}} />}

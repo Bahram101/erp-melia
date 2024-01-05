@@ -1,18 +1,16 @@
-import React from "react";
-import { CFormLabel, CDatePicker } from "@coreui/react-pro";
-import {
-  stringDDMMYYYYToMoment,
-  stringDDMMYYYYHHToMoment,
-} from "utils/DateHelper";
+import React from 'react'
+import { CFormLabel, CDatePicker } from '@coreui/react-pro'
+import { stringDDMMYYYYToMoment, stringDDMMYYYYHHToMoment } from 'utils/DateHelper'
+import '@coreui/coreui-pro/dist/css/coreui.min.css'
 
 interface Props {
-  label?: string;
-  fieldName: string;
-  handleChange: any;
-  value?: string;
-  timepicker?: boolean;
-  placeholder?: string;
-  error?: string;
+  label?: string
+  fieldName: string
+  handleChange: any
+  value?: string
+  timepicker?: boolean
+  placeholder?: string
+  error?: boolean
 }
 export const DatePickerField = ({
   fieldName,
@@ -29,24 +27,25 @@ export const DatePickerField = ({
         name: fieldName,
         value: selectedVal,
       },
-    });
-  };
+    })
+  }
 
-  let format = "dd.MM.yyyy";
+  let format = 'dd.MM.yyyy'
   if (timepicker) {
-    format += " HH:mm";
+    format += ' HH:mm'
   }
 
   return (
     <>
-      {label && <CFormLabel>{label}</CFormLabel>}
       <CDatePicker
-        invalid={error ? true : false}
+        label={label}
+        feedbackInvalid={value == '' && error && 'Поле не может быть пустым'}
+        invalid={error ? true : false} 
         todayButton="Сегодня"
         cancelButton="Сброс"
         confirmButton="Выбрать"
         timepicker={timepicker}
-        placeholder={placeholder || ""}
+        placeholder={placeholder || ''}
         locale="ru-RU"
         format={format}
         onDateChange={(_date, formattedDate) => preHandle(formattedDate)}
@@ -58,7 +57,6 @@ export const DatePickerField = ({
             : null
         }
       />
-      {error && error.length > 0 && <div className="invalid-feedback">{error}</div>}
     </>
-  );
-};
+  )
+}

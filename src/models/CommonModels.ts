@@ -11,6 +11,7 @@ export enum DocStatus {
 }
 
 export interface RefOptionsModel {
-  id: string | null;
+  id?: string ;
+  value?: string;
   label: string;
 }

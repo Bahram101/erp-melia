@@ -16,7 +16,7 @@ const CurrencyField = ({label, value, fieldName, handleChange, error}: Props) =>
         handleChange({
             target: {
                 name: fieldName,
-                value: val
+                value: +val
             }
         })
     }

@@ -1,39 +1,45 @@
+import { RefOptionsModel } from 'models/CommonModels'
 import { CustomFieldProps } from '../../models/customField/CustomFieldProps'
-import { RefOptionsModel } from '../../models/CommonModels'
-import { RefOptionsField } from './RefOptionsField'
+import { CFormSelect } from '@coreui/react-pro'
 
 interface Props extends CustomFieldProps {
-  value?: boolean
+  value?: boolean | null
 }
 
-const YesNoOptionsField = ({value, handleChange, label, fieldName}: Props) => {
+const YesNoOptionsField = ({ value, handleChange, label, fieldName }: Props) => {
   const options: RefOptionsModel[] = [
+    { value: '', label: 'Не выбрано' },
     {
-      id: 'yes',
+      value: 'yes',
       label: 'ДА',
     },
     {
-      id: 'no',
+      value: 'no',
       label: 'НЕТ',
-    }]
+    },
+  ]
 
   const preHandleChange = (e: any) => {
-    const {name, value} = e.target;
+    const { name, value } = e.target
+    const updatedValue = value === 'yes' ? true : value === 'no' ? false : null
     handleChange({
       target: {
         name: name,
-        value: value === 'yes' ? true : false,
-      }
+        value: updatedValue,
+      },
     })
   }
 
-  return <RefOptionsField
-    options={options}
-    handleChange={preHandleChange}
-    value={value === null ? null : (value === true ? 'yes' : 'no')}
-    fieldName={fieldName}
-    label={label}
-  />
+  return (
+    <CFormSelect
+      label={label}
+      name={fieldName}
+      options={options}
+      value={value === true ? 'yes' : value === false ? 'no' : ''}
+      onChange={preHandleChange}
+      required={false}
+    />
+  )
 }
 
 export default YesNoOptionsField

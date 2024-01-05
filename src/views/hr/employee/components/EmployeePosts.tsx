@@ -16,31 +16,42 @@ import React, { useEffect, useState } from 'react'
 import FormModal from 'components/FormModal'
 import PostForm from 'views/hr/components/PostForm'
 import { useBranchOptionsQuery, usePositionOptionsQuery } from 'hooks/reference/refOptionsQueries'
-import { DefaultEmployeePostFormModel, EmployeePostFormModel, EmployeePostGridModel } from 'models/hr/HrModels'
-import { useEmployeePostFormQuery, useEmployeePostSaveMutation } from '../../../../hooks/hr/employeeQueries'
+import {
+  DefaultEmployeePostFormModel,
+  EmployeePostFormModel,
+  EmployeePostGridModel,
+} from 'models/hr/HrModels'
+import {
+  useEmployeePostFormQuery,
+  useEmployeePostSaveMutation,
+  useEmployeePostsQuery,
+} from '../../../../hooks/hr/employeeQueries'
 
 type Props = {
-  posts: EmployeePostGridModel[],
-  employeeId: string;
+  employeeId: string
+  employeePositionsQuery: any
 }
 
-const EmployeePosts = ({ posts, employeeId }: Props) => {
-  const branchOptionsQuery = useBranchOptionsQuery(true)
-  const positionOptionsQuery = usePositionOptionsQuery(true)
+const EmployeePosts = ({ employeeId, employeePositionsQuery }: Props) => {
   const [visibleFormModal, setVisibleFormModal] = useState<boolean>(false)
+  const [formValidated, setFormValidated] = useState(false)
+  const [error, setError] = useState(false)
   const [model, setModel] = useState<EmployeePostFormModel>(DefaultEmployeePostFormModel)
   const [selectedPostId, setSelectedPostId] = useState<string | undefined>(undefined)
+
+  const branchOptionsQuery = useBranchOptionsQuery(true)
+  const positionOptionsQuery = usePositionOptionsQuery(true)
 
   const postFormQuery = useEmployeePostFormQuery(employeeId, selectedPostId || '', true)
   const saveMutation = useEmployeePostSaveMutation(employeeId, selectedPostId)
 
   const handleChange = (e: any) => {
     const { name, value } = e.target
-    setModel({...model, [name]: value})
+    setModel({ ...model, [name]: value })
   }
 
   useEffect(() => {
-    if(postFormQuery.data) {
+    if (postFormQuery.data) {
       setModel(postFormQuery.data)
     } else {
       setModel(DefaultEmployeePostFormModel)
@@ -48,21 +59,23 @@ const EmployeePosts = ({ posts, employeeId }: Props) => {
   }, [postFormQuery.data])
 
   const handleSubmit = () => {
-    let promise = saveMutation.mutateAsync({
-      form: model,
-    })
+    saveMutation
+      .mutateAsync({
+        form: model,
+      })
       .then(() => {
         setSelectedPostId(undefined)
         setModel(DefaultEmployeePostFormModel)
         setVisibleFormModal(false)
+        employeePositionsQuery.refetch()
       })
       .catch((error) => {
-        // ToDo - Handle error
-        console.log('err', error)
-      });
+        setFormValidated(true)
+        setError(true)
+      })
   }
 
-  const toEdit = (postId: string) => {
+  const toEdit = (postId: EmployeePostGridModel['id']) => {
     setSelectedPostId(postId)
     setVisibleFormModal(true)
   }
@@ -81,22 +94,22 @@ const EmployeePosts = ({ posts, employeeId }: Props) => {
         onClose={() => setVisibleFormModal(false)}
         handleSubmit={handleSubmit}
       >
-        {postFormQuery.isFetching
-          ? <CSpinner color="primary" />
-          : <PostForm
+        {postFormQuery.isFetching ? (
+          <CSpinner color="primary" />
+        ) : (
+          <PostForm
             branchOptions={branchOptionsQuery.data || []}
             positionOptions={positionOptionsQuery.data || []}
             handleChange={handleChange}
+            formValidated={formValidated}
             model={model}
-          />}
+            error={error}
+          />
+        )}
       </FormModal>
       <CTabPane role="tabpanel" aria-labelledby="home-tab-pane" visible={true}>
         <div className="float-end">
-          <CButton
-            color="success mb-2"
-            className="text-white"
-            onClick={toCreate}
-          >
+          <CButton color="success mb-2" className="text-white" onClick={toCreate}>
             <FaPlus className="mb-1 me-2" />
             Добавить должность
           </CButton>
@@ -114,7 +127,7 @@ const EmployeePosts = ({ posts, employeeId }: Props) => {
             </CTableRow>
           </CTableHead>
           <CTableBody>
-            {posts?.map((post) => (
+            {employeePositionsQuery.data?.map((post: EmployeePostGridModel) => (
               <CTableRow key={post.id}>
                 <CTableDataCell>{post.branchName}</CTableDataCell>
                 <CTableDataCell>{post.positionName}</CTableDataCell>

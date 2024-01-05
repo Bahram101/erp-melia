@@ -22,18 +22,18 @@ export interface EmployeePostGridModel {
 export interface EmployeePostFormModel {
   branchId?: string;
   positionId?: string;
-  beginDate?: string;
-  endDate: string | null;
+  beginDate: string | null;
+  endDate?: string | null;
   salary: number;
   note: string | null;
-  hasAccess: boolean;
-  accessAllBranches: boolean;
+  hasAccess: boolean | null;
+  accessAllBranches: boolean | null;
 }
 
 export const DefaultEmployeePostFormModel: EmployeePostFormModel = {
-  accessAllBranches: false,
-  endDate: null,
-  hasAccess: false,
+  accessAllBranches: null,
+  beginDate: null,
+  hasAccess: null,
   note: null,
   salary: 0,
 }

@@ -1,6 +1,10 @@
 import { useMutation, useQuery } from 'react-query'
 import { request } from '../../http'
-import { EmployeeDetailedModel, EmployeePostFormModel, EmployeePostGridModel } from '../../models/hr/HrModels'
+import {
+  EmployeeDetailedModel,
+  EmployeePostFormModel,
+  EmployeePostGridModel,
+} from '../../models/hr/HrModels'
 
 export const useCurrentEmployeesQuery = () => {
   return useQuery<any[]>(
@@ -52,9 +56,11 @@ export const useEmployeePostFormQuery = (id: string, postId: string, enabled: bo
 
 export const useEmployeePostSaveMutation = (id: string, postId: string | undefined) => {
   if (postId) {
-    return useMutation(({ form }: {
-      form: EmployeePostFormModel
-    }) => request.put(`/hr/employees/${id}/posts/${postId}`, form))
+    return useMutation(({ form }: { form: EmployeePostFormModel }) =>
+      request.put(`/hr/employees/${id}/posts/${postId}`, form),
+    )
   }
-  return useMutation(({ form }: { form: EmployeePostFormModel }) => request.post(`/hr/employees/${id}/posts`, form))
+  return useMutation(({ form }: { form: EmployeePostFormModel }) =>
+    request.post(`/hr/employees/${id}/posts`, form),
+  )
 }
