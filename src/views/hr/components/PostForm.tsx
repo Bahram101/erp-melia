@@ -1,4 +1,4 @@
-import { CCol, CForm, CFormFeedback, CFormSelect } from '@coreui/react-pro'
+import { CCol, CForm } from '@coreui/react-pro'
 import { RefOptionsModel } from '../../../models/CommonModels'
 import { EmployeePostFormModel } from '../../../models/hr/HrModels'
 import { RefOptionsField } from '../../../components/fields/RefOptionsField'
@@ -10,26 +10,20 @@ type Props = {
   branchOptions: RefOptionsModel[]
   positionOptions: RefOptionsModel[]
   handleChange: (e: any) => void
-  formValidated: boolean
-  error: boolean
+  errors: any
   model: EmployeePostFormModel | undefined
 }
 
-const PostForm = ({
-  branchOptions,
-  positionOptions,
-  handleChange,
-  model,
-  formValidated,
-  error,
-}: Props) => {
-
+const PostForm = ({ branchOptions, positionOptions, handleChange, model, errors }: Props) => {
   if (!model) {
     return null
   }
 
   return (
-    <CForm className="row g-3 needs-validation" validated={formValidated}>
+    <CForm
+      className="row g-3 needs-validation"
+      validated={errors && Object.keys(errors).length > 0}
+    >
       <CCol md={12}>
         <RefOptionsField
           label={'Филиал'}
@@ -37,6 +31,7 @@ const PostForm = ({
           options={branchOptions}
           value={model.branchId}
           handleChange={handleChange}
+          error={errors.branchId}
         />
       </CCol>
       <CCol md={12}>
@@ -46,6 +41,7 @@ const PostForm = ({
           options={positionOptions}
           value={model.positionId}
           handleChange={handleChange}
+          error={errors.positionId}
         />
       </CCol>
       <CCol md={12}>
@@ -53,7 +49,7 @@ const PostForm = ({
           label={'Дата начала'}
           placeholder="Выберите дату"
           fieldName={'beginDate'}
-          error={error}
+          error={errors.beginDate}
           value={model.beginDate || ''}
           handleChange={handleChange}
         />
@@ -61,7 +57,7 @@ const PostForm = ({
       <CCol md={12}>
         <CurrencyField
           label={'Оклад'}
-          error={''}
+          error={errors.salary}
           fieldName={'salary'}
           handleChange={handleChange}
           value={model.salary}

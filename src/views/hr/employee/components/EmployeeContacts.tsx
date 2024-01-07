@@ -56,11 +56,7 @@ const EmployeeContacts = ({ addresses }: Props) => {
     index: index + 1,
   }))
 
-  return (
-    <CTabPane role="tabpanel" aria-labelledby="home-tab-pane" visible={true}>
-      <CTable striped hover responsive columns={columns} items={addressesWithIndex || []} />
-    </CTabPane>
-  )
+  return <CTable striped hover responsive columns={columns} items={addressesWithIndex || []} />
 }
 
 export default EmployeeContacts

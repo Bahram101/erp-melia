@@ -6,9 +6,9 @@ type Props = {
 
 const EmployeeUserBranches = ({ userBranches }: Props) => {
   return (
-    <CTabPane role="tabpanel" aria-labelledby="home-tab-pane" visible={true}>
+    <>
       Филиалы пользователя
-    </CTabPane>
+    </>
   )
 }
 

@@ -6,9 +6,9 @@ type Props = {
 
 const EmployeeHierarchy = ({ hierarchy }: Props) => {
   return (
-    <CTabPane role="tabpanel" aria-labelledby="home-tab-pane" visible={true}>
+    <>
       Иерархия
-    </CTabPane>
+    </>
   )
 }
 

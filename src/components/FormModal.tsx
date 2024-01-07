@@ -14,9 +14,10 @@ type Props = {
   title: string
   children: React.ReactNode
   handleSubmit: (data: any) => void
+  saving: boolean
 }
 
-const FormModal = ({ visibleFormModal, onClose, title, children, handleSubmit }: Props) => {
+const FormModal = ({ visibleFormModal, onClose, title, children, handleSubmit, saving }: Props) => {
   return (
     <>
       <CModal alignment="center" size={'lg'} visible={visibleFormModal} onClose={onClose}>
@@ -28,8 +29,8 @@ const FormModal = ({ visibleFormModal, onClose, title, children, handleSubmit }:
           <CButton color="secondary" onClick={onClose}>
             Отмена
           </CButton>
-          <CButton color="primary" onClick={handleSubmit}>
-            Сохранить
+          <CButton disabled={saving} color="primary" onClick={handleSubmit}>
+            {saving ? 'Ждите...' : 'Сохранить'}
           </CButton>
         </CModalFooter>
       </CModal>

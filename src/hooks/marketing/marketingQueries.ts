@@ -4,7 +4,7 @@ import { ContractGridModel } from '../../models/marketing/MrkModels'
 
 export const useContractsListQuery = (params: {}) => {
   return useQuery<ContractGridModel[]>(
-    ['marketing-get-contracts-list'],
+    ['mrk-get-contracts-list'],
     async () => {
       const { data } = await request.get('/marketing/contracts', {
         params: params,

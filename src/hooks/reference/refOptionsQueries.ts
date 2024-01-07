@@ -23,3 +23,14 @@ export const usePositionOptionsQuery = (enabled: boolean) => {
     { enabled: enabled },
   )
 }
+
+export const useCashOptionsQuery = (enabled: boolean) => {
+  return useQuery<RefOptionsModel[]>(
+    ['get-reference-chashes-as-options'],
+    async () => {
+      const { data } = await request.get('/reference/cashes/as-options')
+      return data
+    },
+    { enabled: enabled },
+  )
+}

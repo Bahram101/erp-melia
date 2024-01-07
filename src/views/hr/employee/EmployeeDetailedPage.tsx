@@ -7,6 +7,7 @@ import {
   CNav,
   CTabContent,
   CSpinner,
+  CTabPane,
 } from '@coreui/react-pro'
 import { Link, useParams } from 'react-router-dom'
 import { FaAngleLeft } from 'react-icons/fa6'
@@ -20,8 +21,8 @@ import EmployeeUserBranches from './components/EmployeeUserBranches'
 import EmployeeHierarchy from './components/EmployeeUserHierarchy'
 import { useCustomerAdressesQuery } from '../../../hooks/reference/refCustomerQueries'
 import { useEmployeeDetailedQuery, useEmployeePostsQuery } from 'hooks/hr/employeeQueries'
-import { useCustomerBalanceQuery } from 'hooks/report/customerQueries'
 import EmployeePosts from './components/EmployeePosts'
+import { useCustomerBalanceQuery } from 'hooks/report/reportQueries'
 
 const EmployeeDetailedPage = () => {
   const [activeKey, setActiveKey] = useState('MAIN_DATA')
@@ -35,17 +36,10 @@ const EmployeeDetailedPage = () => {
     employeeDetailedQuery?.data?.customerId,
     false,
   )
-  const employeePositionsQuery = useEmployeePostsQuery(params.id, false)
-  const customerBalanceQuery = useCustomerBalanceQuery(
-    employeeDetailedQuery?.data?.customerId,
-    false,
-  )
 
   useEffect(() => {
     if (employeeDetailedQuery.data) {
       customerAddressesQuery.refetch()
-      employeePositionsQuery.refetch()
-      setEmployeeInfo(employeeDetailedQuery.data)
     }
   }, [employeeDetailedQuery.data])
 
@@ -83,9 +77,6 @@ const EmployeeDetailedPage = () => {
       label: 'Иерархия',
     },
   ]
-
-  console.log('customerBalanceQuery', customerBalanceQuery)
-  console.log('employeeInfo', employeeInfo)
 
   return (
     <CCard>
@@ -126,28 +117,72 @@ const EmployeeDetailedPage = () => {
           </div>
         ) : (
           <CTabContent>
-            {activeKey === 'MAIN_DATA' && (
+            <CTabPane
+              role="tabpanel"
+              aria-labelledby="main-tab-pane"
+              visible={activeKey === 'MAIN_DATA'}
+            >
               <EmployeeMainData mainData={employeeDetailedQuery?.data} />
-            )}
-            {activeKey === 'CONTACTS' && (
-              <EmployeeContacts addresses={customerAddressesQuery?.data} />
-            )}
-            {activeKey === 'POSITIONS' && (
-              <EmployeePosts
-                employeeId={params.id || ''}
-                employeePositionsQuery={employeePositionsQuery}
-              />
-            )}
-            {activeKey === 'BALANCE' && (
+            </CTabPane>
+
+            <CTabPane
+              role="tabpanel"
+              aria-labelledby="contact-tab-pane"
+              visible={activeKey === 'CONTACTS'}
+            >
+              <EmployeeContacts addresses={customerAddressesQuery?.data || []} />
+            </CTabPane>
+
+            <CTabPane
+              role="tabpanel"
+              aria-labelledby="post-tab-pane"
+              visible={activeKey === 'POSITIONS'}
+            >
+              <EmployeePosts employeeId={params.id || ''} />
+            </CTabPane>
+
+            <CTabPane
+              role="tabpanel"
+              aria-labelledby="balance-tab-pane"
+              visible={activeKey === 'BALANCE'}
+            >
               <EmployeeBalance
                 customerId={employeeDetailedQuery?.data?.customerId}
                 employeeInfo={employeeInfo}
               />
-            )}
-            {activeKey === 'DEPOSIT' && <EmployeeDeposit deposit={{}} />}
-            {activeKey === 'UNPAID_DEPOSITS' && <EmployeeUnPaidDeposits unpaidDeposits={{}} />}
-            {activeKey === 'USER_BRANCHES' && <EmployeeUserBranches userBranches={{}} />}
-            {activeKey === 'HIERARCHY' && <EmployeeHierarchy hierarchy={{}} />}
+            </CTabPane>
+
+            <CTabPane
+              role="tabpanel"
+              aria-labelledby="deposit-tab-pane"
+              visible={activeKey === 'DEPOSIT'}
+            >
+              <EmployeeDeposit deposit={{}} />
+            </CTabPane>
+
+            <CTabPane
+              role="tabpanel"
+              aria-labelledby="unpaid-dep-tab-pane"
+              visible={activeKey === 'UNPAID_DEPOSITS'}
+            >
+              <EmployeeUnPaidDeposits unpaidDeposits={{}} />
+            </CTabPane>
+
+            <CTabPane
+              role="tabpanel"
+              aria-labelledby="user-branches-tab-pane"
+              visible={activeKey === 'USER_BRANCHES'}
+            >
+              <EmployeeUserBranches userBranches={{}} />
+            </CTabPane>
+
+            <CTabPane
+              role="tabpanel"
+              aria-labelledby="hierarchy-tab-pane"
+              visible={activeKey === 'HIERARCHY'}
+            >
+              <EmployeeHierarchy hierarchy={{}} />
+            </CTabPane>
           </CTabContent>
         )}
       </CCardBody>

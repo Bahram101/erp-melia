@@ -38,16 +38,19 @@ export const RefOptionsField = ({
     })
   }
 
+  const invalid = error && error.length > 0;
+
   return (
     <>
-      <CFormSelect
+      <CFormSelect 
         label={label}
         name={fieldName}
         options={preparedOptions}
         value={value || ''}
-        onChange={handleChange} 
+        onChange={handleChange}
         required
-        feedbackInvalid={value == null && 'Поле не может быть пустым'}
+        feedbackInvalid={invalid && error}
+        invalid={invalid ? true : false}
       />
     </>
   )

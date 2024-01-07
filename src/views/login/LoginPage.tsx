@@ -20,7 +20,6 @@ import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
 const LoginPage = () => {
-  const [error, setError] = useState<string | undefined>(undefined)
   const loginQuery = useLogin()
   const navigate = useNavigate()
 
@@ -44,16 +43,9 @@ const LoginPage = () => {
         if (err.response && err.response.data) {
           if (err.response.data.message && err.response.data.message.length > 0) {
             toast.error(err.response.data.message)
-            // toaster.error(err.response.data.message, {
-            //   position: 'top-right',
-            // })
-            // setError(err.response.data.message)
           }
         } else {
           toast.error(err.response.data.message)
-          // toaster.error('Warning Notification !', {
-          //   position: 'top-right',
-          // })
         }
       })
   }
@@ -67,7 +59,6 @@ const LoginPage = () => {
               <CCardBody>
                 <CForm onSubmit={onSubmit}>
                   <h3>Вход в систему</h3>
-                  {/* {error && <div className="text-medium-emphasis">{error}</div>} */}
                   <ToastContainer />
                   <CInputGroup className="mb-3">
                     <CInputGroupText>

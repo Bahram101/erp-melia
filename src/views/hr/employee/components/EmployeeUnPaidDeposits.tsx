@@ -6,9 +6,9 @@ type Props = {
 
 const EmployeeUnPaidDeposits = ({ unpaidDeposits }: Props) => {
   return (
-    <CTabPane role="tabpanel" aria-labelledby="home-tab-pane" visible={true}>
+    <>
       Не оплаченные депозиты
-    </CTabPane>
+    </>
   )
 }
 

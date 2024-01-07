@@ -1,6 +1,6 @@
 import React from 'react'
-import { CFormLabel, CDatePicker } from '@coreui/react-pro'
-import { stringDDMMYYYYToMoment, stringDDMMYYYYHHToMoment } from 'utils/DateHelper'
+import { CDatePicker } from '@coreui/react-pro'
+import { stringDDMMYYYYHHToMoment, stringDDMMYYYYToMoment } from 'utils/DateHelper'
 import '@coreui/coreui-pro/dist/css/coreui.min.css'
 
 interface Props {
@@ -10,8 +10,9 @@ interface Props {
   value?: string
   timepicker?: boolean
   placeholder?: string
-  error?: boolean
+  error?: string
 }
+
 export const DatePickerField = ({
   fieldName,
   handleChange,
@@ -35,12 +36,14 @@ export const DatePickerField = ({
     format += ' HH:mm'
   }
 
+  const invalid: boolean = error && error.length > 0 ? true : false
+
   return (
     <>
       <CDatePicker
         label={label}
-        feedbackInvalid={value == '' && error && 'Поле не может быть пустым'}
-        invalid={error ? true : false} 
+        feedbackInvalid={invalid && error}
+        invalid={invalid}
         todayButton="Сегодня"
         cancelButton="Сброс"
         confirmButton="Выбрать"

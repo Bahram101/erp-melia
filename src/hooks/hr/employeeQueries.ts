@@ -30,7 +30,7 @@ export const useEmployeeDetailedQuery = (id: any, enabled: boolean) => {
 
 export const useEmployeePostsQuery = (employeeId: string | undefined, enabled: boolean) => {
   return useQuery<EmployeePostGridModel[]>(
-    ['hr-get-employee-posts'],
+    ['hr-get-employee-posts', employeeId],
     async () => {
       if (employeeId) {
         const { data } = await request.get(`/hr/employees/${employeeId}/posts`)
@@ -62,18 +62,5 @@ export const useEmployeePostSaveMutation = (id: string, postId: string | undefin
   }
   return useMutation(({ form }: { form: EmployeePostFormModel }) =>
     request.post(`/hr/employees/${id}/posts`, form),
-  )
-}
-
-export const useEmployeeBalanceQuery = (employeeId: string | undefined, enabled: boolean) => {
-  return useQuery<EmployeePostGridModel[]>(
-    ['hr-get-employee-balances'],
-    async () => {
-      if (employeeId) {
-        const { data } = await request.get(`/hr/employees/${employeeId}/posts`)
-        return data
-      }
-    },
-    { enabled: enabled },
   )
 }

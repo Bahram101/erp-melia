@@ -1,6 +1,6 @@
 import { useQuery } from 'react-query'
 import { request } from '../../http'
-import { CustomerBalance } from 'models/report/reportModels'
+import { CustomerBalance } from 'models/report/ReportModels'
 
 export const useCustomerBalanceQuery = (customerId: string | undefined, params: {}) => {
   return useQuery<CustomerBalance[]>(

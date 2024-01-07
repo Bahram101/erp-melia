@@ -26,16 +26,16 @@ import {
   useEmployeePostSaveMutation,
   useEmployeePostsQuery,
 } from '../../../../hooks/hr/employeeQueries'
+import { parseResponseFormErrors } from '../../../../utils/ErrorUtil'
+import { formatMoney } from '../../../../utils/UtilFuncs'
 
 type Props = {
   employeeId: string
-  employeePositionsQuery: any
 }
 
-const EmployeePosts = ({ employeeId, employeePositionsQuery }: Props) => {
+const EmployeePosts = ({ employeeId }: Props) => {
   const [visibleFormModal, setVisibleFormModal] = useState<boolean>(false)
-  const [formValidated, setFormValidated] = useState<boolean>(false)
-  const [error, setError] = useState<boolean>(false)
+  const [errors, setErrors] = useState<any>({})
   const [model, setModel] = useState<EmployeePostFormModel>(DefaultEmployeePostFormModel)
   const [selectedPostId, setSelectedPostId] = useState<string | undefined>(undefined)
 
@@ -44,6 +44,7 @@ const EmployeePosts = ({ employeeId, employeePositionsQuery }: Props) => {
 
   const postFormQuery = useEmployeePostFormQuery(employeeId, selectedPostId || '', true)
   const saveMutation = useEmployeePostSaveMutation(employeeId, selectedPostId)
+  const empPostsQuery = useEmployeePostsQuery(employeeId, true)
 
   const handleChange = (e: any) => {
     const { name, value } = e.target
@@ -67,11 +68,11 @@ const EmployeePosts = ({ employeeId, employeePositionsQuery }: Props) => {
         setSelectedPostId(undefined)
         setModel(DefaultEmployeePostFormModel)
         setVisibleFormModal(false)
-        employeePositionsQuery.refetch()
+        empPostsQuery.refetch()
+        setErrors({})
       })
       .catch((error) => {
-        setFormValidated(true)
-        setError(true)
+        setErrors(parseResponseFormErrors(error))
       })
   }
 
@@ -93,6 +94,7 @@ const EmployeePosts = ({ employeeId, employeePositionsQuery }: Props) => {
         visibleFormModal={visibleFormModal}
         onClose={() => setVisibleFormModal(false)}
         handleSubmit={handleSubmit}
+        saving={saveMutation.isLoading}
       >
         {postFormQuery.isFetching ? (
           <CSpinner color="primary" />
@@ -101,58 +103,55 @@ const EmployeePosts = ({ employeeId, employeePositionsQuery }: Props) => {
             branchOptions={branchOptionsQuery.data || []}
             positionOptions={positionOptionsQuery.data || []}
             handleChange={handleChange}
-            formValidated={formValidated}
             model={model}
-            error={error}
+            errors={errors}
           />
         )}
       </FormModal>
-      <CTabPane role="tabpanel" aria-labelledby="home-tab-pane" visible={true}>
-        <div className="float-end">
-          <CButton color="success mb-2" className="text-white" onClick={toCreate}>
-            <FaPlus className="mb-1 me-2" />
-            Добавить должность
-          </CButton>
-        </div>
-        <CTable striped>
-          <CTableHead>
-            <CTableRow>
-              <CTableHeaderCell scope="col">Филиал</CTableHeaderCell>
-              <CTableHeaderCell scope="col">Должность</CTableHeaderCell>
-              <CTableHeaderCell scope="col">Дата начало</CTableHeaderCell>
-              <CTableHeaderCell scope="col">Дата окончания</CTableHeaderCell>
-              <CTableHeaderCell scope="col">Оклад</CTableHeaderCell>
-              <CTableHeaderCell scope="col">Доступ к системе</CTableHeaderCell>
-              <CTableHeaderCell scope="col"></CTableHeaderCell>
+      <div className="float-end">
+        <CButton color="success mb-2" className="text-white" onClick={toCreate}>
+          <FaPlus className="mb-1 me-2" />
+          Добавить должность
+        </CButton>
+      </div>
+      <CTable striped>
+        <CTableHead>
+          <CTableRow>
+            <CTableHeaderCell scope="col">Филиал</CTableHeaderCell>
+            <CTableHeaderCell scope="col">Должность</CTableHeaderCell>
+            <CTableHeaderCell scope="col">Дата начало</CTableHeaderCell>
+            <CTableHeaderCell scope="col">Дата окончания</CTableHeaderCell>
+            <CTableHeaderCell scope="col">Оклад</CTableHeaderCell>
+            <CTableHeaderCell scope="col">Доступ к системе</CTableHeaderCell>
+            <CTableHeaderCell scope="col"></CTableHeaderCell>
+          </CTableRow>
+        </CTableHead>
+        <CTableBody>
+          {empPostsQuery.data?.map((post: EmployeePostGridModel) => (
+            <CTableRow key={post.id}>
+              <CTableDataCell>{post.branchName}</CTableDataCell>
+              <CTableDataCell>{post.positionName}</CTableDataCell>
+              <CTableDataCell>{post.beginDate}</CTableDataCell>
+              <CTableDataCell>{post.endDate}</CTableDataCell>
+              <CTableDataCell>{formatMoney(post.salary)}</CTableDataCell>
+              <CTableDataCell>{post.hasAccess ? 'Да' : 'Нет'}</CTableDataCell>
+              <CTableDataCell>
+                <Link to={{}}>
+                  <CButton
+                    color={'primary'}
+                    variant="outline"
+                    shape="square"
+                    size="sm"
+                    onClick={() => toEdit(post.id)}
+                  >
+                    <FaPen />
+                  </CButton>
+                </Link>
+              </CTableDataCell>
             </CTableRow>
-          </CTableHead>
-          <CTableBody>
-            {employeePositionsQuery.data?.map((post: EmployeePostGridModel) => (
-              <CTableRow key={post.id}>
-                <CTableDataCell>{post.branchName}</CTableDataCell>
-                <CTableDataCell>{post.positionName}</CTableDataCell>
-                <CTableDataCell>{post.beginDate}</CTableDataCell>
-                <CTableDataCell>{post.endDate}</CTableDataCell>
-                <CTableDataCell>{post.salary}</CTableDataCell>
-                <CTableDataCell>{post.hasAccess ? 'Да' : 'Нет'}</CTableDataCell>
-                <CTableDataCell>
-                  <Link to={{}}>
-                    <CButton
-                      color={'primary'}
-                      variant="outline"
-                      shape="square"
-                      size="sm"
-                      onClick={() => toEdit(post.id)}
-                    >
-                      <FaPen />
-                    </CButton>
-                  </Link>
-                </CTableDataCell>
-              </CTableRow>
-            ))}
-          </CTableBody>
-        </CTable>
-      </CTabPane>
+          ))}
+        </CTableBody>
+      </CTable>
     </>
   )
 }

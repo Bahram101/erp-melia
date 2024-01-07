@@ -6,9 +6,9 @@ type Props = {
 
 const EmployeeDeposit = ({ deposit }: Props) => {
   return (
-    <CTabPane role="tabpanel" aria-labelledby="home-tab-pane" visible={true}>
+    <>
       Депозит
-    </CTabPane>
+    </>
   )
 }
 
