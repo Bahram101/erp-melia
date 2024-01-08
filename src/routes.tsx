@@ -4,6 +4,8 @@ const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
 const EmployeeGridPage = React.lazy(() => import('./views/hr/employee/EmployeeGridPage'))
 const EmployeeDetailedPage = React.lazy(() => import('./views/hr/employee/EmployeeDetailedPage'))
 const ContractGridPage = React.lazy(() => import('./views/marketing/contract/ContractGridPage'))
+const ContractViewPage = React.lazy(() => import('./views/marketing/contract/ContractViewPage'))
+const ContractFormPage = React.lazy(() => import('./views/marketing/contract/ContractFormPage'))
 
 const routes = [
   { path: '/', exact: true, name: 'Home' },
@@ -11,6 +13,9 @@ const routes = [
   { path: '/hr/employees', name: 'Hr Employees', element: EmployeeGridPage },
   { path: '/hr/employees/view/:id', name: 'Hr Employee Card', element: EmployeeDetailedPage },
   { path: '/marketing/contracts', name: 'Список договоров', element: ContractGridPage },
+  { path: '/marketing/contracts/view/:id', name: 'Просмотр договора', element: ContractViewPage },
+  { path: '/marketing/contracts/edit/:id', name: 'Редактирование договора', element: ContractFormPage },
+  { path: '/marketing/contracts/create', name: 'Добавление договора', element: ContractFormPage },
 ]
 
 export default routes

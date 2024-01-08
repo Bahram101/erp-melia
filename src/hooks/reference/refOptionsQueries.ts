@@ -34,3 +34,16 @@ export const useCashOptionsQuery = (enabled: boolean) => {
     { enabled: enabled },
   )
 }
+
+export const useGoodsOptionsQuery = (params: { hasSerial?: boolean }, enabled: boolean) => {
+  return useQuery<RefOptionsModel[]>(
+    ['get-reference-goods-as-options', params.hasSerial],
+    async () => {
+      const { data } = await request.get('/reference/goods/as-options', {
+        params: params
+      })
+      return data
+    },
+    { enabled: enabled },
+  )
+}

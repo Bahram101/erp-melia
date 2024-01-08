@@ -14,10 +14,8 @@ import {
 import { useNavigate } from 'react-router-dom'
 import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilUser } from '@coreui/icons'
-import { useLogin } from '../../hooks/login/loginQueries'
-import toaster from 'toastify-react'
-import { ToastContainer, toast } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
+import { useLogin } from '../../hooks/login/loginQueries' 
+import { toast } from 'react-toastify' 
 
 const LoginPage = () => {
   const loginQuery = useLogin()
@@ -59,7 +57,6 @@ const LoginPage = () => {
               <CCardBody>
                 <CForm onSubmit={onSubmit}>
                   <h3>Вход в систему</h3>
-                  <ToastContainer />
                   <CInputGroup className="mb-3">
                     <CInputGroupText>
                       <CIcon icon={cilUser} />

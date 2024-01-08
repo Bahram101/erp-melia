@@ -1,8 +1,10 @@
 import React, { Component, Suspense } from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { ToastContainer } from 'react-toastify'
+import PublicRouter from './PublicRouter'
+import PrivateRouter from './PrivateRouter'
+import 'react-toastify/dist/ReactToastify.css'
 import './scss/style.scss'
-import PublicRouter from "./PublicRouter";
-import PrivateRouter from "./PrivateRouter";
 
 const loading = (
   <div className="pt-3 text-center">
@@ -14,12 +16,13 @@ const loading = (
 const DefaultLayout = React.lazy(() => import('./layout/DefaultLayout'))
 
 // Pages
-const LoginPage = React.lazy(() => import('./views/login/LoginPage'));
+const LoginPage = React.lazy(() => import('./views/login/LoginPage'))
 
 class App extends Component {
   render() {
     return (
       <BrowserRouter>
+        <ToastContainer />
         <Suspense fallback={loading}>
           <Routes>
             <Route element={<PublicRouter />}>

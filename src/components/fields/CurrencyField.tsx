@@ -1,4 +1,3 @@
-import React from 'react'
 import CurrencyInput from 'react-currency-input-field'
 import { CFormLabel } from '@coreui/react-pro'
 
@@ -20,12 +19,13 @@ const CurrencyField = ({ label, value, fieldName, handleChange, error }: Props) 
     })
   }
   const hasError = error && error.length > 0
+
   return (
     <>
       {label && <CFormLabel>{label}</CFormLabel>}
       <CurrencyInput
         placeholder="0"
-        className={`form-control ${hasError ? 'bnc-invalid-field' : ''}`}
+        className={`form-control`}
         value={value}
         onValueChange={preHandleChange}
         required

@@ -3,7 +3,6 @@ import {
   CButton,
   CCol,
   CRow,
-  CTabPane,
   CTable,
   CTableBody,
   CTableDataCell,
@@ -12,7 +11,7 @@ import {
   CTableRow,
 } from '@coreui/react-pro'
 import { useState } from 'react'
-import { ToastContainer, toast } from 'react-toastify'
+import { toast } from 'react-toastify'
 import FormModal from 'components/FormModal'
 import { DatePickerField } from 'components/fields/DatePickerField'
 import { useFinCustomerDepsMutation } from 'hooks/finance/financeQueries'
@@ -22,7 +21,6 @@ import { CustomerDeptFormModel, DefaultCustomerDeptFormModel } from 'models/fina
 import { CustomerBalance } from 'models/report/ReportModels'
 import { parseResponseFormErrors } from 'utils/ErrorUtil'
 import BalanceForm from 'views/hr/components/BalanceForm'
-import 'react-toastify/dist/ReactToastify.css'
 import { formatMoney } from 'utils/UtilFuncs'
 
 type Props = {
@@ -83,7 +81,6 @@ const EmployeeBalance = ({ customerId, employeeInfo }: Props) => {
 
   return (
     <>
-      <ToastContainer />
       <FormModal
         title={`Оплата долга сотрудника (контрагента) ${employeeInfo.lastname} ${employeeInfo.firstname}`}
         visibleFormModal={visibleFormModal}

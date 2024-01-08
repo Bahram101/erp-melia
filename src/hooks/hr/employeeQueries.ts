@@ -6,14 +6,19 @@ import {
   EmployeePostGridModel,
 } from '../../models/hr/HrModels'
 
-export const useCurrentEmployeesQuery = () => {
+export const useCurrentEmployeesQuery = (params: {
+  branchId?: string;
+  positionId?: string;
+}, enabled: boolean) => {
   return useQuery<any[]>(
     ['hr-get-current-employees-list'],
     async () => {
-      const { data } = await request.get('/hr/employees/current')
+      const { data } = await request.get('/hr/employees/current', {
+        params: params,
+      })
       return data
     },
-    { enabled: true },
+    { enabled: enabled },
   )
 }
 

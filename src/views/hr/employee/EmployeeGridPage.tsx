@@ -1,11 +1,11 @@
-import React, { useMemo } from 'react'
+import React from 'react'
 import { useCurrentEmployeesQuery } from '../../../hooks/hr/employeeQueries'
 import { CCard, CCardHeader, CCardBody, CSmartTable, CButton } from '@coreui/react-pro'
 import { FaPen, FaEye } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 
 const EmployeeGridPage = () => {
-  const currentEmpListQuery = useCurrentEmployeesQuery()
+  const currentEmpListQuery = useCurrentEmployeesQuery({}, true)
 
   const columns = [
     {

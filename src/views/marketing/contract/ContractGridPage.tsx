@@ -96,7 +96,7 @@ const ContractGridPage = () => {
       <CCardHeader>
         <h4 className="float-start">Список договоров</h4>
         <div className="float-end">
-          <Link to={'/hr/employees/add'}>
+          <Link to={'/marketing/contracts/create'}>
             <CButton color={'primary'} shape="square">
               Добавить
             </CButton>
