@@ -20,7 +20,7 @@ const InputField = ({
     <>
       <CFormInput
         disabled={disabled}
-        type={type ? type : 'text'}
+        type={type || 'text'}
         name={fieldName}
         onChange={handleChange}
         label={label}

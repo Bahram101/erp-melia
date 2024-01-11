@@ -9,3 +9,10 @@
 .sidebar-nav::-webkit-scrollbar-thumb:hover {
   background-color: #b9b9b9;
 }
+.rst__tree {
+  height: 100vh !important;
+}
+
+.translateY-2 {
+  transform: translateY(-2px);
+}

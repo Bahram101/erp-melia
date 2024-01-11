@@ -20,14 +20,14 @@ export interface EmployeePostGridModel {
 }
 
 export interface EmployeePostFormModel {
-  branchId?: string;
-  positionId?: string;
-  beginDate: string | null;
-  endDate?: string | null;
-  salary: number;
-  note: string | null;
-  hasAccess: boolean | null;
-  accessAllBranches: boolean | null;
+  branchId?: string
+  positionId?: string
+  beginDate: string | null
+  endDate?: string | null
+  salary: number
+  note: string | null
+  hasAccess: boolean | null
+  accessAllBranches: boolean | null
 }
 
 export const DefaultEmployeePostFormModel: EmployeePostFormModel = {
@@ -36,4 +36,36 @@ export const DefaultEmployeePostFormModel: EmployeePostFormModel = {
   hasAccess: null,
   note: null,
   salary: 0,
+}
+
+export interface CompanyStructuresModel {
+  children?: CompanyStructuresModel[] | []
+  expanded: boolean
+  id: string
+  parentId: string
+  path?: string[]
+  postId: string
+  subTitle: string
+  title: string
+  postName?: string
+}
+
+export interface CompanyStructureFormModel {
+  id: string | null 
+  postId: string | null
+  title: string | null | undefined
+  parentId: string | null
+  year: number | null
+  month: number | null
+  postName: string | null 
+}
+
+export const DefaultCompanyStructureFormModel: CompanyStructureFormModel = {
+  id: null,
+  postId: null,
+  title: null,
+  parentId: null,
+  year: null,
+  month: null,
+  postName: null,
 }

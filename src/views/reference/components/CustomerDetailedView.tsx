@@ -10,7 +10,7 @@ const CustomerDetailedView = ({ customer }: { customer: CustomerDetailedModel | 
     return null
   }
 
-  return <CContainer lg>
+  return <CContainer fluid>
     <CRow className="align-items-start">
       <CCol>
         <CCardHeader>

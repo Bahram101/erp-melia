@@ -50,3 +50,7 @@ export interface RefOptionsModel {
   value?: string;
   label: string;
 }
+
+export interface FormData {
+  [key: string]: string
+}
