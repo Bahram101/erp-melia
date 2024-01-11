@@ -19,7 +19,7 @@ interface Props {
 
 const Structure: React.FC<Props> = ({ companyStructureQuery }) => {
   const [componayStructures, setComponayStructures] = useState(companyStructureQuery || [])
-  const [visibleFormModal, setVisibleFormModal] = useState<boolean>(false)
+  const [formModal, setFormModal] = useState<boolean>(false)
   const [errors, setErrors] = useState<any>({})
   const [model, setModel] = useState<CompanyStructureFormModel>(DefaultCompanyStructureFormModel)
 
@@ -62,14 +62,14 @@ const Structure: React.FC<Props> = ({ companyStructureQuery }) => {
     // setSelectedPostId(undefined)
     // setModel(DefaultEmployeePostFormModel)
     setModel({ ...model, parentId: row.node?.id })
-    setVisibleFormModal(true)
+    setFormModal(true)
   }
 
   return (
     <CCol md={9}>
       <StructureFormModal
-        visibleFormModal={visibleFormModal}
-        onClose={() => setVisibleFormModal(false)}
+        formModal={formModal}
+        onClose={() => setFormModal(false)}
         handleSubmit={handleSubmit}
         saving={false}
         handleChange={handleChange}
@@ -99,7 +99,7 @@ const Structure: React.FC<Props> = ({ companyStructureQuery }) => {
                 color={'primary'}
                 variant="outline"
                 shape="square"
-                onClick={()=>toCreate(rowInfo)}
+                onClick={() => toCreate(rowInfo)}
               >
                 <FaPlus className="translateY-2" />
               </CButton>,

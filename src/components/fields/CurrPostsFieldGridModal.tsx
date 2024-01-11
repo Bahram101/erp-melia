@@ -11,15 +11,18 @@ import {
   CRow,
   CSmartTable,
 } from '@coreui/react-pro'
-import { useBranchOptionsQuery, usePositionOptionsQuery } from '../../hooks/reference/refOptionsQueries'
+import {
+  useBranchOptionsQuery,
+  usePositionOptionsQuery,
+} from '../../hooks/reference/refOptionsQueries'
 import { useCurrentEmployeesQuery } from '../../hooks/hr/employeeQueries'
 import { RefOptionsField } from './RefOptionsField'
 import { DefaultPostRefModel, PostRefModel } from '../../models/CommonModels'
 
 interface Props {
-  visible: boolean;
-  onOk: (selected: PostRefModel) => void;
-  onCancel: () => void;
+  visible: boolean
+  onOk: (selected: PostRefModel) => void
+  onCancel: () => void
 }
 
 const CurrPostsFieldGridModal = ({ visible, onOk, onCancel }: Props) => {
@@ -90,7 +93,7 @@ const CurrPostsFieldGridModal = ({ visible, onOk, onCancel }: Props) => {
   ]
 
   return (
-    <CModal alignment="center" size="xl" visible={visible}>
+    <CModal alignment="center" size="xl" visible={visible} onClose={onCancel}>
       <CModalHeader>
         <CModalTitle>Список должности</CModalTitle>
       </CModalHeader>
@@ -115,11 +118,7 @@ const CurrPostsFieldGridModal = ({ visible, onOk, onCancel }: Props) => {
             />
           </CCol>
           <CCol style={{ alignSelf: 'flex-end' }} lg>
-            <CButton
-              disabled={isFetching}
-              color="secondary"
-              onClick={loadItems}
-            >
+            <CButton disabled={isFetching} color="secondary" onClick={loadItems}>
               {isFetching ? 'Ждите...' : 'Поиск'}
             </CButton>
           </CCol>
