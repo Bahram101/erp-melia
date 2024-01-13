@@ -1,13 +1,13 @@
 export enum DocStatus {
-  NEW = "NEW",
-  ON_PAYING = "ON_PAYING",
-  CLOSED = "CLOSED",
-  REJECTED = "REJECTED",
-  CANCELLED = "CANCELLED",
-  ON_EXECUTION = "ON_EXECUTION",
-  PROBLEM = "PROBLEM",
-  ON_APPROVE = "ON_APPROVE",
-  DELETED = "DELETED",
+  NEW = 'NEW',
+  ON_PAYING = 'ON_PAYING',
+  CLOSED = 'CLOSED',
+  REJECTED = 'REJECTED',
+  CANCELLED = 'CANCELLED',
+  ON_EXECUTION = 'ON_EXECUTION',
+  PROBLEM = 'PROBLEM',
+  ON_APPROVE = 'ON_APPROVE',
+  DELETED = 'DELETED',
 }
 
 export enum Doctype {
@@ -17,40 +17,41 @@ export enum Doctype {
 }
 
 export interface CommonRefModel {
-  id: string;
-  displayName: string;
+  id: string
+  displayName: string
 }
 
 export interface StatusRefModel {
-  status: DocStatus;
-  displayName: string;
+  status: DocStatus
+  displayName: string
 }
 
 export interface DoctypeRefModel {
-  name: Doctype;
-  displayName: string;
+  name: Doctype
+  displayName: string
 }
 
 export interface PostRefModel {
-  id: string;
-  empId: string;
-  empName: string;
-  positionName: string;
+  id: string
+  empId: string
+  empName: string
+  positionName: string
 }
 
 export interface CustomerRefModel {
-  id: string;
-  displayName: string;
+  id: string
+  displayName: string
 }
 
-export const DefaultPostRefModel: PostRefModel = { empId: '', empName: '', id: '', positionName: '' }
+export const DefaultPostRefModel: PostRefModel = {
+  empId: '',
+  empName: '',
+  id: '',
+  positionName: '',
+}
 
 export interface RefOptionsModel {
-  id?: string ;
-  value?: string;
-  label: string;
-}
-
-export interface FormData {
-  [key: string]: string
+  id?: string
+  value?: string
+  label: string
 }

@@ -1,39 +1,39 @@
-import React, { useEffect, useState } from 'react'
-import { CContainer, CRow } from '@coreui/react-pro'
+import React, { useState } from 'react'
+import { CRow } from '@coreui/react-pro'
 import StructureSearchPanel from './components/StructureSearchPanel'
 import Structure from './components/Structure'
-import { FormData } from 'models/CommonModels'
 import { useCompanyStructureQuery } from 'hooks/hr/structureQueries'
-import { StructureSearchParamModel } from 'models/hr/HrModels'
+import { DefaultStructureSearchModel, StructureSearchParamModel } from 'models/hr/HrModels'
+
+export type errorTypes = {
+  [key: string]: string
+}
 
 const CompanyStructure = () => {
-  const [errors, setErrors] = useState<FormData>({
-    year: '',
-    month: '',
-  })
-  const [searchParams, setSearchParams] = useState<StructureSearchParamModel>({
-    year: '',
-    month: '',
-  })
+  const [errors, setErrors] = useState<errorTypes>({ year: '', month: '' })
+  const [searchParams, setSearchParams] = useState<StructureSearchParamModel>(
+    DefaultStructureSearchModel,
+  )
 
   const companyStructureQuery = useCompanyStructureQuery(searchParams, true)
 
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = e.target
     setSearchParams((prev: any) => ({ ...prev, [name]: +value }))
-    setErrors((prev: any) => ({
+    setErrors((prev: errorTypes) => ({
       ...prev,
       [name]: '',
     }))
   }
 
   const loadData = () => {
-    let err: FormData = {}
+    let err: errorTypes = {}
 
-    for (const fieldName in searchParams) {
-      if (searchParams[fieldName] === '') {
-        err[fieldName] = 'Поле обязательно'
-      }
+    if (searchParams.year === '') {
+      err.year = 'Поле обязательно'
+    }
+    if (searchParams.month === '') {
+      err.month = 'Поле обязательно'
     }
 
     if (Object.keys(err).length > 0) {
@@ -51,7 +51,10 @@ const CompanyStructure = () => {
         loadData={loadData}
         handleChange={handleChange}
       />
-      <Structure companyStructureData={companyStructureQuery.data || []} />
+      <Structure
+        companyStructureData={companyStructureQuery.data || []}
+        companyStructureQuery={companyStructureQuery}
+      />
     </CRow>
   )
 }

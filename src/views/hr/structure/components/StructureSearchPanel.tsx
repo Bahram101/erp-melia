@@ -2,11 +2,12 @@ import React, { useState } from 'react'
 import { CButton, CCard, CCardBody, CCardFooter, CCardHeader, CCol, CForm } from '@coreui/react-pro'
 import { RefOptionsField } from 'components/fields/RefOptionsField'
 import { years, months } from 'utils/Helpers'
-import { FormData } from 'models/CommonModels'
+import { StructureSearchParamModel } from 'models/hr/HrModels'
+import { errorTypes } from '../CompanyStructurePage'
 
 type Props = {
-  searchParams: FormData
-  errors: FormData
+  searchParams: StructureSearchParamModel
+  errors: errorTypes
   loadData: () => void
   handleChange: React.ChangeEventHandler<HTMLSelectElement>
 }

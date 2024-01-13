@@ -11,19 +11,21 @@ import { FaEye, FaPen, FaPlus, FaTrash } from 'react-icons/fa'
 import FormModal from 'components/FormModal'
 import StructureForm from './StructureFormModal'
 import StructureFormModal from './StructureFormModal'
-import { useStructurePostSaveMutation } from 'hooks/hr/structureQueries'
+import { useCompanyStructureDel, useStructurePostSaveMutation } from 'hooks/hr/structureQueries'
 
 interface Props {
-  // companyStructureQuery: CompanyStructureModel[] | undefined
   companyStructureData: CompanyStructureModel[]
+  companyStructureQuery: any
 }
 
-const Structure: React.FC<Props> = ({ companyStructureData }) => {
+const Structure: React.FC<Props> = ({ companyStructureData, companyStructureQuery }) => {
   const [componayStructures, setComponayStructures] = useState(companyStructureData || [])
   const [visible, setVisible] = useState<boolean>(false)
+  const [structureId, setStructureId] = useState<string>('')
   const [errors, setErrors] = useState<any>({})
   const [model, setModel] = useState<CompanyStructureFormModel>(DefaultCompanyStructureFormModel)
   const saveMutation = useStructurePostSaveMutation(model.id)
+  const delCompanyStructureQuery = useCompanyStructureDel(structureId)
 
   useEffect(() => {
     if (companyStructureData) {
@@ -31,15 +33,36 @@ const Structure: React.FC<Props> = ({ companyStructureData }) => {
     }
   }, [companyStructureData])
 
+  // useEffect(() => {
+  //   if (structureId) {
+  //     delCompanyStructureQuery.mutate(
+  //       {},
+  //       {
+  //         onSuccess: () => {
+  //           companyStructureQuery.refetch()
+  //         },
+  //       },
+  //     )
+  //   }
+  // }, [structureId])
+
+  useEffect(() => {
+    const handleDelete = async () => {
+      if (structureId) {
+        try {
+          await delCompanyStructureQuery.mutate()
+          console.log('deleted')
+          // companyStructureQuery.refetch()
+        } catch (error) {
+          console.log('eeeeee', error)
+        }
+      }
+    }
+    handleDelete()
+  }, [structureId])
+
   const handleChange = (e: any) => {
     const { name, value } = e.target
-    console.log('name', name)
-    console.log('value', value)
-    // if (name === 'postId') {
-    //   setModel({ ...model, postName: value.positionName, postId: value.id, title: value.empName })
-    // } else {
-    //   setModel({ ...model, [name]: name !== 'parentId' ? +value : value })
-    // }
     setModel({ ...model, [name]: value })
   }
 
@@ -51,26 +74,32 @@ const Structure: React.FC<Props> = ({ companyStructureData }) => {
       .then(() => {
         setModel(DefaultCompanyStructureFormModel)
         setVisible(false)
-        // empPostsQuery.refetch()
+        companyStructureQuery.refetch()
         setErrors({})
       })
       .catch((error) => {
         // setErrors(parseResponseFormErrors(error))
       })
   }
-
   // const toEdit = (postId: EmployeePostGridModel['id']) => {
   //   setSelectedPostId(postId)
   //   setVisible(true)
   // }
 
   console.log('model', model)
+  console.log('companyStructureData', companyStructureData)
 
   const toCreate = (row: any) => {
     // setSelectedPostId(undefined)
     // setModel(DefaultEmployeePostFormModel)
+    console.log('row', row)
     setModel({ ...model, parentId: row.node.id })
     setVisible(true)
+  }
+
+  const toDelete = (row: any) => {
+    console.log('row', row)
+    setStructureId(row.node.id)
   }
 
   return (
@@ -87,7 +116,6 @@ const Structure: React.FC<Props> = ({ companyStructureData }) => {
         treeData={componayStructures}
         onChange={(data) => setComponayStructures(data)}
         generateNodeProps={(rowInfo) => {
-          console.log('rowInfo', rowInfo)
           return {
             buttons: [
               <CButton
@@ -117,8 +145,7 @@ const Structure: React.FC<Props> = ({ companyStructureData }) => {
                 color={'primary'}
                 variant="outline"
                 shape="square"
-
-                // onClick={() => alertNodeInfo(rowInfo)}
+                onClick={() => toDelete(rowInfo)}
               >
                 <FaTrash className="translateY-2 " />
               </CButton>,

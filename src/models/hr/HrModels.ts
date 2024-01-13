@@ -71,6 +71,11 @@ export const DefaultCompanyStructureFormModel: CompanyStructureFormModel = {
 }
 
 export interface StructureSearchParamModel {
-  [key: string]: string
-  // month: string
+  year: string
+  month: string
+}
+
+export const DefaultStructureSearchModel: StructureSearchParamModel = {
+  year: '',
+  month: '',
 }

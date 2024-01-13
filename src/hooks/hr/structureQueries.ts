@@ -25,3 +25,7 @@ export const useStructurePostSaveMutation = (id: string | null) => {
     request.post(`/hr/structures`, form),
   )
 }
+
+export const useCompanyStructureDel = (id: string) => {
+  return useMutation(() => request.delete(`/hr/structures/${id}`))
+}
