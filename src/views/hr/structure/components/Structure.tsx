@@ -4,56 +4,64 @@ import SortableTree from '@nosferatu500/react-sortable-tree'
 import '@nosferatu500/react-sortable-tree/style.css'
 import {
   CompanyStructureFormModel,
-  CompanyStructuresModel,
+  CompanyStructureModel,
   DefaultCompanyStructureFormModel,
 } from 'models/hr/HrModels'
 import { FaEye, FaPen, FaPlus, FaTrash } from 'react-icons/fa'
 import FormModal from 'components/FormModal'
 import StructureForm from './StructureFormModal'
 import StructureFormModal from './StructureFormModal'
+import { useStructurePostSaveMutation } from 'hooks/hr/structureQueries'
 
 interface Props {
-  // companyStructureQuery: CompanyStructuresModel[] | undefined
-  companyStructureQuery: any
+  // companyStructureQuery: CompanyStructureModel[] | undefined
+  companyStructureData: CompanyStructureModel[]
 }
 
-const Structure: React.FC<Props> = ({ companyStructureQuery }) => {
-  const [componayStructures, setComponayStructures] = useState(companyStructureQuery || [])
-  const [formModal, setFormModal] = useState<boolean>(false)
+const Structure: React.FC<Props> = ({ companyStructureData }) => {
+  const [componayStructures, setComponayStructures] = useState(companyStructureData || [])
+  const [visible, setVisible] = useState<boolean>(false)
   const [errors, setErrors] = useState<any>({})
   const [model, setModel] = useState<CompanyStructureFormModel>(DefaultCompanyStructureFormModel)
+  const saveMutation = useStructurePostSaveMutation(model.id)
 
   useEffect(() => {
-    if (companyStructureQuery) {
-      setComponayStructures(companyStructureQuery)
+    if (companyStructureData) {
+      setComponayStructures(companyStructureData)
     }
-  }, [companyStructureQuery])
+  }, [companyStructureData])
 
   const handleChange = (e: any) => {
     const { name, value } = e.target
+    console.log('name', name)
+    console.log('value', value)
+    // if (name === 'postId') {
+    //   setModel({ ...model, postName: value.positionName, postId: value.id, title: value.empName })
+    // } else {
+    //   setModel({ ...model, [name]: name !== 'parentId' ? +value : value })
+    // }
     setModel({ ...model, [name]: value })
   }
 
   const handleSubmit = () => {
-    // saveMutation
-    //   .mutateAsync({
-    //     form: model,
-    //   })
-    //   .then(() => {
-    //     setSelectedPostId(undefined)
-    //     setModel(DefaultEmployeePostFormModel)
-    //     setVisibleFormModal(false)
-    //     empPostsQuery.refetch()
-    //     setErrors({})
-    //   })
-    //   .catch((error) => {
-    //     setErrors(parseResponseFormErrors(error))
-    //   })
+    saveMutation
+      .mutateAsync({
+        form: model,
+      })
+      .then(() => {
+        setModel(DefaultCompanyStructureFormModel)
+        setVisible(false)
+        // empPostsQuery.refetch()
+        setErrors({})
+      })
+      .catch((error) => {
+        // setErrors(parseResponseFormErrors(error))
+      })
   }
 
   // const toEdit = (postId: EmployeePostGridModel['id']) => {
   //   setSelectedPostId(postId)
-  //   setVisibleFormModal(true)
+  //   setVisible(true)
   // }
 
   console.log('model', model)
@@ -61,15 +69,15 @@ const Structure: React.FC<Props> = ({ companyStructureQuery }) => {
   const toCreate = (row: any) => {
     // setSelectedPostId(undefined)
     // setModel(DefaultEmployeePostFormModel)
-    setModel({ ...model, parentId: row.node?.id })
-    setFormModal(true)
+    setModel({ ...model, parentId: row.node.id })
+    setVisible(true)
   }
 
   return (
     <CCol md={9}>
       <StructureFormModal
-        formModal={formModal}
-        onClose={() => setFormModal(false)}
+        visible={visible}
+        onClose={() => setVisible(false)}
         handleSubmit={handleSubmit}
         saving={false}
         handleChange={handleChange}

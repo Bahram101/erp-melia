@@ -38,8 +38,8 @@ export const DefaultEmployeePostFormModel: EmployeePostFormModel = {
   salary: 0,
 }
 
-export interface CompanyStructuresModel {
-  children?: CompanyStructuresModel[] | []
+export interface CompanyStructureModel {
+  children?: CompanyStructureModel[] | []
   expanded: boolean
   id: string
   parentId: string
@@ -51,13 +51,13 @@ export interface CompanyStructuresModel {
 }
 
 export interface CompanyStructureFormModel {
-  id: string | null 
+  id: string | null
   postId: string | null
-  title: string | null | undefined
+  title: string | undefined | null
   parentId: string | null
   year: number | null
   month: number | null
-  postName: string | null 
+  postName: string | null
 }
 
 export const DefaultCompanyStructureFormModel: CompanyStructureFormModel = {
@@ -68,4 +68,9 @@ export const DefaultCompanyStructureFormModel: CompanyStructureFormModel = {
   year: null,
   month: null,
   postName: null,
+}
+
+export interface StructureSearchParamModel {
+  [key: string]: string
+  // month: string
 }

@@ -11,9 +11,9 @@ type Props = {
   handleChange: React.ChangeEventHandler<HTMLSelectElement>
 }
 
-const SearchPanel = ({ searchParams, errors, loadData, handleChange }: Props) => {
+const StructureSearchPanel = ({ searchParams, errors, loadData, handleChange }: Props) => {
   return (
-    <CCol md={3} >
+    <CCol md={3}>
       <CCard>
         <CCardHeader>Панель поиска</CCardHeader>
         <CCardBody>
@@ -48,7 +48,7 @@ const SearchPanel = ({ searchParams, errors, loadData, handleChange }: Props) =>
             onClick={loadData}
             className="float-end m-0"
           >
-            Оформить
+            Сформировать
           </CButton>
         </CCardFooter>
       </CCard>
@@ -56,4 +56,4 @@ const SearchPanel = ({ searchParams, errors, loadData, handleChange }: Props) =>
   )
 }
 
-export default SearchPanel
+export default StructureSearchPanel

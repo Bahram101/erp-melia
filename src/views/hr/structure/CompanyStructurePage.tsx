@@ -1,18 +1,19 @@
 import React, { useEffect, useState } from 'react'
 import { CContainer, CRow } from '@coreui/react-pro'
-import SearchPanel from './components/SearchPanel'
+import StructureSearchPanel from './components/StructureSearchPanel'
 import Structure from './components/Structure'
 import { FormData } from 'models/CommonModels'
 import { useCompanyStructureQuery } from 'hooks/hr/structureQueries'
+import { StructureSearchParamModel } from 'models/hr/HrModels'
 
 const CompanyStructure = () => {
   const [errors, setErrors] = useState<FormData>({
     year: '',
     month: '',
   })
-  const [searchParams, setSearchParams] = useState<FormData>({
-    year: '2020',
-    month: '3',
+  const [searchParams, setSearchParams] = useState<StructureSearchParamModel>({
+    year: '',
+    month: '',
   })
 
   const companyStructureQuery = useCompanyStructureQuery(searchParams, true)
@@ -44,13 +45,13 @@ const CompanyStructure = () => {
 
   return (
     <CRow>
-      <SearchPanel
+      <StructureSearchPanel
         searchParams={searchParams}
         errors={errors}
         loadData={loadData}
         handleChange={handleChange}
       />
-      <Structure companyStructureQuery={companyStructureQuery.data} />
+      <Structure companyStructureData={companyStructureQuery.data || []} />
     </CRow>
   )
 }

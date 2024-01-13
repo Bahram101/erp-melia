@@ -16,7 +16,7 @@ import { months, years } from 'utils/Helpers'
 import { CompanyStructureFormModel } from 'models/hr/HrModels'
 
 type Props = {
-  formModal: boolean
+  visible: boolean
   onClose: () => void
   handleSubmit: (data: any) => void
   saving: boolean
@@ -25,18 +25,16 @@ type Props = {
 }
 
 const StructureFormModal = ({
-  formModal,
+  visible,
   onClose,
   handleSubmit,
   handleChange,
   saving,
   model,
 }: Props) => {
-  console.log('structureM', formModal)
-
   return (
     <>
-      <CModal alignment="center" visible={formModal} onClose={onClose}>
+      <CModal alignment="center" visible={visible} onClose={onClose}>
         <CModalHeader>
           <CModalTitle>Структура / Добавление</CModalTitle>
         </CModalHeader>
@@ -62,7 +60,6 @@ const StructureFormModal = ({
                 options={months}
                 value={model.month}
                 handleChange={handleChange}
-                // error={errors.toCashId}
               />
             </CCol>
             <CCol md={12}>
@@ -78,7 +75,7 @@ const StructureFormModal = ({
                 fieldName={'postId'}
                 handleChange={handleChange}
                 // error={errors.fitter}
-                // value={model.fitter}
+                // value={model.title }
               />
             </CCol>
           </CForm>
