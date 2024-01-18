@@ -36,8 +36,8 @@ const _nav = [
       },
       {
         component: CNavItem,
-        name: 'Breadcrumb1',
-        to: '/base/breadcrumbs1',
+        name: 'Структура компании',
+        to: '/hr/structures',
       },
     ],
   },

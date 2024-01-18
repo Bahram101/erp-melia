@@ -1,19 +1,20 @@
 import React, { useState } from 'react'
 import { CRow } from '@coreui/react-pro'
 import StructureSearchPanel from './components/StructureSearchPanel'
-import Structure from './components/Structure'
+import Structure from './components/StructureTree'
 import { useCompanyStructureQuery } from 'hooks/hr/structureQueries'
-import { DefaultStructureSearchModel, StructureSearchParamModel } from 'models/hr/HrModels'
+import { StructureSearchParamModel } from 'models/hr/HrModels'
 
 export type errorTypes = {
   [key: string]: string
 }
 
-const CompanyStructure = () => {
+const CompanyStructurePage = () => {
   const [errors, setErrors] = useState<errorTypes>({ year: '', month: '' })
-  const [searchParams, setSearchParams] = useState<StructureSearchParamModel>(
-    DefaultStructureSearchModel,
-  )
+  const [searchParams, setSearchParams] = useState<StructureSearchParamModel>({
+    year: '',
+    month: '',
+  })
 
   const companyStructureQuery = useCompanyStructureQuery(searchParams, true)
 
@@ -53,10 +54,10 @@ const CompanyStructure = () => {
       />
       <Structure
         companyStructureData={companyStructureQuery.data || []}
-        companyStructureQuery={companyStructureQuery}
+        searchParams={searchParams}
       />
     </CRow>
   )
 }
 
-export default CompanyStructure
+export default CompanyStructurePage

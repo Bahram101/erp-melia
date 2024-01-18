@@ -15,6 +15,19 @@ export const useCompanyStructureQuery = (params: any, enabled: boolean) => {
   )
 }
 
+export const useStructureFormQuery = (id: string, enabled: boolean) => {
+  return useQuery<CompanyStructureFormModel>(
+    ['hr-get-structure-form', id],
+    async () => {
+      if (id) {
+        const { data } = await request.get(`/hr/structures/${id}/form`)
+        return data
+      }
+    },
+    { enabled: enabled },
+  )
+}
+
 export const useStructurePostSaveMutation = (id: string | null) => {
   if (id) {
     return useMutation(({ form }: { form: CompanyStructureFormModel }) =>
@@ -26,6 +39,6 @@ export const useStructurePostSaveMutation = (id: string | null) => {
   )
 }
 
-export const useCompanyStructureDel = (id: string) => {
+export const useStructureDeleteMutation = (id: string) => {
   return useMutation(() => request.delete(`/hr/structures/${id}`))
 }

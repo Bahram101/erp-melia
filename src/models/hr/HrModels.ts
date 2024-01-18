@@ -1,3 +1,5 @@
+import { DefaultPostRefModel, PostRefModel } from 'models/CommonModels'
+
 export interface EmployeeDetailedModel {
   id: string
   iin: string
@@ -51,18 +53,18 @@ export interface CompanyStructureModel {
 }
 
 export interface CompanyStructureFormModel {
-  id: string | null
-  postId: string | null
+  id?: string | null
+  post: PostRefModel
   title: string | undefined | null
   parentId: string | null
   year: number | null
   month: number | null
-  postName: string | null
+  postName?: string | null
 }
 
 export const DefaultCompanyStructureFormModel: CompanyStructureFormModel = {
   id: null,
-  postId: null,
+  post: DefaultPostRefModel,
   title: null,
   parentId: null,
   year: null,
@@ -73,9 +75,4 @@ export const DefaultCompanyStructureFormModel: CompanyStructureFormModel = {
 export interface StructureSearchParamModel {
   year: string
   month: string
-}
-
-export const DefaultStructureSearchModel: StructureSearchParamModel = {
-  year: '',
-  month: '',
 }

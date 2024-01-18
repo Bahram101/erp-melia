@@ -6,20 +6,14 @@ import CurrPostsFieldGridModal from './CurrPostsFieldGridModal'
 import { PostRefModel } from '../../models/CommonModels'
 
 interface Props {
-  fieldName: string;
-  label?: string;
-  handleChange: any;
-  value?: PostRefModel;
-  error?: string;
+  fieldName: string
+  label?: string
+  handleChange: any
+  value?: PostRefModel
+  error?: string
 }
 
-const CurrPostsField = ({
-                          fieldName,
-                          label,
-                          handleChange,
-                          error,
-                          value,
-                        }: Props) => {
+const CurrPostsField = ({ fieldName, label, handleChange, error, value }: Props) => {
   const [visibleModal, setVisibleModal] = useState<boolean>(false)
   const removeValue = () => {
     handleChange({
@@ -55,21 +49,12 @@ const CurrPostsField = ({
           disabled
           value={value?.empName || ''}
         />
-        <CButton
-          onClick={() => setVisibleModal(true)}
-          color="success"
-          size="sm"
-        >
+        <CButton onClick={() => setVisibleModal(true)} color="success" size="sm">
           <CIcon style={{ color: '#ffffff' }} icon={cilSearch} />
         </CButton>
       </CInputGroup>
       {error && error.length > 0 && <div className="invalid-feedback">{error}</div>}
-
-      <CurrPostsFieldGridModal
-        visible={visibleModal}
-        onOk={onSelectVal}
-        onCancel={onCancel}
-      />
+      <CurrPostsFieldGridModal visible={visibleModal} onOk={onSelectVal} onCancel={onCancel} />
     </>
   )
 }

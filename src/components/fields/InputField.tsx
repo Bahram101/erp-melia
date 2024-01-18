@@ -25,6 +25,7 @@ const InputField = ({
         onChange={handleChange}
         label={label}
         value={value}
+        required
         feedbackInvalid={error || ''}
       />
     </>
