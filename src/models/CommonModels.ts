@@ -1,3 +1,5 @@
+import { SweetAlertOptions } from 'sweetalert2'
+
 export enum DocStatus {
   NEW = 'NEW',
   ON_PAYING = 'ON_PAYING',
@@ -54,4 +56,14 @@ export interface RefOptionsModel {
   id?: string
   value?: string
   label: string
+}
+
+export const DeleteConfirmOptionsModel: SweetAlertOptions = {
+  text: 'Действительно хотите удалить элемент?',
+  icon: 'warning',
+  showCancelButton: true,
+  confirmButtonColor: '#3085d6',
+  cancelButtonColor: '#d33',
+  confirmButtonText: 'Да',
+  cancelButtonText: 'Отмена'
 }

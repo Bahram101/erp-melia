@@ -90,7 +90,7 @@ const CurrPostsFieldGridModal = ({ visible, onOk, onCancel }: Props) => {
   ]
 
   return (
-    <CModal alignment="center" size="xl" visible={visible}>
+    <CModal alignment="center" size="xl" visible={visible} backdrop={'static'}>
       <CModalHeader>
         <CModalTitle>Список должности</CModalTitle>
       </CModalHeader>

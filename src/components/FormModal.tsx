@@ -20,7 +20,7 @@ type Props = {
 const FormModal = ({ visibleFormModal, onClose, title, children, handleSubmit, saving }: Props) => {
   return (
     <>
-      <CModal alignment="center" size={'lg'} visible={visibleFormModal} onClose={onClose}>
+      <CModal alignment="center" size={'lg'} visible={visibleFormModal} onClose={onClose} backdrop={'static'}>
         <CModalHeader>
           <CModalTitle>{title}</CModalTitle>
         </CModalHeader>

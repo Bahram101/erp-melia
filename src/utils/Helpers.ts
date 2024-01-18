@@ -1,63 +1,19 @@
-export const years = [
-  {
-    id: '2017',
-    label: '2017',
-  },
-  {
-    id: '2018',
-    label: '2018',
-  },
-  {
-    id: '2019',
-    label: '2019',
-  },
-  {
-    id: '2020',
-    label: '2020',
-  },
-  {
-    id: '2021',
-    label: '2021',
-  },
-  {
-    id: '2022',
-    label: '2022',
-  },
-  {
-    id: '2023',
-    label: '2023',
-  },
-  {
-    id: '2024',
-    label: '2024',
-  },
-  {
-    id: '2025',
-    label: '2025',
-  },
-  {
-    id: '2026',
-    label: '2026',
-  },
-  {
-    id: '2027',
-    label: '2027',
-  },
-  {
-    id: '2028',
-    label: '2028',
-  },
-  {
-    id: '2029',
-    label: '2029',
-  },
-  {
-    id: '2030',
-    label: '2030',
-  },
-]
+import { RefOptionsModel } from '../models/CommonModels'
 
-export const months = [
+export const getYearOptions = (): RefOptionsModel[] => {
+  const out: RefOptionsModel[] = []
+  for (var year = 2017; year < 2031; year++) {
+    out.push({
+      id: year + '',
+      label: year + '',
+      value: year + '',
+    })
+  }
+
+  return out
+}
+
+export const getMonthOptions = () => [
   {
     id: '1',
     label: 'Январь',
