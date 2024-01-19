@@ -49,8 +49,8 @@ const _nav = [
     items: [
       {
         component: CNavItem,
-        name: 'Accordion',
-        to: '/base/accordion',
+        name: 'Поступление товаров',
+        to: '/whouse/docs/supplies',
       },
     ],
   },

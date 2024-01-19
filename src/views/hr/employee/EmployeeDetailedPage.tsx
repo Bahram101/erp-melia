@@ -11,7 +11,7 @@ import {
 } from '@coreui/react-pro'
 import { Link, useParams } from 'react-router-dom'
 import { FaAngleLeft } from 'react-icons/fa6'
-import TabNavItem from './components/TabNavItem'
+import TabNavItem from '../../../components/TabNavItem'
 import EmployeeMainData from './components/EmployeeMainData'
 import EmployeeContacts from './components/EmployeeContacts'
 import EmployeeBalance from './components/EmployeeBalance'
