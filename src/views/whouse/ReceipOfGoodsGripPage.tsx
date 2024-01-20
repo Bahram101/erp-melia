@@ -7,25 +7,21 @@ import {
   CCol,
   CNav,
   CRow,
-  CSmartTable,
   CSpinner,
   CTabContent,
   CTabPane,
 } from '@coreui/react-pro'
-import { FaEye, FaPen } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 import { RefOptionsField } from 'components/fields/RefOptionsField'
-import ContractStatusBadge from 'views/marketing/contract/components/ContractStatusBadge'
 import TabNavItem from 'components/TabNavItem'
 import ListOfGoods from './components/ListOfGoods'
+import { useWhouseOptionsQuery } from 'hooks/reference/refOptionsQueries'
+import { useReceiptOfGoodsQuery } from 'hooks/whouse/whouseQueries'
 // import { useContractsListQuery } from '../../../hooks/marketing/marketingQueries'
-// import { useBranchOptionsQuery } from '../../../hooks/reference/refOptionsQueries'
-// import { RefOptionsField } from '../../../components/fields/RefOptionsField'
-// import ContractStatusBadge from './components/ContractStatusBadge'
 
-const GoodsSupplyGripPage = () => {
+const ReceipOfGoodsGripPage = () => {
   const [errors, setErrors] = useState<any>({})
-  const [searchParams, setSearchParams] = useState<any>({ branchId: undefined })
+  const [searchParams, setSearchParams] = useState<any>({ whouse: undefined })
   const [activeKey, setActiveKey] = useState('NEW')
 
   const tabs = [
@@ -43,8 +39,8 @@ const GoodsSupplyGripPage = () => {
     },
   ]
 
-  //   const listQuery = useContractsListQuery(searchParams)
-  //   const branchOptionsQuery = useBranchOptionsQuery(true)
+  const listQuery = useReceiptOfGoodsQuery(searchParams)
+  const whouseOptionsQuery = useWhouseOptionsQuery(true)
 
   const handleChange = (e: any) => {
     const { name, value } = e.target
@@ -53,13 +49,16 @@ const GoodsSupplyGripPage = () => {
   }
 
   const loadData = () => {
-    if (!searchParams.branchId) {
-      setErrors({ ...errors, branchId: 'Выберите значение' })
+    if (!searchParams.whouse) {
+      setErrors({ ...errors, whouse: 'Выберите значение' })
       return
     }
 
-    // listQuery.refetch()
+    listQuery.refetch()
   }
+
+  console.log('searchParams', searchParams)
+  console.log('listQuery', listQuery)
 
   return (
     <CCard style={{ maxWidth: '100%' }}>
@@ -78,11 +77,11 @@ const GoodsSupplyGripPage = () => {
           <CCol>
             <RefOptionsField
               label={'Склад'}
-              optionLabel={'Склад'}
-              fieldName={'branchId'}
-              error={errors.branchId}
-              options={[]}
+              fieldName={'whouse'}
+              error={errors.whouse}
+              options={whouseOptionsQuery.data || []}
               handleChange={handleChange}
+              value={searchParams.whouse}
             />
           </CCol>
           <CCol>
@@ -153,4 +152,4 @@ const GoodsSupplyGripPage = () => {
   )
 }
 
-export default GoodsSupplyGripPage
+export default ReceipOfGoodsGripPage

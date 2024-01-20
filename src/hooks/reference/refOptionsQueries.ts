@@ -40,10 +40,20 @@ export const useGoodsOptionsQuery = (params: { hasSerial?: boolean }, enabled: b
     ['get-reference-goods-as-options', params.hasSerial],
     async () => {
       const { data } = await request.get('/reference/goods/as-options', {
-        params: params
+        params: params,
       })
       return data
     },
     { enabled: enabled },
+  )
+}
+export const useWhouseOptionsQuery = (enabled: boolean) => {
+  return useQuery<RefOptionsModel[]>(
+    ['get-reference-whouses-as-options'],
+    async () => {
+      const { data } = await request.get('/reference/whouses/as-options')
+      return data
+    },
+    { enabled },
   )
 }

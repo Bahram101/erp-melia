@@ -1,9 +1,10 @@
 import { useQuery } from 'react-query'
 import { request } from '../../http'
+import { WhouseSupplyGoodsGridModel } from 'models/whouse/whouseModels'
 
-export const useContractsListQuery = (params: {}) => {
-  return useQuery<WhouseGridModel>(
-    ['whouse-get-goods-list'],
+export const useReceiptOfGoodsQuery = (params: { whouse: string }) => {
+  return useQuery<WhouseSupplyGoodsGridModel>(
+    ['whouse-get-receipt-of-goods'],
     async () => {
       const { data } = await request.get('/whouse/docs', {
         params: params,

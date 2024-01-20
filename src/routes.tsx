@@ -7,7 +7,7 @@ const CompanyStructure = React.lazy(() => import('./views/hr/structure/CompanySt
 const ContractGridPage = React.lazy(() => import('./views/marketing/contract/ContractGridPage'))
 const ContractViewPage = React.lazy(() => import('./views/marketing/contract/ContractViewPage'))
 const ContractFormPage = React.lazy(() => import('./views/marketing/contract/ContractFormPage'))
-const GoodsSupplyGripPage = React.lazy(() => import('./views/whouse/GoodsSupplyGripPage'))
+const ReceipOfGoodsGripPage = React.lazy(() => import('./views/whouse/ReceipOfGoodsGripPage'))
 
 const routes = [
   { path: '/', exact: true, name: 'Home' },
@@ -23,7 +23,7 @@ const routes = [
     element: ContractFormPage,
   },
   { path: '/marketing/contracts/create', name: 'Добавление договора', element: ContractFormPage },
-  { path: '/whouse/docs/supplies', name: 'Поступление товаров', element: GoodsSupplyGripPage },
+  { path: '/whouse/docs/supplies', name: 'Поступление товаров', element: ReceipOfGoodsGripPage },
 ]
 
 export default routes
