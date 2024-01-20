@@ -17,7 +17,6 @@ import TabNavItem from 'components/TabNavItem'
 import ListOfGoods from './components/ListOfGoods'
 import { useWhouseOptionsQuery } from 'hooks/reference/refOptionsQueries'
 import { useReceiptOfGoodsQuery } from 'hooks/whouse/whouseQueries'
-// import { useContractsListQuery } from '../../../hooks/marketing/marketingQueries'
 
 const ReceipOfGoodsGripPage = () => {
   const [errors, setErrors] = useState<any>({})

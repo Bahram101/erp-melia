@@ -1,5 +1,5 @@
-import { CButton, CSmartTable } from '@coreui/react-pro'
 import React from 'react'
+import { CButton, CSmartTable } from '@coreui/react-pro'
 import { FaEye, FaPen } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 import ContractStatusBadge from 'views/marketing/contract/components/ContractStatusBadge'
