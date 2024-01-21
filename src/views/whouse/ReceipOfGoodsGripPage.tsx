@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   CButton,
   CCard,
@@ -20,8 +20,13 @@ import { useReceiptOfGoodsQuery } from 'hooks/whouse/whouseQueries'
 
 const ReceipOfGoodsGripPage = () => {
   const [errors, setErrors] = useState<any>({})
-  const [searchParams, setSearchParams] = useState<any>({ whouse: undefined })
   const [activeKey, setActiveKey] = useState('NEW')
+  const [params, setParams] = useState<any>({ doctype: 'SUPPLY', status: 'NEW' })
+  const [dataByTab, setDataByTab] = useState<{ [key: string]: any }>({
+    NEW: null,
+    CLOSED: null,
+    CANCELLED: null,
+  })
 
   const tabs = [
     {
@@ -33,31 +38,45 @@ const ReceipOfGoodsGripPage = () => {
       label: 'Закрытые',
     },
     {
-      key: 'CANCELED',
+      key: 'CANCELLED',
       label: 'Отмененные',
     },
   ]
 
-  const listQuery = useReceiptOfGoodsQuery(searchParams)
   const whouseOptionsQuery = useWhouseOptionsQuery(true)
+  const listQuery = useReceiptOfGoodsQuery(params)
 
   const handleChange = (e: any) => {
     const { name, value } = e.target
     setErrors({ ...errors, [name]: null })
-    setSearchParams({ ...searchParams, [name]: value })
+    setParams({ ...params, [name]: value })
   }
 
-  const loadData = () => {
-    if (!searchParams.whouse) {
-      setErrors({ ...errors, whouse: 'Выберите значение' })
-      return
-    }
+  const getDocListByStatus = (status: string) => {
 
+    if (activeKey === status) { 
+      setParams((prevParams: any) => ({ ...prevParams, status: status }))
+      listQuery.refetch().then(() => {
+        setDataByTab((prevData) => ({ ...prevData, [status]: listQuery.data }))
+      })
+    }
+  }
+
+
+
+  useEffect(() => {
+    getDocListByStatus('NEW')
+    getDocListByStatus('CLOSED')
+    getDocListByStatus('CANCELLED')
+  }, [activeKey])
+
+  const loadData = () => {
     listQuery.refetch()
   }
 
-  console.log('searchParams', searchParams)
-  console.log('listQuery', listQuery)
+  console.log('dataByTab[activeKey]', dataByTab[activeKey])
+  console.log('activeKey', activeKey)
+  console.log('params', params)
 
   return (
     <CCard style={{ maxWidth: '100%' }}>
@@ -80,7 +99,7 @@ const ReceipOfGoodsGripPage = () => {
               error={errors.whouse}
               options={whouseOptionsQuery.data || []}
               handleChange={handleChange}
-              value={searchParams.whouse}
+              value={params.whouse}
             />
           </CCol>
           <CCol>
@@ -89,9 +108,9 @@ const ReceipOfGoodsGripPage = () => {
               style={{ marginTop: '10px' }}
               color={'secondary'}
               onClick={loadData}
-              //   disabled={listQuery.isFetching}
+              // disabled={listQuery.isFetching}
             >
-              {/* {listQuery.isFetching ? 'Ждите...' : 'Загрузить'} */}Загрузить
+              Загрузить
             </CButton>
           </CCol>
         </CRow>
@@ -110,41 +129,35 @@ const ReceipOfGoodsGripPage = () => {
               )
             })}
           </CNav>
-
-          {false ? (
-            <div
-              className="d-flex align-items-center justify-content-center w-100 "
-              style={{ height: 300 }}
-            >
+          <CTabContent>
+            {listQuery.isFetching ? (
               <CSpinner color="primary" />
-            </div>
-          ) : (
-            <CTabContent>
-              <CTabPane
-                role="tabpanel"
-                aria-labelledby="main-tab-pane"
-                visible={activeKey === 'NEW'}
-              >
-                <ListOfGoods />
-              </CTabPane>
-
-              <CTabPane
-                role="tabpanel"
-                aria-labelledby="contact-tab-pane"
-                visible={activeKey === 'CLOSED'}
-              >
-                <ListOfGoods />
-              </CTabPane>
-
-              <CTabPane
-                role="tabpanel"
-                aria-labelledby="post-tab-pane"
-                visible={activeKey === 'CANCELED'}
-              >
-                <ListOfGoods />
-              </CTabPane>
-            </CTabContent>
-          )}
+            ) : (
+              <>
+                <CTabPane
+                  role="tabpanel"
+                  aria-labelledby="new-tab-pane"
+                  visible={activeKey === 'NEW'}
+                >
+                  <ListOfGoods data={dataByTab[activeKey]} />
+                </CTabPane>
+                <CTabPane
+                  role="tabpanel"
+                  aria-labelledby="closed-tab-pane"
+                  visible={activeKey === 'CLOSED'}
+                >
+                  <ListOfGoods data={dataByTab[activeKey]} />
+                </CTabPane>
+                <CTabPane
+                  role="tabpanel"
+                  aria-labelledby="cancelled-tab-pane"
+                  visible={activeKey === 'CANCELLED'}
+                >
+                  <ListOfGoods data={dataByTab[activeKey]} />
+                </CTabPane>
+              </>
+            )}
+          </CTabContent>
         </div>
       </CCardBody>
     </CCard>

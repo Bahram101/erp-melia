@@ -4,27 +4,36 @@ import { FaEye, FaPen } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 import ContractStatusBadge from 'views/marketing/contract/components/ContractStatusBadge'
 
-const ListOfGoods = () => {
+interface Props {
+  data: any
+}
+
+const ListOfGoods = ({data}:Props) => {
+
   const columns = [
     {
       key: 'regNumber',
       label: 'Рег. номер',
     },
     {
-      key: 'customerName',
+      key: 'docDate',
       label: 'Дата документа',
     },
     {
-      key: 'docDate',
+      key: 'statusName',
       label: 'Статус документа',
     },
     {
-      key: 'dealerName',
-      label: 'Со склада',
+      key: 'toWhouseName',
+      label: 'На склад',
     },
     {
       key: 'productCode',
-      label: 'Род. документ',
+      label: 'Поставщик',
+    },
+    {
+      key: 'customerName',
+      label: 'Примечание',
     },
     {
       key: 'actions',
@@ -38,8 +47,8 @@ const ListOfGoods = () => {
   return (
     <CSmartTable
       columns={columns}
-      items={[]}
-      //   loading={listQuery.isLoading}
+      items={data || []}
+      // loading={listQuery.isLoading}
       itemsPerPage={30}
       pagination
       columnFilter
