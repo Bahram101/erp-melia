@@ -53,16 +53,20 @@ const ReceipOfGoodsGripPage = () => {
   }
 
   const getDocListByStatus = (status: string) => {
-
-    if (activeKey === status) { 
+    if (activeKey === status) {
       setParams((prevParams: any) => ({ ...prevParams, status: status }))
-      listQuery.refetch().then(() => {
-        setDataByTab((prevData) => ({ ...prevData, [status]: listQuery.data }))
-      })
     }
   }
 
+  useEffect(() => {
+    setDataByTab((prevData) => ({ ...prevData, [activeKey]: listQuery.data }))
+  }, [listQuery.data])
 
+  useEffect(() => {
+    listQuery.refetch().then(() => {
+      console.log('aaaa', listQuery.data)
+    })
+  }, [params])
 
   useEffect(() => {
     getDocListByStatus('NEW')
@@ -70,13 +74,9 @@ const ReceipOfGoodsGripPage = () => {
     getDocListByStatus('CANCELLED')
   }, [activeKey])
 
-  const loadData = () => {
-    listQuery.refetch()
-  }
-
-  console.log('dataByTab[activeKey]', dataByTab[activeKey])
-  console.log('activeKey', activeKey)
-  console.log('params', params)
+  // const loadData = () => {
+  //   listQuery.refetch()
+  // }
 
   return (
     <CCard style={{ maxWidth: '100%' }}>
@@ -107,7 +107,7 @@ const ReceipOfGoodsGripPage = () => {
             <CButton
               style={{ marginTop: '10px' }}
               color={'secondary'}
-              onClick={loadData}
+              // onClick={loadData}
               // disabled={listQuery.isFetching}
             >
               Загрузить

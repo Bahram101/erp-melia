@@ -8,8 +8,7 @@ interface Props {
   data: any
 }
 
-const ListOfGoods = ({data}:Props) => {
-
+const ListOfGoods = ({ data }: Props) => {
   const columns = [
     {
       key: 'regNumber',
