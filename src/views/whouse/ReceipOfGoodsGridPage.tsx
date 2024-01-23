@@ -14,7 +14,7 @@ import {
 import { Link } from 'react-router-dom'
 import { RefOptionsField } from 'components/fields/RefOptionsField'
 import TabNavItem from 'components/TabNavItem'
-import ListOfGoods from './components/ListOfGoods'
+import ListOfGoods from './components/DocList'
 import { useWhouseOptionsQuery } from 'hooks/reference/refOptionsQueries'
 import { useReceiptOfGoodsQuery } from 'hooks/whouse/whouseQueries'
 

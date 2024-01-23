@@ -13,6 +13,7 @@ const ListOfGoods = ({ data }: Props) => {
     {
       key: 'regNumber',
       label: 'Рег. номер',
+      _style: { width: '130px' },
     },
     {
       key: 'docDate',
@@ -25,10 +26,6 @@ const ListOfGoods = ({ data }: Props) => {
     {
       key: 'toWhouseName',
       label: 'На склад',
-    },
-    {
-      key: 'productCode',
-      label: 'Поставщик',
     },
     {
       key: 'customerName',
@@ -59,13 +56,13 @@ const ListOfGoods = ({ data }: Props) => {
         ),
         actions: (item: any) => (
           <td>
-            <Link to={`/marketing/contracts/view/${item.id}`}>
+            <Link to={``}>
               <CButton color={'primary'} variant="outline" shape="square" size="sm">
                 <FaEye />
               </CButton>
               &nbsp;
             </Link>
-            <Link to={`/marketing/contracts/edit/${item.id}`}>
+            <Link to={``}>
               <CButton color={'primary'} variant="outline" shape="square" size="sm">
                 <FaPen />
               </CButton>

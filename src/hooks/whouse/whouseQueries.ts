@@ -1,6 +1,6 @@
 import { useQuery } from 'react-query'
 import { request } from '../../http'
-import { WhouseSupplyGoodsGridModel } from 'models/whouse/whouseModels'
+import { WhouseSupplyGoodsGridModel } from 'models/whouse/WhouseModels'
 
 export const useReceiptOfGoodsQuery = (params: {}) => {
   return useQuery<WhouseSupplyGoodsGridModel>(
