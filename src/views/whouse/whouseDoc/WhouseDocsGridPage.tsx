@@ -14,9 +14,9 @@ import {
 import { Link } from 'react-router-dom'
 import { RefOptionsField } from 'components/fields/RefOptionsField'
 import TabNavItem from 'components/TabNavItem'
-import ListOfGoods from './components/DocList'
+import WhouseDocsGrid from './components/WhouseDocsGrid'
 import { useWhouseOptionsQuery } from 'hooks/reference/refOptionsQueries'
-import { useReceiptOfGoodsQuery } from 'hooks/whouse/whouseQueries'
+import { useWhouseDocsListQuery } from 'hooks/whouse/whouseQueries'
 
 const ReceipOfGoodsGripPage = () => {
   const [errors, setErrors] = useState<any>({})
@@ -44,7 +44,7 @@ const ReceipOfGoodsGripPage = () => {
   ]
 
   const whouseOptionsQuery = useWhouseOptionsQuery(true)
-  const listQuery = useReceiptOfGoodsQuery(params)
+  const listQuery = useWhouseDocsListQuery(params)
 
   const handleChange = (e: any) => {
     const { name, value } = e.target
@@ -52,31 +52,17 @@ const ReceipOfGoodsGripPage = () => {
     setParams({ ...params, [name]: value })
   }
 
-  const getDocListByStatus = (status: string) => {
-    if (activeKey === status) {
-      setParams((prevParams: any) => ({ ...prevParams, status: status }))
-    }
-  }
+  useEffect(() => {
+    setParams((prev: any) => ({ ...prev, status: activeKey }))
+  }, [activeKey])
 
   useEffect(() => {
     setDataByTab((prevData) => ({ ...prevData, [activeKey]: listQuery.data }))
   }, [listQuery.data])
 
-  useEffect(() => {
-    listQuery.refetch().then(() => {
-      console.log('aaaa', listQuery.data)
-    })
-  }, [params])
-
-  useEffect(() => {
-    getDocListByStatus('NEW')
-    getDocListByStatus('CLOSED')
-    getDocListByStatus('CANCELLED')
-  }, [activeKey])
-
-  // const loadData = () => {
-  //   listQuery.refetch()
-  // }
+  const loadData = () => {
+    listQuery.refetch()
+  }
 
   return (
     <CCard style={{ maxWidth: '100%' }}>
@@ -107,7 +93,7 @@ const ReceipOfGoodsGripPage = () => {
             <CButton
               style={{ marginTop: '10px' }}
               color={'secondary'}
-              // onClick={loadData}
+              onClick={loadData}
               // disabled={listQuery.isFetching}
             >
               Загрузить
@@ -139,21 +125,21 @@ const ReceipOfGoodsGripPage = () => {
                   aria-labelledby="new-tab-pane"
                   visible={activeKey === 'NEW'}
                 >
-                  <ListOfGoods data={dataByTab[activeKey]} />
+                  <WhouseDocsGrid data={dataByTab[activeKey]} />
                 </CTabPane>
                 <CTabPane
                   role="tabpanel"
                   aria-labelledby="closed-tab-pane"
                   visible={activeKey === 'CLOSED'}
                 >
-                  <ListOfGoods data={dataByTab[activeKey]} />
+                  <WhouseDocsGrid data={dataByTab[activeKey]} />
                 </CTabPane>
                 <CTabPane
                   role="tabpanel"
                   aria-labelledby="cancelled-tab-pane"
                   visible={activeKey === 'CANCELLED'}
                 >
-                  <ListOfGoods data={dataByTab[activeKey]} />
+                  <WhouseDocsGrid data={dataByTab[activeKey]} />
                 </CTabPane>
               </>
             )}

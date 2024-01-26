@@ -1,4 +1,4 @@
-export interface WhouseSupplyGoodsGridModel {
+export interface WhouseDocGridModel {
   id: string
   regNumber: number
   docDate: string

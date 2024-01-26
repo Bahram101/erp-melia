@@ -54,7 +54,12 @@ const CurrPostsField = ({ fieldName, label, handleChange, error, value }: Props)
         </CButton>
       </CInputGroup>
       {error && error.length > 0 && <div className="invalid-feedback">{error}</div>}
-      <CurrPostsFieldGridModal visible={visibleModal} onOk={onSelectVal} onCancel={onCancel} />
+      <CurrPostsFieldGridModal
+        visible={visibleModal}
+        setVisibleModal={setVisibleModal}
+        onOk={onSelectVal}
+        onCancel={onCancel}
+      />
     </>
   )
 }

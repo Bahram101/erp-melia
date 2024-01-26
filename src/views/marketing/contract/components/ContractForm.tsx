@@ -1,4 +1,4 @@
-import { CCol, CRow } from '@coreui/react-pro'
+import { CCol, CForm, CRow } from '@coreui/react-pro'
 import InputField from '../../../../components/fields/InputField'
 import { ContractFormModel } from '../../../../models/marketing/MrkModels'
 import { RefOptionsModel } from '../../../../models/CommonModels'
@@ -8,28 +8,31 @@ import YesNoOptionsField from '../../../../components/fields/YesNoOptionsField'
 import { DatePickerField } from '../../../../components/fields/DatePickerField'
 import CurrPostsField from '../../../../components/fields/CurrPostsField'
 import { formatMoney } from '../../../../utils/UtilFuncs'
+import RefContractField from '../../../../components/fields/RefContractField'
+import TextAreaField from '../../../../components/fields/TextAreaField'
+import PaymentScheduleForm from './PaymentScheduleForm'
 
 type Props = {
-  model: ContractFormModel;
-  handleChange: (e: any) => void;
-  errors: any;
-  branchOptions: RefOptionsModel[];
-  addressOptions: RefOptionsModel[];
-  goodsOptions: RefOptionsModel[];
-  saleTypeOptions: RefOptionsModel[];
+  model: ContractFormModel
+  handleChange: (e: any) => void
+  errors: any
+  branchOptions: RefOptionsModel[]
+  addressOptions: RefOptionsModel[]
+  goodsOptions: RefOptionsModel[]
+  saleTypeOptions: RefOptionsModel[]
 }
 const ContractForm = ({
-                        model,
-                        handleChange,
-                        errors,
-                        branchOptions,
-                        addressOptions,
-                        goodsOptions,
-                        saleTypeOptions,
-                      }: Props) => {
-  return <>
-    <CRow>
-      <CCol>
+  model,
+  handleChange,
+  errors,
+  branchOptions,
+  addressOptions,
+  goodsOptions,
+  saleTypeOptions,
+}: Props) => {
+  return (
+    <CForm className="row g-3 needs-validation">
+      <CCol md={6}>
         <InputField
           label={'Рег. номер'}
           type={'number'}
@@ -39,7 +42,7 @@ const ContractForm = ({
           error={errors.regNumber}
         />
       </CCol>
-      <CCol>
+      <CCol md={6}>
         <CustomerField
           label={'Клиент'}
           fieldName={'customer'}
@@ -48,10 +51,8 @@ const ContractForm = ({
           error={errors.customer}
         />
       </CCol>
-    </CRow>
 
-    <CRow>
-      <CCol>
+      <CCol md={6}>
         <RefOptionsField
           label={'Филиал'}
           options={branchOptions}
@@ -61,7 +62,7 @@ const ContractForm = ({
           error={errors.branchId}
         />
       </CCol>
-      <CCol>
+      <CCol md={6}>
         <RefOptionsField
           label={'Адрес'}
           options={addressOptions}
@@ -71,10 +72,8 @@ const ContractForm = ({
           error={errors.addressId}
         />
       </CCol>
-    </CRow>
 
-    <CRow>
-      <CCol>
+      <CCol md={6}>
         <RefOptionsField
           label={'Сервис филиал'}
           options={branchOptions}
@@ -84,7 +83,7 @@ const ContractForm = ({
           error={errors.serviceBranchId}
         />
       </CCol>
-      <CCol>
+      <CCol md={6}>
         <YesNoOptionsField
           label={'За город'}
           fieldName={'outCity'}
@@ -93,10 +92,8 @@ const ContractForm = ({
           error={errors.outCity}
         />
       </CCol>
-    </CRow>
 
-    <CRow>
-      <CCol>
+      <CCol md={6}>
         <DatePickerField
           label={'Дата договора'}
           fieldName={'docDate'}
@@ -105,13 +102,9 @@ const ContractForm = ({
           error={errors.docDate}
         />
       </CCol>
-      <CCol>
-        //ToDo Reco Field
-      </CCol>
-    </CRow>
+      <CCol>//ToDo Reco Field</CCol>
 
-    <CRow>
-      <CCol>
+      <CCol md={6}>
         <CurrPostsField
           label={'Дилер'}
           fieldName={'dealer'}
@@ -120,7 +113,7 @@ const ContractForm = ({
           value={model.dealer}
         />
       </CCol>
-      <CCol>
+      <CCol md={6}>
         <RefOptionsField
           label={'Продукт'}
           options={goodsOptions}
@@ -130,10 +123,8 @@ const ContractForm = ({
           error={errors.goodsId}
         />
       </CCol>
-    </CRow>
 
-    <CRow>
-      <CCol>
+      <CCol md={6}>
         <CurrPostsField
           label={'Демосекретарь'}
           fieldName={'demoSec'}
@@ -142,7 +133,7 @@ const ContractForm = ({
           value={model.demoSec}
         />
       </CCol>
-      <CCol>
+      <CCol md={6}>
         <InputField
           label={'Серииный номер'}
           fieldName={'serialNumber'}
@@ -151,10 +142,8 @@ const ContractForm = ({
           error={errors.serialNumber}
         />
       </CCol>
-    </CRow>
 
-    <CRow>
-      <CCol>
+      <CCol md={6}>
         <CurrPostsField
           label={'Установщик'}
           fieldName={'fitter'}
@@ -163,7 +152,7 @@ const ContractForm = ({
           value={model.fitter}
         />
       </CCol>
-      <CCol>
+      <CCol md={6}>
         <RefOptionsField
           label={'Вид продажи'}
           options={saleTypeOptions}
@@ -173,10 +162,8 @@ const ContractForm = ({
           error={errors.saleTypeId}
         />
       </CCol>
-    </CRow>
 
-    <CRow>
-      <CCol>
+      <CCol md={6}>
         <CurrPostsField
           label={'Взносщик'}
           fieldName={'collector'}
@@ -185,7 +172,7 @@ const ContractForm = ({
           value={model.collector}
         />
       </CCol>
-      <CCol>
+      <CCol md={6}>
         <InputField
           label={'Цена продажи продукта'}
           fieldName={'price'}
@@ -195,13 +182,8 @@ const ContractForm = ({
           disabled
         />
       </CCol>
-    </CRow>
 
-    <CRow>
-      <CCol>
-
-      </CCol>
-      <CCol>
+      <CCol md={{ span: 6, offset: 6 }}>
         <InputField
           label={'Первоначальный взнос'}
           fieldName={'firstPayment'}
@@ -211,13 +193,8 @@ const ContractForm = ({
         />
         {/*ToDo - Перв. взнос наличными*/}
       </CCol>
-    </CRow>
 
-    <CRow>
-      <CCol>
-
-      </CCol>
-      <CCol>
+      <CCol md={{ span: 6, offset: 6 }}>
         <InputField
           label={'Скидка от дилера'}
           fieldName={'discountFromDealer'}
@@ -226,8 +203,8 @@ const ContractForm = ({
           error={errors.discountFromDealer}
         />
       </CCol>
-    </CRow>
-  </>
+    </CForm>
+  )
 }
 
 export default ContractForm

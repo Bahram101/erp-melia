@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
-import { CButton, CCard, CCardBody, CCardHeader, CCol, CRow, CSmartTable } from '@coreui/react-pro'
-import { FaEye, FaPen } from 'react-icons/fa'
-import { Link } from 'react-router-dom'
+import { CButton, CCol, CRow } from '@coreui/react-pro'
 import { useContractsListQuery } from '../../../hooks/marketing/marketingQueries'
 import { useBranchOptionsQuery } from '../../../hooks/reference/refOptionsQueries'
+import GridDataWrapper from '../../../components/grid/GridDataWrapper'
+import { ActionButton, ActionButtonType } from '../../../components/button/ActionButtonContent'
+import { ContractGridModel } from '../../../models/marketing/MrkModels'
+import { DocStatus } from '../../../models/CommonModels'
 import { RefOptionsField } from '../../../components/fields/RefOptionsField'
 import ContractStatusBadge from './components/ContractStatusBadge'
 
@@ -37,7 +39,7 @@ const ContractGridPage = () => {
       label: 'Сер. ном',
     },
     {
-      key: 'statusName',
+      key: 'status',
       label: 'Статус',
     },
     {
@@ -91,74 +93,57 @@ const ContractGridPage = () => {
     listQuery.refetch()
   }
 
+  const actions: ActionButton[] = [
+    {
+      type: ActionButtonType.VIEW_LINK,
+      hrefPreparer: (item: ContractGridModel) => `/marketing/contracts/view/${item.id}`,
+    },
+    {
+      type: ActionButtonType.EDIT_LINK,
+      hrefPreparer: (item: ContractGridModel) => `/marketing/contracts/edit/${item.id}`,
+      hideAction: (item: ContractGridModel) => item.status !== DocStatus.NEW,
+    },
+  ]
+
+  const addScopedColumns = {
+    phoneNumbers: (item: ContractGridModel) => (
+      <td><p>{item.phoneNumbers && item.phoneNumbers.join(', ')}</p></td>
+    ),
+    status: (item: ContractGridModel) => (
+      <td><ContractStatusBadge status={item.status} statusName={item.statusName} /></td>
+    ),
+  }
+
+  const headerContent = <CRow>
+    <CCol>
+      <RefOptionsField
+        optionLabel={'Филиал'}
+        fieldName={'branchId'}
+        options={branchOptionsQuery.data || []}
+        handleChange={handleChange}
+        value={searchParams.branchId}
+      />
+    </CCol>
+    <CCol>
+      <CButton color={'secondary'} onClick={loadData} disabled={listQuery.isFetching}>
+        {listQuery.isFetching ? 'Ждите...' : 'Загрузить'}
+      </CButton>
+    </CCol>
+  </CRow>
+
   return (
-    <CCard style={{ maxWidth: '100%' }}>
-      <CCardHeader>
-        <h4 className="float-start">Список договоров</h4>
-        <div className="float-end">
-          <Link to={'/marketing/contracts/create'}>
-            <CButton color={'primary'} shape="square">
-              Добавить
-            </CButton>
-          </Link>
-        </div>
-      </CCardHeader>
-      <CCardBody>
-        <CRow>
-          <CCol>
-            <RefOptionsField
-              optionLabel={'Филиал'}
-              label={'Филиал'}
-              fieldName={'branchId'}
-              error={errors.branchId}
-              options={branchOptionsQuery.data || []}
-              handleChange={handleChange}
-            />
-          </CCol>
-          <CCol>
-            <br />
-            <CButton
-              style={{ marginTop: '10px' }}
-              color={'secondary'}
-              onClick={loadData}
-              disabled={listQuery.isFetching}
-            >
-              {listQuery.isFetching ? 'Ждите...' : 'Загрузить'}
-            </CButton>
-          </CCol>
-        </CRow>
-        <CSmartTable
-          columns={columns}
-          items={listQuery.data || []}
-          loading={listQuery.isLoading}
-          itemsPerPage={30}
-          pagination
-          columnFilter
-          scopedColumns={{
-            statusName: (item: any) => (
-              <td>
-                <ContractStatusBadge status={item.status} statusName={item.statusName} />
-              </td>
-            ),
-            actions: (item: any) => (
-              <td>
-                <Link to={`/marketing/contracts/view/${item.id}`}>
-                  <CButton color={'primary'} variant="outline" shape="square" size="sm">
-                    <FaEye />
-                  </CButton>
-                  &nbsp;
-                </Link>
-                <Link to={`/marketing/contracts/edit/${item.id}`}>
-                  <CButton color={'primary'} variant="outline" shape="square" size="sm">
-                    <FaPen />
-                  </CButton>
-                </Link>
-              </td>
-            ),
-          }}
-        />
-      </CCardBody>
-    </CCard>
+    <GridDataWrapper
+      data={listQuery.data || []}
+      columns={columns}
+      loading={listQuery.isFetching}
+      actions={actions}
+      addScopedColumns={addScopedColumns}
+      header={{
+        title: 'Список договоров',
+        content: headerContent,
+        createUrl: '/marketing/contracts/create',
+      }}
+    />
   )
 }
 

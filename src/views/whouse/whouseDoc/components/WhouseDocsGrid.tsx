@@ -8,7 +8,7 @@ interface Props {
   data: any
 }
 
-const ListOfGoods = ({ data }: Props) => {
+const WhouseDocsGrid = ({ data }: Props) => {
   const columns = [
     {
       key: 'regNumber',
@@ -28,7 +28,7 @@ const ListOfGoods = ({ data }: Props) => {
       label: 'На склад',
     },
     {
-      key: 'customerName',
+      key: 'note',
       label: 'Примечание',
     },
     {
@@ -56,13 +56,13 @@ const ListOfGoods = ({ data }: Props) => {
         ),
         actions: (item: any) => (
           <td>
-            <Link to={``}>
+            <Link to={`/whouse/docs/supplies/view/${item.id}`}>
               <CButton color={'primary'} variant="outline" shape="square" size="sm">
                 <FaEye />
               </CButton>
               &nbsp;
             </Link>
-            <Link to={``}>
+            <Link to={`/whouse/docs/supplies/edit/${item.id}`}>
               <CButton color={'primary'} variant="outline" shape="square" size="sm">
                 <FaPen />
               </CButton>
@@ -74,4 +74,4 @@ const ListOfGoods = ({ data }: Props) => {
   )
 }
 
-export default ListOfGoods
+export default WhouseDocsGrid

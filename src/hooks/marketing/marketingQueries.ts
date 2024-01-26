@@ -1,9 +1,13 @@
-import { useQuery } from 'react-query'
+import { useMutation, useQuery } from 'react-query'
 import { request } from '../../http'
 import {
-  ContractDetailedModel, ContractFormModel,
-  ContractGridModel, ContractRewardGridModel,
-  PaymentScheduleDetailedGridModel, SaleTypeDetailedModel,
+  ContractDetailedModel,
+  ContractFormModel,
+  ContractGridModel,
+  ContractRewardGridModel,
+  PaymentScheduleDetailedGridModel,
+  PaymentScheduleFormModel,
+  SaleTypeDetailedModel,
 } from '../../models/marketing/MrkModels'
 import { CashDocGridByContextModel } from '../../models/finance/FinModels'
 import { RefOptionsModel } from '../../models/CommonModels'
@@ -65,18 +69,18 @@ export const useSaleTypeDetailedQuery = (saleTypeId: string, enabled: boolean) =
   )
 }
 
-export const useSaleTypeOptionsQuery = (params: {forDate?: string}, enabled: boolean) => {
+export const useSaleTypeOptionsQuery = (params: { forDate?: string }, enabled: boolean) => {
   return useQuery<RefOptionsModel[]>(
     ['mrk-get-sale-type-as-options', params?.forDate],
     async () => {
-      if(params.forDate) {
+      if (params.forDate) {
         const { data } = await request.get('/marketing/sale-types/as-options', {
-          params: params
+          params: params,
         })
         return data
       }
 
-      return [];
+      return []
     },
     { enabled: enabled },
   )
@@ -101,5 +105,54 @@ export const useContractPaymentsQuery = (contractId: string, enabled: boolean) =
       return data
     },
     { enabled: enabled },
+  )
+}
+
+export const useContractRefQuery = (branchId: string, regNumber: number, enabled: boolean) => {
+  return useQuery<ContractRewardGridModel[]>(
+    ['mrk-get-contract-as-ref', `${branchId}-${regNumber}`],
+    async () => {
+      const { data } = await request.get(`/marketing/contracts/${branchId}/${regNumber}/as-ref`)
+      return data
+    },
+    { enabled: enabled },
+  )
+}
+
+export const useSaleTypeDistributePaymentsQuery = (saleTypeId: string | undefined | null,
+                                                   firstPayment: number,
+                                                   discountFromDealer: number,
+                                                   docDate: string) => {
+  return useQuery<PaymentScheduleFormModel[]>(
+    ['get-distribute-payment-schedules', saleTypeId],
+    async () => {
+      if (!saleTypeId) {
+        return []
+      }
+
+      const { data } = await request.get('/marketing/sale-types/distribute-payments', {
+        params: {
+          saleTypeId: saleTypeId,
+          firstPayment: firstPayment,
+          discountFromDealer: discountFromDealer,
+          docDate: docDate,
+        },
+      })
+
+      return data
+    },
+    { enabled: false },
+  )
+}
+
+export const useContractSaveMutation = (id: string | undefined) => {
+  if (id) {
+    return useMutation(({ form }: { form: ContractFormModel }) =>
+      request.put(`/marketing/contracts/${id}`, form),
+    )
+  }
+
+  return useMutation(({ form }: { form: ContractFormModel }) =>
+    request.post('/marketing/contracts', form),
   )
 }

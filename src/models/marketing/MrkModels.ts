@@ -1,6 +1,6 @@
 import {
-  CommonRefModel,
-  CustomerRefModel, DefaultPostRefModel,
+  CommonRefModel, ContractRefModel,
+  CustomerRefModel, DefaultContractRefModel, DefaultPostRefModel,
   DocStatus, Doctype,
   DoctypeRefModel,
   PostRefModel,
@@ -115,7 +115,7 @@ export interface SaleTypeEmpPaymentModel {
 }
 
 export interface ContractFormModel {
-  regNumber: number | 0;
+  regNumber: number | "";
   branchId: string;
   serviceBranchId: string;
   docDate: string;
@@ -134,7 +134,7 @@ export interface ContractFormModel {
   addressId: string | null;
   outCity: boolean;
   note: string;
-  recommender: RecoFormModel | null;
+  recommender: ContractRefModel;
   payments: PaymentScheduleFormModel[];
   gifts: ContractGiftFormModel[];
   hasDiscountFromRecommender: boolean;
@@ -178,8 +178,8 @@ export const DefaultContractFormModel : ContractFormModel = {
   outCity: false,
   payments: [],
   price: 0,
-  recommender: null,
-  regNumber: 0,
+  recommender: DefaultContractRefModel,
+  regNumber: "",
   saleTypeId: '',
   serialNumber: '',
   serviceBranchId: '',

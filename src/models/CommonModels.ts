@@ -67,3 +67,12 @@ export const DeleteConfirmOptionsModel: SweetAlertOptions = {
   confirmButtonText: 'Да',
   cancelButtonText: 'Отмена'
 }
+
+export interface ContractRefModel {
+  id: string;
+  customerName: string;
+  regNumber: number;
+  branchId: string;
+}
+
+export const DefaultContractRefModel: ContractRefModel = { branchId: '', customerName: '', id: '', regNumber: 0 }

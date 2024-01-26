@@ -6,20 +6,14 @@ import CustomerFieldSearchModal from './CustomerFieldSearchModal'
 import { CustomerRefModel } from '../../models/CommonModels'
 
 interface Props {
-  fieldName: string;
-  label?: string;
-  handleChange: any;
-  value?: CustomerRefModel | null;
-  error?: string;
+  fieldName: string
+  label?: string
+  handleChange: any
+  value?: CustomerRefModel | null
+  error?: string
 }
 
-const CustomerField = ({
-                         fieldName,
-                         label,
-                         value,
-                         handleChange,
-                         error,
-                       }: Props) => {
+const CustomerField = ({ fieldName, label, value, handleChange, error }: Props) => {
   const [visibleModal, setVisibleModal] = useState<boolean>(false)
   const removeValue = () => {
     handleChange({
@@ -42,7 +36,7 @@ const CustomerField = ({
   const onCancel = () => {
     setVisibleModal(false)
   }
-
+  console.log('visibleModal', visibleModal)
   return (
     <>
       {label && <CFormLabel>{label}</CFormLabel>}
@@ -55,11 +49,7 @@ const CustomerField = ({
           disabled
           value={value?.displayName || ''}
         />
-        <CButton
-          onClick={() => setVisibleModal(true)}
-          color="success"
-          size="sm"
-        >
+        <CButton onClick={() => setVisibleModal(true)} color="success" size="sm">
           <CIcon style={{ color: '#ffffff' }} icon={cilSearch} />
         </CButton>
       </CInputGroup>
@@ -67,10 +57,10 @@ const CustomerField = ({
 
       <CustomerFieldSearchModal
         visible={visibleModal}
+        setVisibleModal={setVisibleModal}
         onOk={onSelectVal}
         onCancel={onCancel}
-        onAdd={() => {
-        }}
+        onAdd={() => {}}
       />
     </>
   )

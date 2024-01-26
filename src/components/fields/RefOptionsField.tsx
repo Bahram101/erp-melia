@@ -42,13 +42,13 @@ export const RefOptionsField = ({
 
   return (
     <>
-      <CFormSelect 
+      <CFormSelect
         label={label}
         name={fieldName}
         options={preparedOptions}
         value={value || ''}
         onChange={handleChange}
-        required
+        required={invalid ? true : false}
         feedbackInvalid={invalid && error}
         invalid={invalid ? true : false}
       />
