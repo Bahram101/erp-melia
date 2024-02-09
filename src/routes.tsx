@@ -23,7 +23,7 @@ const routes = [
     element: ContractFormPage,
   },
   { path: '/marketing/contracts/create', name: 'Добавление договора', element: ContractFormPage },
-  { path: '/whouse/docs/supplies', name: 'Поступление товаров', element: WhouseDocsGridPage },
+  { path: '/whouse/docs/:doctype', name: 'Поступление товаров', element: WhouseDocsGridPage },
 ]
 
 export default routes

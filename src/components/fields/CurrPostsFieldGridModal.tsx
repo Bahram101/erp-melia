@@ -21,12 +21,11 @@ import { DefaultPostRefModel, PostRefModel } from '../../models/CommonModels'
 
 interface Props {
   visible: boolean
-  setVisibleModal: (param: boolean) => void
   onOk: (selected: PostRefModel) => void
   onCancel: () => void
 }
 
-const CurrPostsFieldGridModal = ({ visible, setVisibleModal, onOk, onCancel }: Props) => {
+const CurrPostsFieldGridModal = ({ visible, onOk, onCancel }: Props) => {
   const [postParams, setPostParams] = useState<any>({
     branchId: null,
     positionId: null,
@@ -98,7 +97,7 @@ const CurrPostsFieldGridModal = ({ visible, setVisibleModal, onOk, onCancel }: P
       alignment="center"
       size="xl"
       visible={visible}
-      onClose={() => setVisibleModal(false)}
+      onClose={() => onCancel()}
       backdrop={'static'}
     >
       <CModalHeader>

@@ -52,6 +52,31 @@ const _nav = [
         name: 'Поступление товаров',
         to: '/whouse/docs/supplies',
       },
+      {
+        component: CNavItem,
+        name: 'Реализация товаров',
+        to: '/whouse/docs/shipments',
+      },
+      {
+        component: CNavItem,
+        name: 'Отправка товаров на другой склад',
+        to: '/whouse/docs/move_outs',
+      },
+      {
+        component: CNavItem,
+        name: 'Внутр. поуступления товаров',
+        to: '/whouse/docs/move_ins',
+      },
+      {
+        component: CNavItem,
+        name: 'Возврат товара от клиента',
+        to: '/whouse/docs/returns',
+      },
+      {
+        component: CNavItem,
+        name: 'Списание по потере',
+        to: '/whouse/docs/writeoff_losts',
+      },
     ],
   },
   {

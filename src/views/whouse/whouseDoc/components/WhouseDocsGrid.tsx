@@ -3,12 +3,15 @@ import { CButton, CSmartTable } from '@coreui/react-pro'
 import { FaEye, FaPen } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 import ContractStatusBadge from 'views/marketing/contract/components/ContractStatusBadge'
+import { WhouseDocGridModel } from '../../../../models/whouse/whouseModels'
 
 interface Props {
-  data: any
+  data: WhouseDocGridModel[]
+  isLoading: boolean
+  doctype: string | undefined
 }
 
-const WhouseDocsGrid = ({ data }: Props) => {
+const WhouseDocsGrid = ({ data, isLoading, doctype }: Props) => {
   const columns = [
     {
       key: 'regNumber',
@@ -23,14 +26,22 @@ const WhouseDocsGrid = ({ data }: Props) => {
       key: 'statusName',
       label: 'Статус документа',
     },
-    {
-      key: 'toWhouseName',
-      label: 'На склад',
-    },
-    {
-      key: 'note',
-      label: 'Примечание',
-    },
+    doctype === 'supplies'
+      ? [
+          { key: 'toWhouseName', label: 'На склад' },
+          { key: 'customerName', label: 'Поставщик' },
+          {
+            key: 'note',
+            label: 'Примечание',
+          },
+        ]
+      : [],
+    doctype === 'shipments'
+      ? [
+          { key: 'fromWhouseName', label: 'Со склада' },
+          { key: 'note', label: 'Род. документ' },
+        ]
+      : [],
     {
       key: 'actions',
       label: '',
@@ -42,12 +53,12 @@ const WhouseDocsGrid = ({ data }: Props) => {
 
   return (
     <CSmartTable
-      columns={columns}
+      columns={columns.flat()}
       items={data || []}
-      // loading={listQuery.isLoading}
       itemsPerPage={30}
       pagination
       columnFilter
+      loading={isLoading}
       scopedColumns={{
         statusName: (item: any) => (
           <td>
@@ -56,13 +67,13 @@ const WhouseDocsGrid = ({ data }: Props) => {
         ),
         actions: (item: any) => (
           <td>
-            <Link to={`/whouse/docs/supplies/view/${item.id}`}>
+            <Link to={`/whouse/docs/${doctype}/view/${item.id}`}>
               <CButton color={'primary'} variant="outline" shape="square" size="sm">
                 <FaEye />
               </CButton>
               &nbsp;
             </Link>
-            <Link to={`/whouse/docs/supplies/edit/${item.id}`}>
+            <Link to={`/whouse/docs/${doctype}/edit/${item.id}`}>
               <CButton color={'primary'} variant="outline" shape="square" size="sm">
                 <FaPen />
               </CButton>

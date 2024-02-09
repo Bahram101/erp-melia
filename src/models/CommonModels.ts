@@ -16,6 +16,12 @@ export enum Doctype {
   CONTRACT = 'CONTRACT',
   CASH_DOC_FIRST_PAYMENT = 'CASH_DOC_FIRST_PAYMENT',
   CASH_DOC_MONTHLY_PAYMENT = 'CASH_DOC_MONTHLY_PAYMENT',
+  SUPPLY = 'SUPPLY',
+  SHIPMENT = 'SHIPMENT',
+  MOVE_OUT = 'MOVE_OUT',
+  MOVE_IN = 'MOVE_IN',
+  RETURN = 'RETURN',
+  WRITEOFF_LOST = 'WRITEOFF_LOST',
 }
 
 export interface CommonRefModel {
@@ -65,14 +71,19 @@ export const DeleteConfirmOptionsModel: SweetAlertOptions = {
   confirmButtonColor: '#3085d6',
   cancelButtonColor: '#d33',
   confirmButtonText: 'Да',
-  cancelButtonText: 'Отмена'
+  cancelButtonText: 'Отмена',
 }
 
 export interface ContractRefModel {
-  id: string;
-  customerName: string;
-  regNumber: number;
-  branchId: string;
+  id: string
+  customerName: string
+  regNumber: number
+  branchId: string
 }
 
-export const DefaultContractRefModel: ContractRefModel = { branchId: '', customerName: '', id: '', regNumber: 0 }
+export const DefaultContractRefModel: ContractRefModel = {
+  branchId: '',
+  customerName: '',
+  id: '',
+  regNumber: 0,
+}

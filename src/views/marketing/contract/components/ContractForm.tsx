@@ -20,6 +20,9 @@ type Props = {
   addressOptions: RefOptionsModel[]
   goodsOptions: RefOptionsModel[]
   saleTypeOptions: RefOptionsModel[]
+  distributePayments: () => void
+  distributing: boolean
+  handleContractPaymentChange: (idx: number, e: any) => void
 }
 const ContractForm = ({
   model,
@@ -29,6 +32,9 @@ const ContractForm = ({
   addressOptions,
   goodsOptions,
   saleTypeOptions,
+  distributePayments,
+  handleContractPaymentChange,
+  distributing = false,
 }: Props) => {
   return (
     <CForm className="row g-3 needs-validation">

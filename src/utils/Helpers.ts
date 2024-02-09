@@ -1,5 +1,17 @@
 import { RefOptionsModel } from '../models/CommonModels'
 
+interface TitleTypes {
+  [key: string]: string
+}
+export const DoctypesTitles: TitleTypes = {
+  supplies: 'Поступление товаров',
+  shipments: 'Реализация товаров',
+  move_outs: 'Отправка товаров на другой склад',
+  move_ins: 'Внутр. поуступления товаров',
+  returns: 'Возврат товара от клиента',
+  writeoff_losts: 'Списание по потере',
+}
+
 export const getYearOptions = (): RefOptionsModel[] => {
   const out: RefOptionsModel[] = []
   for (var year = 2017; year < 2031; year++) {

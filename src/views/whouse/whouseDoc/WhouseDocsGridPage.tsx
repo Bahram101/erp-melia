@@ -11,17 +11,20 @@ import {
   CTabContent,
   CTabPane,
 } from '@coreui/react-pro'
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { RefOptionsField } from 'components/fields/RefOptionsField'
 import TabNavItem from 'components/TabNavItem'
 import WhouseDocsGrid from './components/WhouseDocsGrid'
 import { useWhouseOptionsQuery } from 'hooks/reference/refOptionsQueries'
 import { useWhouseDocsListQuery } from 'hooks/whouse/whouseQueries'
+import { Doctype } from 'models/CommonModels'
+import { DoctypesTitles } from '../../../utils/Helpers'
 
-const ReceipOfGoodsGripPage = () => {
+const WhouseDocsGridPage = () => {
+  let { doctype } = useParams()
   const [errors, setErrors] = useState<any>({})
   const [activeKey, setActiveKey] = useState('NEW')
-  const [params, setParams] = useState<any>({ doctype: 'SUPPLY', status: 'NEW' })
+  const [params, setParams] = useState<any>({ doctype: Doctype.SUPPLY, status: 'NEW' })
   const [dataByTab, setDataByTab] = useState<{ [key: string]: any }>({
     NEW: null,
     CLOSED: null,
@@ -53,26 +56,43 @@ const ReceipOfGoodsGripPage = () => {
   }
 
   useEffect(() => {
+    setDataByTab({ ...dataByTab, [activeKey]: [] })
+    if (doctype === 'supplies') {
+      setParams((prev: any) => ({ ...prev, doctype: Doctype.SUPPLY }))
+    } else if (doctype === 'shipments') {
+      setParams((prev: any) => ({ ...prev, doctype: Doctype.SHIPMENT }))
+    } else if (doctype === 'move-outs') {
+      setParams((prev: any) => ({ ...prev, doctype: Doctype.MOVE_OUT }))
+    } else if (doctype === 'move-ins') {
+      setParams((prev: any) => ({ ...prev, doctype: Doctype.MOVE_IN }))
+    } else if (doctype === 'returns') {
+      setParams((prev: any) => ({ ...prev, doctype: Doctype.RETURN }))
+    } else if (doctype === 'writeoff-losts') {
+      setParams((prev: any) => ({ ...prev, doctype: Doctype.WRITEOFF_LOST }))
+    }
+  }, [doctype])
+
+  useEffect(() => {
     setParams((prev: any) => ({ ...prev, status: activeKey }))
   }, [activeKey])
 
-  useEffect(() => {
-    setDataByTab((prevData) => ({ ...prevData, [activeKey]: listQuery.data }))
-  }, [listQuery.data])
-
   const loadData = () => {
-    listQuery.refetch()
+    listQuery.refetch().then(({ data }) => {
+      setDataByTab({ ...dataByTab, [activeKey]: data || [] })
+    })
   }
 
   return (
     <CCard style={{ maxWidth: '100%' }}>
       <CCardHeader>
-        <h4 className="float-start">Поступление товаров</h4>
+        <h4 className="float-start">{doctype !== undefined && DoctypesTitles[doctype]}</h4>
         <div className="float-end">
-          <Link to={'/marketing/contracts/create'}>
-            <CButton color={'primary'} shape="square">
-              Добавить
-            </CButton>
+          <Link to={''}>
+            {doctype !== 'shipments' && (
+              <CButton color={'primary'} shape="square">
+                Добавить
+              </CButton>
+            )}
           </Link>
         </div>
       </CCardHeader>
@@ -94,7 +114,7 @@ const ReceipOfGoodsGripPage = () => {
               style={{ marginTop: '10px' }}
               color={'secondary'}
               onClick={loadData}
-              // disabled={listQuery.isFetching}
+              disabled={listQuery.isFetching}
             >
               Загрузить
             </CButton>
@@ -116,33 +136,45 @@ const ReceipOfGoodsGripPage = () => {
             })}
           </CNav>
           <CTabContent>
-            {listQuery.isFetching ? (
+            {/* {listQuery.isFetching ? (
               <CSpinner color="primary" />
-            ) : (
-              <>
-                <CTabPane
-                  role="tabpanel"
-                  aria-labelledby="new-tab-pane"
-                  visible={activeKey === 'NEW'}
-                >
-                  <WhouseDocsGrid data={dataByTab[activeKey]} />
-                </CTabPane>
-                <CTabPane
-                  role="tabpanel"
-                  aria-labelledby="closed-tab-pane"
-                  visible={activeKey === 'CLOSED'}
-                >
-                  <WhouseDocsGrid data={dataByTab[activeKey]} />
-                </CTabPane>
-                <CTabPane
-                  role="tabpanel"
-                  aria-labelledby="cancelled-tab-pane"
-                  visible={activeKey === 'CANCELLED'}
-                >
-                  <WhouseDocsGrid data={dataByTab[activeKey]} />
-                </CTabPane>
-              </>
-            )}
+            ) : ( */}
+            <>
+              <CTabPane
+                role="tabpanel"
+                aria-labelledby="new-tab-pane"
+                visible={activeKey === 'NEW'}
+              >
+                <WhouseDocsGrid
+                  data={dataByTab[activeKey]}
+                  isLoading={listQuery.isFetching}
+                  doctype={doctype}
+                />
+              </CTabPane>
+              <CTabPane
+                role="tabpanel"
+                aria-labelledby="closed-tab-pane"
+                visible={activeKey === 'CLOSED'}
+              >
+                <WhouseDocsGrid
+                  data={dataByTab[activeKey]}
+                  isLoading={listQuery.isFetching}
+                  doctype={doctype}
+                />
+              </CTabPane>
+              <CTabPane
+                role="tabpanel"
+                aria-labelledby="cancelled-tab-pane"
+                visible={activeKey === 'CANCELLED'}
+              >
+                <WhouseDocsGrid
+                  data={dataByTab[activeKey]}
+                  isLoading={listQuery.isFetching}
+                  doctype={doctype}
+                />
+              </CTabPane>
+            </>
+            {/* )} */}
           </CTabContent>
         </div>
       </CCardBody>
@@ -150,4 +182,4 @@ const ReceipOfGoodsGripPage = () => {
   )
 }
 
-export default ReceipOfGoodsGripPage
+export default WhouseDocsGridPage

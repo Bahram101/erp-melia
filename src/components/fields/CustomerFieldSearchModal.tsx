@@ -11,22 +11,18 @@ import {
   CSmartTable,
 } from '@coreui/react-pro'
 import InputField from './InputField'
-import {
-  CustomerSearchParams,
-  useCustomerSearchQuery,
-} from '../../hooks/reference/refCustomerQueries'
+import { CustomerSearchParams, useCustomerSearchQuery } from '../../hooks/reference/refCustomerQueries'
 import { CustomerGridModel } from '../../models/reference/RefModels'
 import { CustomerRefModel } from '../../models/CommonModels'
 
 interface Props {
   visible: boolean
-  setVisibleModal: (param: boolean) => void
   onOk: (selected: CustomerRefModel | null) => void
   onCancel: () => void
   onAdd: () => void
 }
 
-const CustomerFieldSearchModal = ({ visible, setVisibleModal, onOk, onCancel, onAdd }: Props) => {
+const CustomerFieldSearchModal = ({ visible, onOk, onCancel, onAdd }: Props) => {
   const [searchParams, setSearchParams] = useState<CustomerSearchParams>({
     lastname: undefined,
     firstname: undefined,
@@ -67,7 +63,6 @@ const CustomerFieldSearchModal = ({ visible, setVisibleModal, onOk, onCancel, on
     searchQuery
       .refetch()
       .then(({ data }) => setItems(data || []))
-      .catch((error) => console.error('err', error))
   }
 
   const columns = [
@@ -94,7 +89,7 @@ const CustomerFieldSearchModal = ({ visible, setVisibleModal, onOk, onCancel, on
   ]
 
   return (
-    <CModal size="xl" visible={visible} onClose={() => setVisibleModal(false)}>
+    <CModal size="xl" visible={visible} backdrop={'static'} onClose={onCancel}>
       <CModalHeader>
         <CModalTitle>Поиск клиента</CModalTitle>
       </CModalHeader>

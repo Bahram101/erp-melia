@@ -36,7 +36,7 @@ const CustomerField = ({ fieldName, label, value, handleChange, error }: Props) 
   const onCancel = () => {
     setVisibleModal(false)
   }
-  console.log('visibleModal', visibleModal)
+
   return (
     <>
       {label && <CFormLabel>{label}</CFormLabel>}
@@ -57,7 +57,6 @@ const CustomerField = ({ fieldName, label, value, handleChange, error }: Props) 
 
       <CustomerFieldSearchModal
         visible={visibleModal}
-        setVisibleModal={setVisibleModal}
         onOk={onSelectVal}
         onCancel={onCancel}
         onAdd={() => {}}
