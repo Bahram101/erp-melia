@@ -9,7 +9,10 @@ import {
   useSaleTypeOptionsQuery,
 } from '../../../hooks/marketing/marketingQueries'
 import ContractForm from './components/ContractForm'
-import { useBranchOptionsQuery, useGoodsOptionsQuery } from '../../../hooks/reference/refOptionsQueries'
+import {
+  useBranchOptionsQuery,
+  useGoodsOptionsQuery,
+} from '../../../hooks/reference/refOptionsQueries'
 import { useCustomerAdressesAsOptionsQuery } from '../../../hooks/reference/refCustomerQueries'
 import DocFormPageWrapper from '../../../components/doc/DocFormPageWrapper'
 import CustomSpinner from '../../../components/spinner/CustomSpinner'
@@ -30,18 +33,22 @@ const ContractFormPage = () => {
   const goodsOptionsQuery = useGoodsOptionsQuery({ hasSerial: true }, true)
   const saleTypeOptionsQuery = useSaleTypeOptionsQuery({ forDate: model?.docDate }, false)
   const saleTypeDetailedQuery = useSaleTypeDetailedQuery(selectedSaleTypeId || '', false)
-  const saleTypeDistributePaymentsQuery = useSaleTypeDistributePaymentsQuery(model.saleTypeId, model.firstPayment, model.discountFromDealer, model.docDate)
+  const saleTypeDistributePaymentsQuery = useSaleTypeDistributePaymentsQuery(
+    model.saleTypeId,
+    model.firstPayment,
+    model.discountFromDealer,
+    model.docDate,
+  )
   const saveMutation = useContractSaveMutation(id)
 
   useEffect(() => {
     if (id && id.length > 0) {
-      formQuery.refetch()
-        .then(({ data }) => {
-          if (data) {
-            setModel(data)
-            setTitle('Редактирование договора')
-          }
-        })
+      formQuery.refetch().then(({ data }) => {
+        if (data) {
+          setModel(data)
+          setTitle('Редактирование договора')
+        }
+      })
       //ToDo - Catch
     } else {
       setModel(DefaultContractFormModel)
@@ -63,12 +70,11 @@ const ContractFormPage = () => {
 
   useEffect(() => {
     if (selectedSaleTypeId) {
-      saleTypeDetailedQuery.refetch()
-        .then(({ data }) => {
-          if (data) {
-            setModel({ ...model, price: data.price, firstPayment: data.firstPayment, payments: [] })
-          }
-        })
+      saleTypeDetailedQuery.refetch().then(({ data }) => {
+        if (data) {
+          setModel({ ...model, price: data.price, firstPayment: data.firstPayment, payments: [] })
+        }
+      })
     } else {
       setModel({ ...model, price: 0, firstPayment: 0, payments: [] })
     }
@@ -90,14 +96,13 @@ const ContractFormPage = () => {
   }
 
   const distributePayments = () => {
-    saleTypeDistributePaymentsQuery.refetch()
-      .then(({ data }) => {
-        if (data) {
-          setModel({ ...model, payments: data })
-        } else {
-          setModel({ ...model, payments: [] })
-        }
-      })
+    saleTypeDistributePaymentsQuery.refetch().then(({ data }) => {
+      if (data) {
+        setModel({ ...model, payments: data })
+      } else {
+        setModel({ ...model, payments: [] })
+      }
+    })
     //ToDo - Catch
   }
 
@@ -130,7 +135,8 @@ const ContractFormPage = () => {
   }
 
   const handleSubmit = () => {
-    saveMutation.mutateAsync({ form: model })
+    saveMutation
+      .mutateAsync({ form: model })
       .then(({ data }) => {
         if (id) {
           window.location.pathname = `/marketing/contracts/view/${id}`
@@ -138,30 +144,37 @@ const ContractFormPage = () => {
           window.location.pathname = `/marketing/contracts/view/${data.id}`
         }
       })
-      .catch(error => {
+      .catch((error) => {
         setErrors(parseResponseFormErrors(error))
       })
   }
 
-  return <DocFormPageWrapper
-    saving={saveMutation.isLoading}
-    handleSubmit={handleSubmit}
-    cancelUrl={'/marketing/contracts'}
-    title={title}
-    children={formQuery.isFetching
-      ? <CustomSpinner />
-      : <ContractForm
-        model={model}
-        handleChange={handleChange}
-        errors={errors}
-        branchOptions={branchOptionsQuery.data || []}
-        addressOptions={addressOptionsQuery.data || []}
-        goodsOptions={goodsOptionsQuery.data || []}
-        saleTypeOptions={saleTypeOptionsQuery.data || []}
-        distributePayments={distributePayments}
-        distributing={saleTypeDistributePaymentsQuery.isFetching}
-        handleContractPaymentChange={handleContractPaymentChange}
-      />} />
+  return (
+    <DocFormPageWrapper
+      saving={saveMutation.isLoading}
+      handleSubmit={handleSubmit}
+      cancelUrl={'/marketing/contracts'}
+      title={title}
+      children={
+        formQuery.isFetching ? (
+          <CustomSpinner />
+        ) : (
+          <ContractForm
+            model={model}
+            handleChange={handleChange}
+            errors={errors}
+            branchOptions={branchOptionsQuery.data || []}
+            addressOptions={addressOptionsQuery.data || []}
+            goodsOptions={goodsOptionsQuery.data || []}
+            saleTypeOptions={saleTypeOptionsQuery.data || []}
+            distributePayments={distributePayments}
+            distributing={saleTypeDistributePaymentsQuery.isFetching}
+            handleContractPaymentChange={handleContractPaymentChange}
+          />
+        )
+      }
+    />
+  )
 }
 
 export default ContractFormPage

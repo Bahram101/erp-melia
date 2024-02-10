@@ -30,6 +30,7 @@ const InputField = ({
       required={error && error.length > 0 ? true : false}
       feedbackInvalid={error || ''}
       placeholder={placeholder}
+      readOnly
     />
   )
 }

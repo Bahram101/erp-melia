@@ -87,7 +87,7 @@ const WhouseDocsGridPage = () => {
       <CCardHeader>
         <h4 className="float-start">{doctype !== undefined && DoctypesTitles[doctype]}</h4>
         <div className="float-end">
-          <Link to={''}>
+          <Link to={`/whouse/docs/${doctype}/create`}>
             {doctype !== 'shipments' && (
               <CButton color={'primary'} shape="square">
                 Добавить
