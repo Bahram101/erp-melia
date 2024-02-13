@@ -40,7 +40,7 @@ const CustomerField = ({ fieldName, label, value, handleChange, error }: Props) 
   return (
     <>
       {label && <CFormLabel>{label}</CFormLabel>}
-      <CInputGroup>
+      <CInputGroup className="mb-1 mt-1">
         <CButton onClick={removeValue} color="danger" size="sm">
           <CIcon style={{ color: 'white' }} icon={cilX} />
         </CButton>

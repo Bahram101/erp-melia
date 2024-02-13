@@ -38,11 +38,12 @@ export const RefOptionsField = ({
     })
   }
 
-  const invalid = error && error.length > 0;
+  const invalid = error && error.length > 0
 
   return (
     <>
       <CFormSelect
+        className="mb-1 mt-1"
         label={label}
         name={fieldName}
         options={preparedOptions}

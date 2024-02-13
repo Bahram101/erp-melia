@@ -32,6 +32,7 @@ const YesNoOptionsField = ({ value, handleChange, label, fieldName }: Props) => 
 
   return (
     <CFormSelect
+      className="mb-1 mt-1"
       label={label}
       name={fieldName}
       options={options}

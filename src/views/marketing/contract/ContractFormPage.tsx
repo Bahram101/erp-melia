@@ -134,6 +134,8 @@ const ContractFormPage = () => {
     setModel({ ...model, payments: newState })
   }
 
+  console.log('DefaultContractFormModel', DefaultContractFormModel)
+
   const handleSubmit = () => {
     saveMutation
       .mutateAsync({ form: model })

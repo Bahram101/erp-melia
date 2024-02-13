@@ -16,3 +16,10 @@
 .translateY-2 {
   transform: translateY(-2px);
 }
+
+@media (min-width: 768px) {
+  .goodListForm {
+    border-left: 1px solid rgb(217 217 217);
+    padding-left: 15px !important;
+  }
+}

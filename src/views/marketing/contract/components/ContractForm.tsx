@@ -47,18 +47,6 @@ const ContractForm = ({
           value={model.regNumber}
           error={errors.regNumber}
         />
-      </CCol>
-      <CCol md={6}>
-        <CustomerField
-          label={'Клиент'}
-          fieldName={'customer'}
-          handleChange={handleChange}
-          value={model.customer}
-          error={errors.customer}
-        />
-      </CCol>
-
-      <CCol md={6}>
         <RefOptionsField
           label={'Филиал'}
           options={branchOptions}
@@ -67,19 +55,6 @@ const ContractForm = ({
           value={model.branchId}
           error={errors.branchId}
         />
-      </CCol>
-      <CCol md={6}>
-        <RefOptionsField
-          label={'Адрес'}
-          options={addressOptions}
-          handleChange={handleChange}
-          fieldName={'addressId'}
-          value={model.addressId}
-          error={errors.addressId}
-        />
-      </CCol>
-
-      <CCol md={6}>
         <RefOptionsField
           label={'Сервис филиал'}
           options={branchOptions}
@@ -88,18 +63,6 @@ const ContractForm = ({
           value={model.serviceBranchId}
           error={errors.serviceBranchId}
         />
-      </CCol>
-      <CCol md={6}>
-        <YesNoOptionsField
-          label={'За город'}
-          fieldName={'outCity'}
-          handleChange={handleChange}
-          value={model.outCity}
-          error={errors.outCity}
-        />
-      </CCol>
-
-      <CCol md={6}>
         <DatePickerField
           label={'Дата договора'}
           fieldName={'docDate'}
@@ -107,10 +70,6 @@ const ContractForm = ({
           value={model.docDate}
           error={errors.docDate}
         />
-      </CCol>
-      <CCol>//ToDo Reco Field</CCol>
-
-      <CCol md={6}>
         <CurrPostsField
           label={'Дилер'}
           fieldName={'dealer'}
@@ -118,19 +77,6 @@ const ContractForm = ({
           error={errors.dealer}
           value={model.dealer}
         />
-      </CCol>
-      <CCol md={6}>
-        <RefOptionsField
-          label={'Продукт'}
-          options={goodsOptions}
-          handleChange={handleChange}
-          fieldName={'goodsId'}
-          value={model.goodsId}
-          error={errors.goodsId}
-        />
-      </CCol>
-
-      <CCol md={6}>
         <CurrPostsField
           label={'Демосекретарь'}
           fieldName={'demoSec'}
@@ -138,18 +84,6 @@ const ContractForm = ({
           error={errors.demoSec}
           value={model.demoSec}
         />
-      </CCol>
-      <CCol md={6}>
-        <InputField
-          label={'Серииный номер'}
-          fieldName={'serialNumber'}
-          handleChange={handleChange}
-          value={model.serialNumber}
-          error={errors.serialNumber}
-        />
-      </CCol>
-
-      <CCol md={6}>
         <CurrPostsField
           label={'Установщик'}
           fieldName={'fitter'}
@@ -157,19 +91,6 @@ const ContractForm = ({
           error={errors.fitter}
           value={model.fitter}
         />
-      </CCol>
-      <CCol md={6}>
-        <RefOptionsField
-          label={'Вид продажи'}
-          options={saleTypeOptions}
-          handleChange={handleChange}
-          fieldName={'saleTypeId'}
-          value={model.saleTypeId}
-          error={errors.saleTypeId}
-        />
-      </CCol>
-
-      <CCol md={6}>
         <CurrPostsField
           label={'Взносщик'}
           fieldName={'collector'}
@@ -178,7 +99,54 @@ const ContractForm = ({
           value={model.collector}
         />
       </CCol>
+
       <CCol md={6}>
+        <CustomerField
+          label={'Клиент'}
+          fieldName={'customer'}
+          handleChange={handleChange}
+          value={model.customer}
+          error={errors.customer}
+        />
+        <RefOptionsField
+          label={'Адрес'}
+          options={addressOptions}
+          handleChange={handleChange}
+          fieldName={'addressId'}
+          value={model.addressId}
+          error={errors.addressId}
+        />
+        <YesNoOptionsField
+          label={'За город'}
+          fieldName={'outCity'}
+          handleChange={handleChange}
+          value={model.outCity}
+          error={errors.outCity}
+        />
+        {/* //ToDo Reco Field  */}
+        <RefOptionsField
+          label={'Продукт'}
+          options={goodsOptions}
+          handleChange={handleChange}
+          fieldName={'goodsId'}
+          value={model.goodsId}
+          error={errors.goodsId}
+        />
+        <InputField
+          label={'Серииный номер'}
+          fieldName={'serialNumber'}
+          handleChange={handleChange}
+          value={model.serialNumber}
+          error={errors.serialNumber}
+        />
+        <RefOptionsField
+          label={'Вид продажи'}
+          options={saleTypeOptions}
+          handleChange={handleChange}
+          fieldName={'saleTypeId'}
+          value={model.saleTypeId}
+          error={errors.saleTypeId}
+        />
         <InputField
           label={'Цена продажи продукта'}
           fieldName={'price'}
@@ -187,9 +155,6 @@ const ContractForm = ({
           error={errors.price}
           disabled
         />
-      </CCol>
-
-      <CCol md={{ span: 6, offset: 6 }}>
         <InputField
           label={'Первоначальный взнос'}
           fieldName={'firstPayment'}
@@ -198,9 +163,7 @@ const ContractForm = ({
           error={errors.firstPayment}
         />
         {/*ToDo - Перв. взнос наличными*/}
-      </CCol>
 
-      <CCol md={{ span: 6, offset: 6 }}>
         <InputField
           label={'Скидка от дилера'}
           fieldName={'discountFromDealer'}
