@@ -47,6 +47,7 @@ export const useGoodsOptionsQuery = (params: { hasSerial?: boolean }, enabled: b
     { enabled: enabled },
   )
 }
+
 export const useWhouseOptionsQuery = (enabled: boolean) => {
   return useQuery<RefOptionsModel[]>(
     ['get-reference-whouses-as-options'],
@@ -55,5 +56,16 @@ export const useWhouseOptionsQuery = (enabled: boolean) => {
       return data
     },
     { enabled },
+  )
+}
+
+export const useSupplierOptionsQuery = (enabled: boolean) => {
+  return useQuery<RefOptionsModel[]>(
+    ['get-reference-suppliers-as-options'],
+    async () => {
+      const { data } = await request.get('/reference/customers/suppliers/as-options')
+      return data
+    },
+    { enabled: enabled },
   )
 }

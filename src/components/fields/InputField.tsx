@@ -19,7 +19,6 @@ const InputField = ({
   type,
   disabled,
   placeholder,
-  readOnly,
 }: Props) => {
   return (
     <CFormInput
@@ -33,7 +32,6 @@ const InputField = ({
       required={error && error.length > 0 ? true : false}
       feedbackInvalid={error || ''}
       placeholder={placeholder}
-      readOnly={readOnly}
     />
   )
 }

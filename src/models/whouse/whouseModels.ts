@@ -19,7 +19,7 @@ export interface WhouseDocGoodsFormModel {
   serialNumbers: string[]
 }
 
-export const DefaultWhouseDocGoodFormModel: WhouseDocGoodsFormModel = {
+export const DefaultWhouseDocGoodsFormModel: WhouseDocGoodsFormModel = {
   id: '',
   goodsId: '',
   quantity: 0,
@@ -39,9 +39,9 @@ export const DefaultWhouseDocFormModel: WhouseDocFormModel = {
   customerId: '',
   amount: 0,
   doctype: '',
-  status: '',
+  status: 'Новый',
   note: '',
-  items: [],
+  items: [DefaultWhouseDocGoodsFormModel],
 }
 
 export interface WhouseDocFormModel {
@@ -58,5 +58,5 @@ export interface WhouseDocFormModel {
   doctype: string
   status: string
   note?: string
-  items?: WhouseDocGoodsFormModel[]
+  items?: WhouseDocGoodsFormModel[] | undefined
 }

@@ -12,10 +12,11 @@ interface Props {
   model: WhouseDocFormModel
   doctype: string | undefined
   whouseList: RefOptionsModel[] | undefined
-  handleChange: (e: any) => void
+  supplierList: RefOptionsModel[] | undefined
+  handleChange: (e: any, index: any) => void
 }
 
-const WhouseDocsInfoForm = ({ model, doctype, whouseList, handleChange }: Props) => {
+const WhouseDocsInfoForm = ({ model, doctype, whouseList, supplierList, handleChange }: Props) => {
   return (
     <CCol md={4} className="pe-3">
       <div className="mb-3">
@@ -23,29 +24,29 @@ const WhouseDocsInfoForm = ({ model, doctype, whouseList, handleChange }: Props)
           label={'Тип документа'}
           fieldName={'doctype'}
           error={''}
-          readOnly={true}
+          disabled
           value={doctype && DoctypesTitles[doctype]}
-          handleChange={handleChange}
+          handleChange={() => {}}
         />
       </div>
       <div className="mb-3">
         <InputField
           label={'Статус документа'}
-          fieldName={''}
+          fieldName={'status'}
           error={''}
-          readOnly={true}
-          value={'Новый'}
-          handleChange={handleChange}
+          disabled
+          value={model.status}
+          handleChange={() => {}}
         />
       </div>
       <div className="mb-3">
         <RefOptionsField
           label={'Поставщик'}
-          fieldName={'branchId'}
+          fieldName={'customerId'}
           error={''}
-          options={[]}
-          value={''}
-          handleChange={handleChange}
+          options={supplierList || []}
+          value={model.customerId}
+          handleChange={(e: any) => handleChange(e, false)}
         />
       </div>
       <div className="mb-3">
@@ -55,7 +56,7 @@ const WhouseDocsInfoForm = ({ model, doctype, whouseList, handleChange }: Props)
           error={''}
           options={whouseList || []}
           value={model.toWhouseId}
-          handleChange={handleChange}
+          handleChange={(e: any) => handleChange(e, false)}
         />
       </div>
       <div className="mb-3">
@@ -64,15 +65,14 @@ const WhouseDocsInfoForm = ({ model, doctype, whouseList, handleChange }: Props)
           fieldName={'docDate'}
           error={''}
           value={model.docDate}
-          handleChange={handleChange}
+          handleChange={(e: any) => handleChange(e, false)}
         />
       </div>
-
       <TextAreaField
         label={'Примечание'}
         fieldName="note"
         value={model.note}
-        handleChange={handleChange}
+        handleChange={(e: any) => handleChange(e, false)}
       />
     </CCol>
   )
