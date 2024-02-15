@@ -16,9 +16,10 @@ import {
   useWhouseOptionsQuery,
 } from 'hooks/reference/refOptionsQueries'
 import { Doctype } from 'models/CommonModels'
+import { useWhouseDocsFormQuery, useWhouseDocsSaveMutation } from 'hooks/whouse/whouseQueries'
 
 const WhouseDocFormPage = () => {
-  let { doctype } = useParams()
+  let { doctype, id } = useParams()
   const [model, setModel] = useState<WhouseDocFormModel>({
     ...DefaultWhouseDocFormModel,
     items: [],
@@ -28,6 +29,17 @@ const WhouseDocFormPage = () => {
   const whouseOptionsQuery = useWhouseOptionsQuery(true)
   const supplierOptionsQuery = useSupplierOptionsQuery(true)
   const goodsOptionsQuery = useGoodsOptionsQuery({ hasSerial: true }, true)
+
+  const whouseDocsFormQuery = useWhouseDocsFormQuery(id, true)
+  const saveMutation = useWhouseDocsSaveMutation(id)
+
+  useEffect(() => {
+    if (whouseDocsFormQuery.data) {
+      setModel(whouseDocsFormQuery.data)
+    } else {
+      setModel(DefaultWhouseDocFormModel)
+    }
+  }, [whouseDocsFormQuery.data])
 
   useEffect(() => {
     if (doctype === 'supplies') {
@@ -46,18 +58,20 @@ const WhouseDocFormPage = () => {
   }, [doctype])
 
   const handleSubmit = () => {
-    // saveMutation
-    //   .mutateAsync({ form: model })
-    //   .then(({ data }) => {
-    //     if (id) {
-    //       window.location.pathname = `/marketing/contracts/view/${id}`
-    //     } else {
-    //       window.location.pathname = `/marketing/contracts/view/${data.id}`
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     setErrors(parseResponseFormErrors(error))
-    //   })
+    saveMutation
+      .mutateAsync({
+        form: model,
+      })
+      .then(({ data }) => {
+        if (id) {
+          location.pathname = `/whouse/docs/supplies/view/${id}`
+        } else {
+          location.pathname = `/whouse/docs/supplies/view/${data.id}`
+        }
+      })
+      .catch((error) => {
+        // setErrors(parseResponseFormErrors(error))
+      })
   }
 
   const handleChange = (e: any, index: any) => {

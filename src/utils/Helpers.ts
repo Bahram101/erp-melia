@@ -3,13 +3,24 @@ import { RefOptionsModel } from '../models/CommonModels'
 interface TitleTypes {
   [key: string]: string
 }
+
+interface StatusTypes {
+  [key: string]: string
+}
+
 export const DoctypesTitles: TitleTypes = {
   supplies: 'Поступление товаров',
   shipments: 'Реализация товаров',
-  move_outs: 'Отправка товаров на другой склад',
-  move_ins: 'Внутр. поуступления товаров',
+  'move-outs': 'Отправка товаров на другой склад',
+  'move-ins': 'Внутр. поуступления товаров',
   returns: 'Возврат товара от клиента',
-  writeoff_losts: 'Списание по потере',
+  'writeoff-losts': 'Списание по потере',
+}
+
+export const DocStatuses: StatusTypes = {
+  NEW: 'Новый',
+  CLOSED: 'Закрытый',
+  CANCELED: 'Отменен',
 }
 
 export const getYearOptions = (): RefOptionsModel[] => {

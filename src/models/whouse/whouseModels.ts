@@ -39,7 +39,7 @@ export const DefaultWhouseDocFormModel: WhouseDocFormModel = {
   customerId: '',
   amount: 0,
   doctype: '',
-  status: 'Новый',
+  status: 'NEW',
   note: '',
   items: [DefaultWhouseDocGoodsFormModel],
 }

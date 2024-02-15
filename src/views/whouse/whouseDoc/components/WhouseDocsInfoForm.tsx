@@ -6,7 +6,7 @@ import TextAreaField from 'components/fields/TextAreaField'
 import { RefOptionsModel } from 'models/CommonModels'
 import { WhouseDocFormModel } from 'models/whouse/whouseModels'
 import React from 'react'
-import { DoctypesTitles } from 'utils/Helpers'
+import { DocStatuses, DoctypesTitles } from 'utils/Helpers'
 
 interface Props {
   model: WhouseDocFormModel
@@ -17,6 +17,8 @@ interface Props {
 }
 
 const WhouseDocsInfoForm = ({ model, doctype, whouseList, supplierList, handleChange }: Props) => {
+  console.log('doctype', doctype)
+
   return (
     <CCol md={4} className="pe-3">
       <div className="mb-3">
@@ -35,28 +37,8 @@ const WhouseDocsInfoForm = ({ model, doctype, whouseList, supplierList, handleCh
           fieldName={'status'}
           error={''}
           disabled
-          value={model.status}
+          value={DocStatuses[model.status]}
           handleChange={() => {}}
-        />
-      </div>
-      <div className="mb-3">
-        <RefOptionsField
-          label={'Поставщик'}
-          fieldName={'customerId'}
-          error={''}
-          options={supplierList || []}
-          value={model.customerId}
-          handleChange={(e: any) => handleChange(e, false)}
-        />
-      </div>
-      <div className="mb-3">
-        <RefOptionsField
-          label={'На склад'}
-          fieldName={'toWhouseId'}
-          error={''}
-          options={whouseList || []}
-          value={model.toWhouseId}
-          handleChange={(e: any) => handleChange(e, false)}
         />
       </div>
       <div className="mb-3">
@@ -68,12 +50,146 @@ const WhouseDocsInfoForm = ({ model, doctype, whouseList, supplierList, handleCh
           handleChange={(e: any) => handleChange(e, false)}
         />
       </div>
-      <TextAreaField
-        label={'Примечание'}
-        fieldName="note"
-        value={model.note}
-        handleChange={(e: any) => handleChange(e, false)}
-      />
+      {doctype === 'supplies' && (
+        <>
+          <div className="mb-3">
+            <RefOptionsField
+              label={'На склад'}
+              fieldName={'toWhouseId'}
+              error={''}
+              options={whouseList || []}
+              value={model.toWhouseId}
+              handleChange={(e: any) => handleChange(e, false)}
+            />
+          </div>
+          <div className="mb-3">
+            <RefOptionsField
+              label={'Поставщик'}
+              fieldName={'customerId'}
+              error={''}
+              options={supplierList || []}
+              value={model.customerId}
+              handleChange={(e: any) => handleChange(e, false)}
+            />
+          </div>
+          <TextAreaField
+            label={'Примечание'}
+            fieldName="note"
+            value={model.note}
+            handleChange={(e: any) => handleChange(e, false)}
+          />
+        </>
+      )}
+      {doctype === 'move-outs' || (
+        <>
+          <div className="mb-3">
+            <RefOptionsField
+              label={'Со склада'}
+              fieldName={'fromWhouseId'}
+              error={''}
+              options={whouseList || []}
+              value={model.fromWhouseId}
+              handleChange={(e: any) => handleChange(e, false)}
+            />
+          </div>
+          <div className="mb-3">
+            <RefOptionsField
+              label={'На склад'}
+              fieldName={'toWhouseId'}
+              error={''}
+              options={whouseList || []}
+              value={model.toWhouseId}
+              handleChange={(e: any) => handleChange(e, false)}
+            />
+          </div>
+          <TextAreaField
+            label={'Примечание'}
+            fieldName="note"
+            value={model.note}
+            handleChange={(e: any) => handleChange(e, false)}
+          />
+        </>
+      )}
+      {doctype === 'move-ins' || (
+        <>
+          <div className="mb-3">
+            <RefOptionsField
+              label={'Со склада'}
+              fieldName={'fromWhouseId'}
+              error={''}
+              options={whouseList || []}
+              value={model.fromWhouseId}
+              handleChange={(e: any) => handleChange(e, false)}
+            />
+          </div>
+          <div className="mb-3">
+            <RefOptionsField
+              label={'На склад'}
+              fieldName={'toWhouseId'}
+              error={''}
+              options={whouseList || []}
+              value={model.toWhouseId}
+              handleChange={(e: any) => handleChange(e, false)}
+            />
+          </div>
+          <TextAreaField
+            label={'Примечание'}
+            fieldName="note"
+            value={model.note}
+            handleChange={(e: any) => handleChange(e, false)}
+          />
+        </>
+      )}
+      {doctype === 'returns' && (
+        <>
+          <div className="mb-3">
+            <RefOptionsField
+              label={'На склад'}
+              fieldName={'toWhouseId'}
+              error={''}
+              options={whouseList || []}
+              value={model.toWhouseId}
+              handleChange={(e: any) => handleChange(e, false)}
+            />
+          </div>
+          <div className="mb-3">
+            <InputField
+              label={'Род. документ'}
+              fieldName={'note'}
+              error={''}
+              disabled
+              value={model.note}
+              handleChange={() => {}}
+            />
+          </div>
+          <TextAreaField
+            label={'Примечание'}
+            fieldName="note"
+            value={model.note}
+            handleChange={(e: any) => handleChange(e, false)}
+          />
+        </>
+      )}
+      {doctype === 'writeoff-losts' && (
+        <>
+          <div className="mb-3">
+            <RefOptionsField
+              label={'Со склада'}
+              fieldName={'fromWhouseId'}
+              error={''}
+              options={whouseList || []}
+              value={model.fromWhouseId}
+              handleChange={(e: any) => handleChange(e, false)}
+            />
+          </div>
+          <TextAreaField
+            label={'Примечание'}
+            fieldName="note"
+            value={model.note}
+            handleChange={(e: any) => handleChange(e, false)}
+          />
+        </>
+      )}
     </CCol>
   )
 }

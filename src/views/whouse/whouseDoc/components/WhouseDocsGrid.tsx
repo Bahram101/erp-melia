@@ -30,16 +30,33 @@ const WhouseDocsGrid = ({ data, isLoading, doctype }: Props) => {
       ? [
           { key: 'toWhouseName', label: 'На склад' },
           { key: 'customerName', label: 'Поставщик' },
-          {
-            key: 'note',
-            label: 'Примечание',
-          },
+          { key: 'note', label: 'Примечание' },
         ]
       : [],
     doctype === 'shipments'
       ? [
           { key: 'fromWhouseName', label: 'Со склада' },
           { key: 'note', label: 'Род. документ' },
+        ]
+      : [],
+    doctype === 'move-outs' || doctype === 'move-ins'
+      ? [
+          { key: 'fromWhouseName', label: 'Со склада' },
+          { key: 'toWhouseName', label: 'На склад' },
+          { key: 'note', label: 'Примечание' },
+        ]
+      : [],
+    doctype === 'returns'
+      ? [
+          { key: 'toWhouseName', label: 'На склад' },
+          { key: 'note', label: 'Род. док' },
+          { key: 'note', label: 'Род. док. номер' },
+        ]
+      : [],
+    doctype === 'writeoff-losts'
+      ? [
+          { key: 'fromWhouseName', label: 'Со склада' },
+          { key: 'note', label: 'Примечание' },
         ]
       : [],
     {

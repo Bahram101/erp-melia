@@ -60,12 +60,12 @@ const _nav = [
       {
         component: CNavItem,
         name: 'Отправка товаров на другой склад',
-        to: '/whouse/docs/move_outs',
+        to: '/whouse/docs/move-outs',
       },
       {
         component: CNavItem,
         name: 'Внутр. поуступления товаров',
-        to: '/whouse/docs/move_ins',
+        to: '/whouse/docs/move-ins',
       },
       {
         component: CNavItem,
@@ -75,7 +75,7 @@ const _nav = [
       {
         component: CNavItem,
         name: 'Списание по потере',
-        to: '/whouse/docs/writeoff_losts',
+        to: '/whouse/docs/writeoff-losts',
       },
     ],
   },

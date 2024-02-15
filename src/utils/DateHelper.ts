@@ -12,6 +12,10 @@ export const dateToStringDDMMYYYY = (date: Date) => {
   return moment(date).format('DD.MM.YYYY')
 }
 
+export function momentToStringYYYYMMDD(date: Date) {
+  return moment(date).format('YYYY.MM.DD')
+}
+
 export const addMonths = (date: Date, months: number) => {
   if (!date) {
     return date
@@ -26,9 +30,9 @@ export const addMonths = (date: Date, months: number) => {
 }
 
 const isLeapYear = (year: number) => {
-  return (((year % 4 === 0) && (year % 100 !== 0)) || (year % 400 === 0))
+  return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0
 }
 
 const getDaysInMonth = (year: number, month: number) => {
-  return [31, (isLeapYear(year) ? 29 : 28), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month]
+  return [31, isLeapYear(year) ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month]
 }
