@@ -15,7 +15,7 @@ export const useWhouseDocsListQuery = (params: {}) => {
   )
 }
 
-export const useWhouseDocsSaveMutation = (id: string | undefined) => {
+export const useWhouseDocSaveMutation = (id: string | undefined) => {
   if (id) {
     return useMutation(({ form }: { form: WhouseDocFormModel }) =>
       request.put(`/whouse/docs/${id}`, form),
@@ -24,9 +24,9 @@ export const useWhouseDocsSaveMutation = (id: string | undefined) => {
   return useMutation(({ form }: { form: WhouseDocFormModel }) => request.post(`/whouse/docs`, form))
 }
 
-export const useWhouseDocsFormQuery = (id: string | undefined, enabled: boolean) => {
+export const useWhouseDocFormQuery = (id: string | undefined, enabled: boolean) => {
   return useQuery<WhouseDocFormModel>(
-    ['wh-get-whouse-docs-form', id],
+    ['wh-get-whouse-doc-form', id],
     async () => {
       if (id) {
         const { data } = await request.get(`/whouse/docs/${id}/form`)

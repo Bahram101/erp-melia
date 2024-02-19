@@ -1,28 +1,5 @@
 import { RefOptionsModel } from '../models/CommonModels'
 
-interface TitleTypes {
-  [key: string]: string
-}
-
-interface StatusTypes {
-  [key: string]: string
-}
-
-export const DoctypesTitles: TitleTypes = {
-  supplies: 'Поступление товаров',
-  shipments: 'Реализация товаров',
-  'move-outs': 'Отправка товаров на другой склад',
-  'move-ins': 'Внутр. поуступления товаров',
-  returns: 'Возврат товара от клиента',
-  'writeoff-losts': 'Списание по потере',
-}
-
-export const DocStatuses: StatusTypes = {
-  NEW: 'Новый',
-  CLOSED: 'Закрытый',
-  CANCELED: 'Отменен',
-}
-
 export const getYearOptions = (): RefOptionsModel[] => {
   const out: RefOptionsModel[] = []
   for (var year = 2017; year < 2031; year++) {

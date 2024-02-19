@@ -24,6 +24,20 @@ export enum Doctype {
   WRITEOFF_LOST = 'WRITEOFF_LOST',
 }
 
+export enum DocAction {
+  UPDATE = 'UPDATE',
+  DELETE = 'DELETE',
+  CANCEL = 'CANCEL',
+  SEND_TO_PROBLEM = 'SEND_TO_PROBLEM',
+  RESTORE = 'RESTORE',
+  UPDATE_COLLECTOR = 'UPDATE_COLLECTOR',
+}
+
+export interface DocActionButton {
+  name: DocAction;
+  label: string;
+}
+
 export interface CommonRefModel {
   id: string
   displayName: string
@@ -86,4 +100,20 @@ export const DefaultContractRefModel: ContractRefModel = {
   customerName: '',
   id: '',
   regNumber: 0,
+}
+
+export const DoctypeTitles: { [key in Doctype]?: string } = {
+  [Doctype.CONTRACT]: 'Договор',
+  [Doctype.SUPPLY]: 'Поступление товаров',
+  [Doctype.SHIPMENT]: 'Реализация товаров',
+  [Doctype.MOVE_OUT]: 'Отправка товаров на другой склад',
+  [Doctype.MOVE_IN]: 'Внутр. поуступления товаров',
+  [Doctype.RETURN]: 'Возврат товара от клиента',
+  [Doctype.WRITEOFF_LOST]: 'Списание по потере',
+}
+
+export const DocStatusTitles: { [key in DocStatus]?: string } = {
+  [DocStatus.NEW]: 'Новый',
+  [DocStatus.CLOSED]: 'Закрытый',
+  [DocStatus.CANCELLED]: 'Отменен',
 }

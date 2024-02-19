@@ -11,13 +11,19 @@ import {
   CTabPane,
 } from '@coreui/react-pro'
 import { useParams } from 'react-router-dom'
-import { useContractDetailedQuery } from '../../../hooks/marketing/marketingQueries'
+import { useContractDetailedQuery, useContractHandleActionQuery } from '../../../hooks/marketing/marketingQueries'
 import ContractDetailedView from './components/ContractDetailedView'
 import ContractAddDataView from './components/ContractAddDataView'
 import { useCustomerDetailedQuery } from '../../../hooks/reference/refCustomerQueries'
 import CustomerDetailedView from '../../reference/components/CustomerDetailedView'
 import ContractRewardsGrid from './components/ContractRewardsGrid'
 import ContractPaymentsGrid from './components/ContractPaymentsGrid'
+import { ContractDetailedModel } from '../../../models/marketing/MrkModels'
+import DocHeaderActionButtons from '../../../components/doc/DocHeaderActionButtons'
+import { DocAction } from '../../../models/CommonModels'
+import ContractCancelFormModal from './components/ContractCancelFormModal'
+import ContractRestoreFormModal from './components/ContractRestoreFormModal'
+import ContractChangeCollectorModal from './components/actionmodals/ContractChangeCollectorModal'
 
 const TAB_MAIN_DATA = 'MAIN_DATA'
 const TAB_ADD_DATA = 'ADD_DATA'
@@ -56,35 +62,119 @@ const Tabs = [
 const ContractViewPage = () => {
   const { id } = useParams()
   const [activeKey, setActiveKey] = useState<string>(TAB_MAIN_DATA)
+  const [model, setModel] = useState<ContractDetailedModel | undefined>(undefined)
+  const [cancelModalVisible, setCancelModalVisible] = useState<boolean>(false)
+  const [restoreModalVisible, setRestoreModalVisible] = useState<boolean>(false)
+  const [changeCollectorModalVisible, setChangeCollectorModalVisible] = useState<boolean>(false)
 
-  const detailedQuery = useContractDetailedQuery(id, true)
-  const customerDetailedQuery = useCustomerDetailedQuery(detailedQuery.data?.customer?.id, false);
+  const detailedQuery = useContractDetailedQuery(id, false)
+  const customerDetailedQuery = useCustomerDetailedQuery(model?.customer?.id, false)
+  const handleActionQuery = useContractHandleActionQuery()
 
   useEffect(() => {
-    if(detailedQuery.data && detailedQuery.data.customer) {
-      customerDetailedQuery.refetch();
+    if (id) {
+      loadContract()
+    } else {
+      setModel(undefined)
     }
-  }, [detailedQuery.data])
+  }, [id])
+
+  useEffect(() => {
+    if (model && model.customer) {
+      customerDetailedQuery.refetch()
+    }
+  }, [model])
+
+  const loadContract = () => {
+    detailedQuery.refetch()
+      .then(({ data }) => setModel(data))
+  }
 
   const onChangeTab = (key: string) => {
     setActiveKey(key)
   }
 
+  const handleAction = (action: DocAction) => {
+    const form = {
+      docId: id,
+      action: action,
+    }
+
+    if (action === DocAction.DELETE) {
+      if (!window.confirm('Действительно хотите удалить договор?')) {
+        return Promise.resolve(false)
+      }
+    }
+
+    if (action === DocAction.SEND_TO_PROBLEM) {
+      if (!window.confirm('Действительно хотите отметить договор как проблемный?')) {
+        return Promise.resolve()
+      }
+    }
+
+    if (action === DocAction.UPDATE) {
+      window.location.pathname = `/marketing/contracts/edit/${id}`
+      return Promise.resolve()
+    } else if (action === DocAction.CANCEL) {
+      setCancelModalVisible(true)
+      return Promise.resolve()
+    } else if (action === DocAction.RESTORE) {
+      setRestoreModalVisible(true)
+      return Promise.resolve()
+    } else if (action === DocAction.UPDATE_COLLECTOR) {
+      setChangeCollectorModalVisible(true)
+      return Promise.resolve()
+    }
+
+    return handleActionQuery.mutateAsync({ form: form })
+      .then(() => {
+        loadContract()
+        return Promise.resolve()
+      })
+  }
+
   return (
     <CCard>
       <CCardHeader>
-        <h4 className="float-start">{`Договор № `}</h4>
+        <h4 className="float-start">{`Договор №${model?.regCode}`}</h4>
       </CCardHeader>
-      {/*<CCardHeader>*/}
-      {/*  <div className="float-end">*/}
-      {/*    <Link to={'/hr/employees/add'}>*/}
-      {/*      <CButton color={'primary'} shape="square">*/}
-      {/*        Добавить*/}
-      {/*      </CButton>*/}
-      {/*    </Link>*/}
-      {/*  </div>*/}
-      {/*</CCardHeader>*/}
+      <CCardHeader>
+        <DocHeaderActionButtons
+          actionButtons={model?.actions || []}
+          handleAction={handleAction}
+        />
+      </CCardHeader>
       <CCardBody>
+        <ContractCancelFormModal
+          visible={cancelModalVisible}
+          onClose={() => setCancelModalVisible(false)}
+          regCode={model?.regCode || ''}
+          handleAfterSubmit={() => {
+            loadContract()
+            setCancelModalVisible(false)
+          }}
+          contractId={id || ''}
+        />
+        <ContractChangeCollectorModal
+          visible={changeCollectorModalVisible}
+          onClose={() => setChangeCollectorModalVisible(false)}
+          regCode={model?.regCode || ''}
+          contractId={id || ''}
+          handleAfterSubmit={() => {
+            loadContract()
+            setChangeCollectorModalVisible(false)
+          }}
+        />
+        <ContractRestoreFormModal
+          visible={restoreModalVisible}
+          onClose={() => setRestoreModalVisible(false)}
+          regCode={model?.regCode || ''}
+          handleAfterSubmit={() => {
+            loadContract()
+            setRestoreModalVisible(false)
+          }}
+          contractId={id || ''}
+        />
         <CNav variant="tabs">
           {Tabs.map((tab) => <CNavItem key={tab.key}>
             <CNavLink
@@ -96,16 +186,16 @@ const ContractViewPage = () => {
             </CNavLink>
           </CNavItem>)}
         </CNav>
-        <CTabContent style={{paddingTop: '20px'}}>
+        <CTabContent style={{ paddingTop: '20px' }}>
           <CTabPane visible={activeKey === TAB_MAIN_DATA}>
             {
               detailedQuery.isFetching
                 ? <CSpinner color="primary" />
-                : <ContractDetailedView contract={detailedQuery.data} />
+                : <ContractDetailedView contract={model} />
             }
           </CTabPane>
           <CTabPane visible={activeKey === TAB_ADD_DATA}>
-            <ContractAddDataView saleTypeId={detailedQuery.data?.saleType?.id} contractId={id} />
+            <ContractAddDataView saleTypeId={model?.saleType?.id} contractId={id} />
           </CTabPane>
           <CTabPane visible={activeKey === TAB_CUSTOMER}>
             {

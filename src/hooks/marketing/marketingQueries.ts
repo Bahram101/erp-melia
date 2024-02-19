@@ -156,3 +156,9 @@ export const useContractSaveMutation = (id: string | undefined) => {
     request.post('/marketing/contracts', form),
   )
 }
+
+export const useContractHandleActionQuery = () => {
+  return useMutation(({ form }: { form: any }) => {
+    return request.put(`/marketing/contracts/handle-action`, form);
+  });
+};

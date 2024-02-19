@@ -134,8 +134,6 @@ const ContractFormPage = () => {
     setModel({ ...model, payments: newState })
   }
 
-  console.log('DefaultContractFormModel', DefaultContractFormModel)
-
   const handleSubmit = () => {
     saveMutation
       .mutateAsync({ form: model })
@@ -150,6 +148,8 @@ const ContractFormPage = () => {
         setErrors(parseResponseFormErrors(error))
       })
   }
+
+  console.log('ccc', model)
 
   return (
     <DocFormPageWrapper

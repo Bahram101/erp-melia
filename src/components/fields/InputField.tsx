@@ -7,7 +7,6 @@ interface Props extends CustomFieldProps {
   disabled?: boolean
   value?: string | string[] | number
   placeholder?: string
-  readOnly?: boolean
 }
 
 const InputField = ({
@@ -20,6 +19,7 @@ const InputField = ({
   disabled,
   placeholder,
 }: Props) => {
+  const invalid = error && error.length > 0
   return (
     <CFormInput
       className="mb-1 mt-1"
@@ -29,8 +29,9 @@ const InputField = ({
       onChange={handleChange}
       label={label}
       value={value}
-      required={error && error.length > 0 ? true : false}
-      feedbackInvalid={error || ''}
+      required={invalid ? true : false}
+      feedbackInvalid={invalid && error}
+      invalid={invalid ? true : false}
       placeholder={placeholder}
     />
   )

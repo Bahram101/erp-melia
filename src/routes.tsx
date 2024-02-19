@@ -8,8 +8,8 @@ const ContractGridPage = React.lazy(() => import('./views/marketing/contract/Con
 const ContractViewPage = React.lazy(() => import('./views/marketing/contract/ContractViewPage'))
 const ContractFormPage = React.lazy(() => import('./views/marketing/contract/ContractFormPage'))
 const WhouseDocsGridPage = React.lazy(() => import('./views/whouse/whouseDoc/WhouseDocsGridPage'))
-const WhouseDocsFormPage = React.lazy(
-  () => import('./views/whouse/whouseDoc/components/WhouseDocsFormPage'),
+const WhouseDocFormPage = React.lazy(
+  () => import('./views/whouse/whouseDoc/WhouseDocFormPage'),
 )
 
 const routes = [
@@ -26,11 +26,16 @@ const routes = [
     element: ContractFormPage,
   },
   { path: '/marketing/contracts/create', name: 'Добавление договора', element: ContractFormPage },
-  { path: '/whouse/docs/:doctype', name: 'Поступление товаров', element: WhouseDocsGridPage },
+  { path: '/whouse/docs/:whousedocpath', name: 'Список документов склада', element: WhouseDocsGridPage },
   {
-    path: '/whouse/docs/:doctype/:action/:id?',
-    name: 'Поступление товаров',
-    element: WhouseDocsFormPage,
+    path: '/whouse/docs/:whousedocpath/create',
+    name: 'Документы склада создание',
+    element: WhouseDocFormPage,
+  },
+  {
+    path: '/whouse/docs/:whousedocpath/edit/:id?',
+    name: 'Документы склада редактирование',
+    element: WhouseDocFormPage,
   },
 ]
 

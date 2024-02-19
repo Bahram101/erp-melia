@@ -13,27 +13,35 @@ import { RefOptionsField } from 'components/fields/RefOptionsField'
 import InputField from 'components/fields/InputField'
 import { FaPlus, FaTrash } from 'react-icons/fa'
 import { RefOptionsModel } from 'models/CommonModels'
-import { WhouseDocFormModel } from 'models/whouse/whouseModels'
+import { WhouseDocFormModel, WhouseDocItemFormModel } from 'models/whouse/whouseModels'
+import CurrencyField from 'components/fields/CurrencyField'
 
 interface Props {
-  goodList: RefOptionsModel[] | undefined
+  goodsOptions: RefOptionsModel[]
   model: WhouseDocFormModel
-  handleChange: (e: any, index: any) => void
-  addNewGoods: () => void
-  deleteGoodsFromList: (e: any) => void
-  // deleteGoodsFromList: (e: React.MouseEventHandler<HTMLButtonElement>) => void
-  // deleteGoodsFromList: React.MouseEventHandler<HTMLButtonElement>
+  errors: any
+  handleItemChange: (e: any, index: number) => void
+  addItemRow: () => void
+  deleteItemRow: (e: any) => void
 }
 
-const WhouseDocsGoodsListForm = ({
-  goodList,
+const WhouseDocItemForm = ({
+  goodsOptions,
   model,
-  handleChange,
-  addNewGoods,
-  deleteGoodsFromList,
+  errors,
+  handleItemChange,
+  addItemRow,
+  deleteItemRow,
 }: Props) => {
   return (
-    <CCol md={8} className="goodListForm ">
+    <CCol md={8} className="goodsOptionsForm ">
+      <div className="mb-3 d-flex justify-content-between align-items-center">
+        <h5>Список товаров</h5>
+        <CButton size="sm" color="success" className="text-white float-end" onClick={addItemRow}>
+          <FaPlus className="translateY-2 text-white me-2 " style={{ fontSize: '11px' }} />
+          <span>Добавить товар</span>
+        </CButton>
+      </div>
       <CTable>
         <CTableHead color="light">
           <CTableRow>
@@ -49,7 +57,7 @@ const WhouseDocsGoodsListForm = ({
           </CTableRow>
         </CTableHead>
         <CTableBody>
-          {model.items?.map((post: any, index: any) => (
+          {model.items?.map((item: WhouseDocItemFormModel, index: number) => (
             <CTableRow key={index}>
               <CTableDataCell>
                 <div style={{ transform: 'translateY(7px)' }}>{index + 1}</div>
@@ -57,36 +65,42 @@ const WhouseDocsGoodsListForm = ({
               <CTableDataCell>
                 <RefOptionsField
                   fieldName={'goodsId'}
-                  error={''}
-                  options={goodList || []}
+                  error={errors[`items[${index}].goodsId`]}
+                  options={goodsOptions || []}
                   value={model.items && model.items[index].goodsId}
-                  handleChange={(e) => handleChange(e, index)}
+                  handleChange={(e) => handleItemChange(e, index)}
                 />
               </CTableDataCell>
               <CTableDataCell>
-                <InputField
+                {/* <InputField
                   fieldName={'unitPrice'}
-                  error={''}
-                  readOnly={false}
+                  type={'number'}
+                  error={errors[`items[${index}].unitPrice`]}
                   value={model.items && model.items[index].unitPrice}
-                  handleChange={(e: any) => handleChange(e, index)}
+                  handleChange={(e: any) => handleItemChange(e, index)}
+                /> */}
+                <CurrencyField
+                  error={errors.unitPrice}
+                  fieldName={'unitPrice'}
+                  handleChange={(e: any) => handleItemChange(e, index)}
+                  value={model.items && model.items[index].unitPrice}
                 />
               </CTableDataCell>
               <CTableDataCell>
                 <InputField
                   fieldName={'quantity'}
-                  error={''}
-                  readOnly={false}
+                  type={'number'}
+                  error={errors[`items[${index}].quantity`]}
                   value={model.items && model.items[index].quantity}
-                  handleChange={(e: any) => handleChange(e, index)}
+                  handleChange={(e: any) => handleItemChange(e, index)}
                 />
               </CTableDataCell>
               <CTableDataCell>
                 <CButton
                   size="sm"
                   color="danger"
-                  style={{ transform: 'translateY(7px)' }}
-                  onClick={() => deleteGoodsFromList(index)}
+                  style={{ transform: 'translate(5px, 7px)' }}
+                  onClick={() => deleteItemRow(index)}
                 >
                   <FaTrash className="translateY-2 text-white " style={{ fontSize: '11px' }} />
                 </CButton>
@@ -95,12 +109,8 @@ const WhouseDocsGoodsListForm = ({
           ))}
         </CTableBody>
       </CTable>
-      <CButton size="sm" color="success" className="text-white float-end" onClick={addNewGoods}>
-        <FaPlus className="translateY-2 text-white me-2 " style={{ fontSize: '11px' }} />
-        <span>Добавить товар</span>
-      </CButton>
     </CCol>
   )
 }
 
-export default WhouseDocsGoodsListForm
+export default WhouseDocItemForm

@@ -1,3 +1,5 @@
+import { DocStatus, Doctype } from 'models/CommonModels'
+
 export interface WhouseDocGridModel {
   id: string
   regNumber: number
@@ -11,7 +13,7 @@ export interface WhouseDocGridModel {
   doctype: string
 }
 
-export interface WhouseDocGoodsFormModel {
+export interface WhouseDocItemFormModel {
   id: string
   goodsId: string
   quantity: number
@@ -19,7 +21,7 @@ export interface WhouseDocGoodsFormModel {
   serialNumbers: string[]
 }
 
-export const DefaultWhouseDocGoodsFormModel: WhouseDocGoodsFormModel = {
+export const DefaultWhouseDocGoodsFormModel: WhouseDocItemFormModel = {
   id: '',
   goodsId: '',
   quantity: 0,
@@ -28,35 +30,35 @@ export const DefaultWhouseDocGoodsFormModel: WhouseDocGoodsFormModel = {
 }
 
 export const DefaultWhouseDocFormModel: WhouseDocFormModel = {
-  branchId: '',
+  branchId: null,
   regNumber: 0,
-  toWhouseId: '',
-  fromWhouseId: '',
-  contextDoctype: '',
+  toWhouseId: null,
+  fromWhouseId: null,
+  contextDoctype: null,
   contextDocId: '',
   contractRegNumber: 0,
   docDate: '',
   customerId: '',
   amount: 0,
-  doctype: '',
-  status: 'NEW',
+  doctype: Doctype.SUPPLY,
+  status: DocStatus.NEW,
   note: '',
   items: [DefaultWhouseDocGoodsFormModel],
 }
 
 export interface WhouseDocFormModel {
-  branchId?: string
+  branchId?: null
   regNumber: number
-  toWhouseId?: string
-  fromWhouseId?: string
-  contextDoctype?: string
+  toWhouseId?: null
+  fromWhouseId?: null
+  contextDoctype?: null
   contextDocId?: string
   contractRegNumber?: number
   docDate: string
   customerId?: string
   amount?: number
-  doctype: string
-  status: string
+  doctype: Doctype
+  status: DocStatus
   note?: string
-  items?: WhouseDocGoodsFormModel[] | undefined
+  items: WhouseDocItemFormModel[]
 }

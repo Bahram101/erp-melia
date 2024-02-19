@@ -1,30 +1,23 @@
 import React, { useEffect, useState } from 'react'
-import {
-  CButton,
-  CCard,
-  CCardBody,
-  CCardHeader,
-  CCol,
-  CNav,
-  CRow,
-  CSpinner,
-  CTabContent,
-  CTabPane,
-} from '@coreui/react-pro'
+import { CButton, CCard, CCardBody, CCardHeader, CCol, CNav, CRow, CTabContent, CTabPane } from '@coreui/react-pro'
 import { Link, useParams } from 'react-router-dom'
 import { RefOptionsField } from 'components/fields/RefOptionsField'
 import TabNavItem from 'components/TabNavItem'
 import WhouseDocsGrid from './components/WhouseDocsGrid'
 import { useWhouseOptionsQuery } from 'hooks/reference/refOptionsQueries'
 import { useWhouseDocsListQuery } from 'hooks/whouse/whouseQueries'
-import { Doctype } from 'models/CommonModels'
-import { DoctypesTitles } from '../../../utils/Helpers'
+import { DocStatus, Doctype, DoctypeTitles } from 'models/CommonModels'
+import { getWhouseDoctypeFromUriPath, getWhouseDocUriPathFromDoctype } from '../../../utils/UrlHelper'
 
 const WhouseDocsGridPage = () => {
-  let { doctype } = useParams()
+  let { whousedocpath } = useParams()
   const [errors, setErrors] = useState<any>({})
   const [activeKey, setActiveKey] = useState('NEW')
-  const [params, setParams] = useState<any>({ doctype: Doctype.SUPPLY, status: 'NEW' })
+  const [params, setParams] = useState<{ doctype: Doctype | null, status: DocStatus | null, fromWhouseId: string | null }>({
+    doctype: null,
+    status: null,
+    fromWhouseId: null
+  })
   const [dataByTab, setDataByTab] = useState<{ [key: string]: any }>({
     NEW: null,
     CLOSED: null,
@@ -57,20 +50,13 @@ const WhouseDocsGridPage = () => {
 
   useEffect(() => {
     setDataByTab({ ...dataByTab, [activeKey]: [] })
-    if (doctype === 'supplies') {
-      setParams((prev: any) => ({ ...prev, doctype: Doctype.SUPPLY }))
-    } else if (doctype === 'shipments') {
-      setParams((prev: any) => ({ ...prev, doctype: Doctype.SHIPMENT }))
-    } else if (doctype === 'move-outs') {
-      setParams((prev: any) => ({ ...prev, doctype: Doctype.MOVE_OUT }))
-    } else if (doctype === 'move-ins') {
-      setParams((prev: any) => ({ ...prev, doctype: Doctype.MOVE_IN }))
-    } else if (doctype === 'returns') {
-      setParams((prev: any) => ({ ...prev, doctype: Doctype.RETURN }))
-    } else if (doctype === 'writeoff-losts') {
-      setParams((prev: any) => ({ ...prev, doctype: Doctype.WRITEOFF_LOST }))
+    const doctype = getWhouseDoctypeFromUriPath(whousedocpath || '')
+    if (doctype) {
+      setParams({ ...params, doctype: doctype })
+    } else {
+      //ToDo show error
     }
-  }, [doctype])
+  }, [whousedocpath])
 
   useEffect(() => {
     setParams((prev: any) => ({ ...prev, status: activeKey }))
@@ -85,15 +71,15 @@ const WhouseDocsGridPage = () => {
   return (
     <CCard style={{ maxWidth: '100%' }}>
       <CCardHeader>
-        <h4 className="float-start">{doctype !== undefined && DoctypesTitles[doctype]}</h4>
+        <h4 className="float-start">{params.doctype && DoctypeTitles[params.doctype]}</h4>
         <div className="float-end">
-          <Link to={`/whouse/docs/${doctype}/create`}>
-            {doctype !== 'shipments' && (
+          {params.doctype && <Link to={`/whouse/docs/${getWhouseDocUriPathFromDoctype(params.doctype)}/create`}>
+            {params.doctype !== Doctype.SHIPMENT && (
               <CButton color={'primary'} shape="square">
                 Добавить
               </CButton>
             )}
-          </Link>
+          </Link>}
         </div>
       </CCardHeader>
       <CCardBody>
@@ -105,7 +91,7 @@ const WhouseDocsGridPage = () => {
               error={errors.whouse}
               options={whouseOptionsQuery.data || []}
               handleChange={handleChange}
-              value={params.whouse}
+              value={params.fromWhouseId}
             />
           </CCol>
           <CCol>
@@ -148,7 +134,7 @@ const WhouseDocsGridPage = () => {
                 <WhouseDocsGrid
                   data={dataByTab[activeKey]}
                   isLoading={listQuery.isFetching}
-                  doctype={doctype}
+                  doctype={params.doctype}
                 />
               </CTabPane>
               <CTabPane
@@ -159,7 +145,7 @@ const WhouseDocsGridPage = () => {
                 <WhouseDocsGrid
                   data={dataByTab[activeKey]}
                   isLoading={listQuery.isFetching}
-                  doctype={doctype}
+                  doctype={params.doctype}
                 />
               </CTabPane>
               <CTabPane
@@ -170,7 +156,7 @@ const WhouseDocsGridPage = () => {
                 <WhouseDocsGrid
                   data={dataByTab[activeKey]}
                   isLoading={listQuery.isFetching}
-                  doctype={doctype}
+                  doctype={params.doctype}
                 />
               </CTabPane>
             </>

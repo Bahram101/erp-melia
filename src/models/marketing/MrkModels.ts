@@ -1,6 +1,6 @@
 import {
   CommonRefModel, ContractRefModel,
-  CustomerRefModel, DefaultContractRefModel, DefaultPostRefModel,
+  CustomerRefModel, DefaultContractRefModel, DefaultPostRefModel, DocActionButton,
   DocStatus, Doctype,
   DoctypeRefModel,
   PostRefModel,
@@ -31,6 +31,7 @@ export interface ContractDetailedModel {
   goods: CommonRefModel;
   recommender: RecommenderModel;
   saleType: CommonRefModel;
+  actions: DocActionButton[];
 };
 
 export interface ContractGridModel {

@@ -1,17 +1,17 @@
-import { CSpinner } from "@coreui/react-pro";
+import { CSpinner } from '@coreui/react-pro'
 
 function CustomSpinner() {
   return (
     <CSpinner
       style={{
-        top: "50%",
-        left: "40%",
-        height: 100,
-        width: 100,
-        position: "absolute",
+        top: '50%',
+        left: '40%',
+        height: 30,
+        width: 30,
+        position: 'absolute',
       }}
     />
-  );
+  )
 }
 
-export default CustomSpinner;
+export default CustomSpinner

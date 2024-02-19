@@ -2,13 +2,15 @@ import React from 'react'
 import { CButton, CSmartTable } from '@coreui/react-pro'
 import { FaEye, FaPen } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
-import ContractStatusBadge from 'views/marketing/contract/components/ContractStatusBadge'
 import { WhouseDocGridModel } from '../../../../models/whouse/whouseModels'
+import { Doctype } from '../../../../models/CommonModels'
+import { getWhouseDocUriPathFromDoctype } from '../../../../utils/UrlHelper'
+import WhouseDocStatusBadge from './WhouseDocStatusBadge'
 
 interface Props {
   data: WhouseDocGridModel[]
   isLoading: boolean
-  doctype: string | undefined
+  doctype: Doctype | null
 }
 
 const WhouseDocsGrid = ({ data, isLoading, doctype }: Props) => {
@@ -26,38 +28,38 @@ const WhouseDocsGrid = ({ data, isLoading, doctype }: Props) => {
       key: 'statusName',
       label: 'Статус документа',
     },
-    doctype === 'supplies'
+    doctype === Doctype.SUPPLY
       ? [
-          { key: 'toWhouseName', label: 'На склад' },
-          { key: 'customerName', label: 'Поставщик' },
-          { key: 'note', label: 'Примечание' },
-        ]
+        { key: 'toWhouseName', label: 'На склад' },
+        { key: 'customerName', label: 'Поставщик' },
+        { key: 'note', label: 'Примечание' },
+      ]
       : [],
-    doctype === 'shipments'
+    doctype === Doctype.SHIPMENT
       ? [
-          { key: 'fromWhouseName', label: 'Со склада' },
-          { key: 'note', label: 'Род. документ' },
-        ]
+        { key: 'fromWhouseName', label: 'Со склада' },
+        { key: 'note', label: 'Род. документ' },
+      ]
       : [],
-    doctype === 'move-outs' || doctype === 'move-ins'
+    doctype === Doctype.MOVE_OUT || doctype === Doctype.MOVE_IN
       ? [
-          { key: 'fromWhouseName', label: 'Со склада' },
-          { key: 'toWhouseName', label: 'На склад' },
-          { key: 'note', label: 'Примечание' },
-        ]
+        { key: 'fromWhouseName', label: 'Со склада' },
+        { key: 'toWhouseName', label: 'На склад' },
+        { key: 'note', label: 'Примечание' },
+      ]
       : [],
-    doctype === 'returns'
+    doctype === Doctype.RETURN
       ? [
-          { key: 'toWhouseName', label: 'На склад' },
-          { key: 'note', label: 'Род. док' },
-          { key: 'note', label: 'Род. док. номер' },
-        ]
+        { key: 'toWhouseName', label: 'На склад' },
+        { key: 'note', label: 'Род. док' },
+        { key: 'note', label: 'Род. док. номер' },
+      ]
       : [],
-    doctype === 'writeoff-losts'
+    doctype === Doctype.WRITEOFF_LOST
       ? [
-          { key: 'fromWhouseName', label: 'Со склада' },
-          { key: 'note', label: 'Примечание' },
-        ]
+        { key: 'fromWhouseName', label: 'Со склада' },
+        { key: 'note', label: 'Примечание' },
+      ]
       : [],
     {
       key: 'actions',
@@ -79,22 +81,24 @@ const WhouseDocsGrid = ({ data, isLoading, doctype }: Props) => {
       scopedColumns={{
         statusName: (item: any) => (
           <td>
-            <ContractStatusBadge status={item.status} statusName={item.statusName} />
+            <WhouseDocStatusBadge status={item.status} statusName={item.statusName} />
           </td>
         ),
         actions: (item: any) => (
           <td>
-            <Link to={`/whouse/docs/${doctype}/view/${item.id}`}>
-              <CButton color={'primary'} variant="outline" shape="square" size="sm">
-                <FaEye />
-              </CButton>
-              &nbsp;
-            </Link>
-            <Link to={`/whouse/docs/${doctype}/edit/${item.id}`}>
-              <CButton color={'primary'} variant="outline" shape="square" size="sm">
-                <FaPen />
-              </CButton>
-            </Link>
+            {doctype && <>
+              <Link to={`/whouse/docs/${getWhouseDocUriPathFromDoctype(doctype)}/view/${item.id}`}>
+                <CButton color={'primary'} variant="outline" shape="square" size="sm">
+                  <FaEye />
+                </CButton>
+                &nbsp;
+              </Link>
+              <Link to={`/whouse/docs/${getWhouseDocUriPathFromDoctype(doctype)}/edit/${item.id}`}>
+                <CButton color={'primary'} variant="outline" shape="square" size="sm">
+                  <FaPen />
+                </CButton>
+              </Link>
+            </>}
           </td>
         ),
       }}

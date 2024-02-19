@@ -29,7 +29,11 @@ const DocFormPageWrapper = ({
 }: Props) => {
   return (
     <CCard>
-      {title && <CCardHeader>{title}</CCardHeader>}
+      {title && (
+        <CCardHeader>
+          <h5>{title}</h5>
+        </CCardHeader>
+      )}
 
       <CCardBody>{children}</CCardBody>
       <CCardFooter>
