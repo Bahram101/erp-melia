@@ -15,6 +15,7 @@ interface Props {
     title?: string
     content?: ReactNode,
     createUrl?: string,
+    createButtonClick?: () => void
   }
   loading: boolean;
   addButton?: ReactNode;
@@ -62,7 +63,7 @@ const GridDataWrapper = ({
   }
 
   if (addScopedColumns) {
-    scopedColumns = {...scopedColumns, ...addScopedColumns}
+    scopedColumns = { ...scopedColumns, ...addScopedColumns }
   }
 
   return (
@@ -72,6 +73,12 @@ const GridDataWrapper = ({
         {header?.createUrl && <CButton
           className={'pull-right'}
           href={header.createUrl}
+        >
+          Добавить
+        </CButton>}
+        {header?.createButtonClick && <CButton
+          className={'pull-right'}
+          onClick={header.createButtonClick}
         >
           Добавить
         </CButton>}

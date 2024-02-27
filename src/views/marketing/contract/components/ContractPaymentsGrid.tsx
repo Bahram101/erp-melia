@@ -1,7 +1,7 @@
 import { useContractPaymentsQuery } from '../../../../hooks/marketing/marketingQueries'
 import React, { useEffect, useState } from 'react'
 import { CCard, CCardBody, CCardHeader, CSpinner } from '@coreui/react-pro'
-import CashDocGridByContext from '../../../finance/components/CashDocGridByContext'
+import CashDocGridByContext from '../../../finance/cashdoc/components/CashDocGridByContext'
 import { CashDocGridByContextModel } from '../../../../models/finance/FinModels'
 import { Doctype } from '../../../../models/CommonModels'
 

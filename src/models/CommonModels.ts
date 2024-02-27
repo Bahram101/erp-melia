@@ -10,18 +10,21 @@ export enum DocStatus {
   PROBLEM = 'PROBLEM',
   ON_APPROVE = 'ON_APPROVE',
   DELETED = 'DELETED',
+  APPROVED = 'APPROVED',
 }
 
 export enum Doctype {
   CONTRACT = 'CONTRACT',
-  CASH_DOC_FIRST_PAYMENT = 'CASH_DOC_FIRST_PAYMENT',
-  CASH_DOC_MONTHLY_PAYMENT = 'CASH_DOC_MONTHLY_PAYMENT',
   SUPPLY = 'SUPPLY',
   SHIPMENT = 'SHIPMENT',
   MOVE_OUT = 'MOVE_OUT',
   MOVE_IN = 'MOVE_IN',
   RETURN = 'RETURN',
   WRITEOFF_LOST = 'WRITEOFF_LOST',
+  // CashDocs
+  CASH_DOC_SERVICE_PAYMENT = 'CASH_DOC_SERVICE_PAYMENT',
+  CASH_DOC_FIRST_PAYMENT = 'CASH_DOC_FIRST_PAYMENT',
+  CASH_DOC_MONTHLY_PAYMENT = 'CASH_DOC_MONTHLY_PAYMENT',
 }
 
 export enum DocAction {
@@ -31,6 +34,11 @@ export enum DocAction {
   SEND_TO_PROBLEM = 'SEND_TO_PROBLEM',
   RESTORE = 'RESTORE',
   UPDATE_COLLECTOR = 'UPDATE_COLLECTOR',
+  CONTRACT_RENEW = 'CONTRACT_RENEW',
+  UPDATE_RECOMMENDER = 'UPDATE_RECOMMENDER',
+  ADD_GIFT = 'ADD_GIFT',
+  APPROVE = 'APPROVE',
+  REJECT = 'REJECT',
 }
 
 export interface DocActionButton {
@@ -110,10 +118,27 @@ export const DoctypeTitles: { [key in Doctype]?: string } = {
   [Doctype.MOVE_IN]: 'Внутр. поуступления товаров',
   [Doctype.RETURN]: 'Возврат товара от клиента',
   [Doctype.WRITEOFF_LOST]: 'Списание по потере',
+  [Doctype.CASH_DOC_SERVICE_PAYMENT]: 'Сервис платежи',
 }
 
 export const DocStatusTitles: { [key in DocStatus]?: string } = {
   [DocStatus.NEW]: 'Новый',
   [DocStatus.CLOSED]: 'Закрытый',
   [DocStatus.CANCELLED]: 'Отменен',
+}
+
+export interface ContextDocRefModel {
+  id: string
+  doctype: DoctypeRefModel
+  regNumber?: string
+}
+
+export interface ContextDocDetailedModel {
+  id: string
+  doctype: DoctypeRefModel
+  regNumber?: string
+  docDate?: string
+  branch?: CommonRefModel
+  customer?: CustomerRefModel
+  responsible?: PostRefModel
 }

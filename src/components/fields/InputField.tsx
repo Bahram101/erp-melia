@@ -19,6 +19,16 @@ const InputField = ({
   disabled,
   placeholder,
 }: Props) => {
+  const preHandleChange = (e: any) => {
+    const { value } = e.target
+    handleChange({
+      target: {
+        name: fieldName,
+        value: type === 'number' ? +value : value,
+      },
+    })
+  }
+
   const invalid = error && error.length > 0
   return (
     <CFormInput
@@ -26,7 +36,7 @@ const InputField = ({
       disabled={disabled}
       type={type || 'text'}
       name={fieldName}
-      onChange={handleChange}
+      onChange={preHandleChange}
       label={label}
       value={value}
       required={invalid ? true : false}

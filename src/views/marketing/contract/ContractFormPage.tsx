@@ -149,8 +149,6 @@ const ContractFormPage = () => {
       })
   }
 
-  console.log('ccc', model)
-
   return (
     <DocFormPageWrapper
       saving={saveMutation.isLoading}

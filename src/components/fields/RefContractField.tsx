@@ -7,6 +7,7 @@ import InputField from './InputField'
 import { cilSearch } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
 import { useContractRefQuery } from '../../hooks/marketing/marketingQueries'
+import { AxiosError } from 'axios'
 
 interface Props extends CustomFieldProps {
   branchOptions: RefOptionsModel[];
@@ -22,6 +23,16 @@ const RefContractField = ({ branchOptions, value, label, handleChange, fieldName
   useEffect(() => {
     setModel(value)
   }, [value])
+
+  useEffect(() => {
+    //console.log('asdsadasdsa', contractRefSearchQuery.error)
+    //console.log('isErr', contractRefSearchQuery.isError)
+    if (contractRefSearchQuery.error && contractRefSearchQuery.error instanceof AxiosError) {
+      if ((contractRefSearchQuery.error as AxiosError)?.response?.status === 404) {
+        setError('Договор не найден')
+      }
+    }
+  }, [contractRefSearchQuery.error])
 
   const localHandleChange = (e: any) => {
     const { name, value } = e.target
@@ -83,8 +94,8 @@ const RefContractField = ({ branchOptions, value, label, handleChange, fieldName
         }
 
       </CButton>
-      {error && error.length > 0 && <div className="invalid-feedback">{error}</div>}
     </CInputGroup>
+    {error && error.length > 0 && <div style={{fontSize: '14px', color: 'red', marginTop: '-15px'}}>{error}</div>}
   </>
 }
 

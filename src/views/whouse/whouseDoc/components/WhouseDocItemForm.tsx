@@ -2,6 +2,7 @@ import React from 'react'
 import {
   CButton,
   CCol,
+  CFormInput,
   CTable,
   CTableBody,
   CTableDataCell,
@@ -23,6 +24,7 @@ interface Props {
   handleItemChange: (e: any, index: number) => void
   addItemRow: () => void
   deleteItemRow: (e: any) => void
+  goodsIds: any
 }
 
 const WhouseDocItemForm = ({
@@ -32,7 +34,9 @@ const WhouseDocItemForm = ({
   handleItemChange,
   addItemRow,
   deleteItemRow,
+  goodsIds,
 }: Props) => {
+  console.log('goodsIds', goodsIds)
   return (
     <CCol md={8} className="goodsOptionsForm ">
       <div className="mb-3 d-flex justify-content-between align-items-center">
@@ -72,28 +76,25 @@ const WhouseDocItemForm = ({
                 />
               </CTableDataCell>
               <CTableDataCell>
-                {/* <InputField
-                  fieldName={'unitPrice'}
-                  type={'number'}
-                  error={errors[`items[${index}].unitPrice`]}
-                  value={model.items && model.items[index].unitPrice}
-                  handleChange={(e: any) => handleItemChange(e, index)}
-                /> */}
                 <CurrencyField
-                  error={errors.unitPrice}
+                  error={errors[`items[${index}].unitPrice`]}
                   fieldName={'unitPrice'}
                   handleChange={(e: any) => handleItemChange(e, index)}
                   value={model.items && model.items[index].unitPrice}
                 />
               </CTableDataCell>
               <CTableDataCell>
-                <InputField
-                  fieldName={'quantity'}
-                  type={'number'}
-                  error={errors[`items[${index}].quantity`]}
-                  value={model.items && model.items[index].quantity}
-                  handleChange={(e: any) => handleItemChange(e, index)}
-                />
+                {goodsIds.includes(item.goodsId) ? (
+                  <CFormInput type="file" id="formFile" label="" className="mt-1" />
+                ) : (
+                  <InputField
+                    fieldName={'quantity'}
+                    type="number"
+                    error={errors[`items[${index}].quantity`]}
+                    value={model.items && model.items[index].quantity}
+                    handleChange={(e: any) => handleItemChange(e, index)}
+                  />
+                )}
               </CTableDataCell>
               <CTableDataCell>
                 <CButton

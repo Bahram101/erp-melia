@@ -24,11 +24,15 @@ export const usePositionOptionsQuery = (enabled: boolean) => {
   )
 }
 
-export const useCashOptionsQuery = (enabled: boolean) => {
+export const useCashOptionsQuery = (params: {
+  type?: string
+}, enabled: boolean) => {
   return useQuery<RefOptionsModel[]>(
     ['get-reference-chashes-as-options'],
     async () => {
-      const { data } = await request.get('/reference/cashes/as-options')
+      const { data } = await request.get('/reference/cashes/as-options', {
+        params: params
+      })
       return data
     },
     { enabled: enabled },
@@ -64,6 +68,28 @@ export const useSupplierOptionsQuery = (enabled: boolean) => {
     ['get-reference-suppliers-as-options'],
     async () => {
       const { data } = await request.get('/reference/customers/suppliers/as-options')
+      return data
+    },
+    { enabled: enabled },
+  )
+}
+
+export const useGiftOptionsQuery = (enabled: boolean) => {
+  return useQuery<RefOptionsModel[]>(
+    ['get-reference-gifts-as-options'],
+    async () => {
+      const { data } = await request.get('/reference/gifts/as-options')
+      return data
+    },
+    { enabled },
+  )
+}
+
+export const useBankOptionsQuery = (enabled: boolean) => {
+  return useQuery<RefOptionsModel[]>(
+    ['get-reference-banks-as-options'],
+    async () => {
+      const { data } = await request.get('/reference/banks/as-options')
       return data
     },
     { enabled: enabled },

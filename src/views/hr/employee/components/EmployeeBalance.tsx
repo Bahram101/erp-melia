@@ -38,11 +38,11 @@ const EmployeeBalance = ({ customerId, employeeInfo }: Props) => {
     dateTo: null,
   })
 
-  const [visibleFormModal, setVisibleFormModal] = useState<boolean>(false) 
+  const [visibleFormModal, setVisibleFormModal] = useState<boolean>(false)
   const [model, setModel] = useState<CustomerDeptFormModel>(DefaultCustomerDeptFormModel)
 
   const balancesQuery = useCustomerBalanceQuery(customerId, searchParams)
-  const chashOptionsQuery = useCashOptionsQuery(true)
+  const chashOptionsQuery = useCashOptionsQuery({}, true)
   const saveMutation = useFinCustomerDepsMutation()
 
   const onChangeSearchParams = (e: any) => {

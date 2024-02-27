@@ -6,7 +6,7 @@ import CustomSpinner from '../../../components/spinner/CustomSpinner'
 import WhouseDocForm from './components/WhouseDocForm'
 import {
   DefaultWhouseDocFormModel,
-  DefaultWhouseDocGoodsFormModel,
+  DefaultWhouseDocItemFormModel,
   WhouseDocFormModel,
 } from '../../../models/whouse/whouseModels'
 import {
@@ -29,10 +29,12 @@ const WhouseDocFormPage = () => {
   const { whousedocpath, id } = useParams()
   const [model, setModel] = useState<WhouseDocFormModel>(DefaultWhouseDocFormModel)
   const [errors, setErrors] = useState<any>({})
+  const [goodsIds, setGoodsIds] = useState<any>([])
 
   const whouseOptionsQuery = useWhouseOptionsQuery(true)
   const supplierOptionsQuery = useSupplierOptionsQuery(true)
   const goodsOptionsQuery = useGoodsOptionsQuery({}, true)
+  const goodsHasSerialsQuery = useGoodsOptionsQuery({ hasSerial: true }, true)
 
   const whouseDocFormQuery = useWhouseDocFormQuery(id, false)
   const saveMutation = useWhouseDocSaveMutation(id)
@@ -51,6 +53,11 @@ const WhouseDocFormPage = () => {
       //ToDo show error
     }
   }, [whousedocpath, id])
+
+  useEffect(() => {
+    const ids = goodsHasSerialsQuery.data?.map(({ id }: any) => id)
+    setGoodsIds(ids)
+  }, [goodsHasSerialsQuery.data])
 
   const handleSubmit = () => {
     saveMutation
@@ -74,8 +81,7 @@ const WhouseDocFormPage = () => {
   }
   const handleItemChange = (e: any, index: number) => {
     const { name, value } = e.target
-    const obj = model.items.find((el) => el.goodsId === value)
-    if (obj) {
+    if (name === 'goodsId' && model.items.some((el) => el.goodsId === value)) {
       toast.error('Товар уже выбран!')
       return
     }
@@ -90,13 +96,12 @@ const WhouseDocFormPage = () => {
           : el,
       ),
     }))
-    setErrors({ ...errors, [name]: null })
   }
 
   const addItemRow = () => {
     setModel((prev) => ({
       ...prev,
-      items: prev.items && [...prev.items, DefaultWhouseDocGoodsFormModel],
+      items: prev.items && [...prev.items, DefaultWhouseDocItemFormModel],
     }))
   }
 
@@ -106,9 +111,7 @@ const WhouseDocFormPage = () => {
       items: prev.items?.filter((item, key) => key !== index),
     }))
   }
-
   console.log('model', model)
-
   return (
     <DocFormPageWrapper
       saving={saveMutation.isLoading}
@@ -125,6 +128,7 @@ const WhouseDocFormPage = () => {
             whouseOptions={whouseOptionsQuery.data || []}
             supplierOptions={supplierOptionsQuery.data || []}
             goodsOptions={goodsOptionsQuery.data || []}
+            goodsIds={goodsIds || []}
             addItemRow={addItemRow}
             deleteItemRow={deleteItemRow}
             handleItemChange={handleItemChange}

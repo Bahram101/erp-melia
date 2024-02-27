@@ -90,6 +90,26 @@ const _nav = [
         name: 'Список договоров',
         to: '/marketing/contracts',
       },
+      {
+        component: CNavItem,
+        name: 'Типы продаж',
+        to: '/marketing/sale-types',
+      },
+      {
+        component: CNavItem,
+        name: 'Документы на утверждение',
+        to: '/marketing/docflow/approve-docs',
+      },
+      {
+        component: CNavItem,
+        name: 'Бонусы',
+        to: '/marketing/sale-bonuses',
+      },
+      {
+        component: CNavItem,
+        name: 'Подарки',
+        to: '/marketing/sale-gifts',
+      },
     ],
   },
   {
@@ -99,8 +119,8 @@ const _nav = [
     items: [
       {
         component: CNavItem,
-        name: 'Form Control',
-        to: '/forms/form-control',
+        name: 'Сервис платежи',
+        to: '/finance/cash-docs/service-payments',
       },
     ],
   },

@@ -24,6 +24,8 @@ import { DocAction } from '../../../models/CommonModels'
 import ContractCancelFormModal from './components/ContractCancelFormModal'
 import ContractRestoreFormModal from './components/ContractRestoreFormModal'
 import ContractChangeCollectorModal from './components/actionmodals/ContractChangeCollectorModal'
+import ContractChangeRecoModal from './components/actionmodals/ContractChangeRecoModal'
+import ContractGiftFormModal from './components/actionmodals/ContractGiftFormModal'
 
 const TAB_MAIN_DATA = 'MAIN_DATA'
 const TAB_ADD_DATA = 'ADD_DATA'
@@ -66,6 +68,8 @@ const ContractViewPage = () => {
   const [cancelModalVisible, setCancelModalVisible] = useState<boolean>(false)
   const [restoreModalVisible, setRestoreModalVisible] = useState<boolean>(false)
   const [changeCollectorModalVisible, setChangeCollectorModalVisible] = useState<boolean>(false)
+  const [changeRecoModalVisible, setChangeRecoModalVisible] = useState<boolean>(false)
+  const [giftFormModalVisible, setGiftFormModalVisible] = useState<boolean>(false)
 
   const detailedQuery = useContractDetailedQuery(id, false)
   const customerDetailedQuery = useCustomerDetailedQuery(model?.customer?.id, false)
@@ -124,6 +128,15 @@ const ContractViewPage = () => {
     } else if (action === DocAction.UPDATE_COLLECTOR) {
       setChangeCollectorModalVisible(true)
       return Promise.resolve()
+    } else if (action === DocAction.CONTRACT_RENEW) {
+      window.location.pathname = `/marketing/contracts/renew/${id}`
+      return Promise.resolve()
+    } else if (action === DocAction.UPDATE_RECOMMENDER) {
+      setChangeRecoModalVisible(true)
+      return Promise.resolve()
+    } else if (action === DocAction.ADD_GIFT) {
+      setGiftFormModalVisible(true)
+      return Promise.resolve()
     }
 
     return handleActionQuery.mutateAsync({ form: form })
@@ -145,6 +158,27 @@ const ContractViewPage = () => {
         />
       </CCardHeader>
       <CCardBody>
+        <ContractGiftFormModal
+          visible={giftFormModalVisible}
+          close={() => setGiftFormModalVisible(false)}
+          regCode={model?.regCode || ''}
+          contractId={id || ''}
+          handleAfterSubmit={() => {
+            loadContract()
+            setGiftFormModalVisible(false)
+          }}
+          existGifts={model?.gifts || []}
+        />
+        <ContractChangeRecoModal
+          visible={changeRecoModalVisible}
+          close={() => setChangeRecoModalVisible(false)}
+          regCode={model?.regCode || ''}
+          handleAfterSubmit={() => {
+            loadContract()
+            setChangeRecoModalVisible(false)
+          }}
+          contractId={id || ''}
+        />
         <ContractCancelFormModal
           visible={cancelModalVisible}
           onClose={() => setCancelModalVisible(false)}

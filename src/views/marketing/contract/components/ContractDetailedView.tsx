@@ -6,6 +6,7 @@ import PhoneNumber from '../../../../components/phone/PhoneNumber'
 import PostRef from '../../../../components/post/PostRef'
 import CustomerRef from '../../../../components/customer/CustomerRef'
 import ContractRecommender from './ContractRecommender'
+import ContractGiftGrid from './ContractGiftGrid'
 
 type Props = {
   contract: ContractDetailedModel | undefined
@@ -97,6 +98,8 @@ const ContractDetailedView = ({ contract }: Props) => {
             </CTableRow>
           </CTableBody>
         </CTable>
+        <hr />
+        <ContractGiftGrid gifts={contract.gifts} />
       </CCol>
       <CCol md>
         <CTable className={'table table-striped item-detailed'}>

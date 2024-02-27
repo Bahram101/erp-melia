@@ -25,7 +25,7 @@ const CurrencyField = ({ label, value, fieldName, handleChange, error }: Props) 
       {label && <CFormLabel>{label}</CFormLabel>}
       <CurrencyInput
         placeholder="0"
-        className={`form-control`}
+        className={`mb-1 mt-1 form-control`}
         value={value}
         onValueChange={preHandleChange}
         required

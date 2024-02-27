@@ -37,3 +37,21 @@ export const getWhouseDocUriPathFromDoctype = (doctype: Doctype): string => {
       return ''
   }
 }
+
+export const getCashDoctypeFromUriPath = (path: string): Doctype | null => {
+  switch (path) {
+    case 'service-payments':
+      return Doctype.CASH_DOC_SERVICE_PAYMENT
+    default:
+      return null
+  }
+}
+
+export const getCashDocUriPathFromDoctype = (doctype: Doctype): string => {
+  switch (doctype) {
+    case Doctype.CASH_DOC_SERVICE_PAYMENT:
+      return 'service-payments'
+    default:
+      return ''
+  }
+}

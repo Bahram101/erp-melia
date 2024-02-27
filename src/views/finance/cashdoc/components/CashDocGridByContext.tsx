@@ -1,6 +1,6 @@
-import { CashDocGridByContextModel } from '../../../models/finance/FinModels'
+import { CashDocGridByContextModel } from '../../../../models/finance/FinModels'
 import { CTable, CTableBody, CTableDataCell, CTableHead, CTableHeaderCell, CTableRow } from '@coreui/react-pro'
-import { formatMoney } from '../../../utils/UtilFuncs'
+import { formatMoney } from '../../../../utils/UtilFuncs'
 import React from 'react'
 
 

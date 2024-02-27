@@ -70,6 +70,17 @@ const ContractForm = ({
           value={model.docDate}
           error={errors.docDate}
         />
+      </CCol>
+      <CCol>
+        <RefContractField
+          branchOptions={[]}
+          value={model.recommender}
+          fieldName={'recommender'}
+          handleChange={handleChange}
+        />
+      </CCol>
+
+      <CCol md={6}>
         <CurrPostsField
           label={'Дилер'}
           fieldName={'dealer'}

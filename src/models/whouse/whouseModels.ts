@@ -14,14 +14,14 @@ export interface WhouseDocGridModel {
 }
 
 export interface WhouseDocItemFormModel {
-  id: string
+  id?: string
   goodsId: string
   quantity: number
   unitPrice: number
   serialNumbers: string[]
 }
 
-export const DefaultWhouseDocGoodsFormModel: WhouseDocItemFormModel = {
+export const DefaultWhouseDocItemFormModel: WhouseDocItemFormModel = {
   id: '',
   goodsId: '',
   quantity: 0,
@@ -43,7 +43,7 @@ export const DefaultWhouseDocFormModel: WhouseDocFormModel = {
   doctype: Doctype.SUPPLY,
   status: DocStatus.NEW,
   note: '',
-  items: [DefaultWhouseDocGoodsFormModel],
+  items: [DefaultWhouseDocItemFormModel],
 }
 
 export interface WhouseDocFormModel {

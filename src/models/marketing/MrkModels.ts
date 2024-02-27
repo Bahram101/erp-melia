@@ -1,7 +1,11 @@
 import {
-  CommonRefModel, ContractRefModel,
-  CustomerRefModel, DefaultContractRefModel, DefaultPostRefModel, DocActionButton,
-  DocStatus, Doctype,
+  CommonRefModel,
+  ContractRefModel,
+  CustomerRefModel,
+  DefaultContractRefModel,
+  DefaultPostRefModel,
+  DocActionButton,
+  DocStatus,
   DoctypeRefModel,
   PostRefModel,
   StatusRefModel,
@@ -27,12 +31,13 @@ export interface ContractDetailedModel {
   serialNumber: string;
   serialNumber2: string;
   note: string;
+  gifts: ContractGiftGridModel[]
   discountFromDealer: number;
   goods: CommonRefModel;
   recommender: RecommenderModel;
   saleType: CommonRefModel;
   actions: DocActionButton[];
-};
+}
 
 export interface ContractGridModel {
   id: string;
@@ -116,7 +121,8 @@ export interface SaleTypeEmpPaymentModel {
 }
 
 export interface ContractFormModel {
-  regNumber: number | "";
+  regNumber: number | '';
+  regCode: string;
   branchId: string;
   serviceBranchId: string;
   docDate: string;
@@ -155,12 +161,20 @@ export interface PaymentScheduleFormModel {
 }
 
 export interface ContractGiftFormModel {
-  giftId: string;
-  name: string;
+  giftId?: string
+  name?: string;
   quantity: number;
 }
 
-export const DefaultContractFormModel : ContractFormModel = {
+export interface ContractGiftGridModel {
+  giftId: string;
+  name: string;
+  quantity: number;
+  unitPrice: number
+}
+
+export const DefaultContractFormModel: ContractFormModel = {
+  regCode: '',
   addressId: '',
   branchId: '',
   cashFirstPayment: 0,
@@ -180,8 +194,144 @@ export const DefaultContractFormModel : ContractFormModel = {
   payments: [],
   price: 0,
   recommender: DefaultContractRefModel,
-  regNumber: "",
+  regNumber: '',
   saleTypeId: '',
   serialNumber: '',
   serviceBranchId: '',
+}
+
+export interface ContractRenewFormModel {
+  regCode: string
+  contractId: string
+  statusName: string
+  branchName: string
+  customerId: string
+  customerName: string
+  dealerName: string
+  addressId: string | null
+  docDate: string
+  renewDate: string
+  discountFromDealer: number
+  serialNumber: string
+  saleTypeId: string | null
+  price: number
+  goodsId: string
+  toWhouseId?: string
+  cashId?: string
+  firstPayment: number
+  payments: PaymentScheduleFormModel[];
+}
+
+export const DefaultContractRenewFormModel: ContractRenewFormModel = {
+  addressId: '',
+  branchName: '',
+  contractId: '',
+  customerId: '',
+  customerName: '',
+  dealerName: '',
+  discountFromDealer: 0,
+  docDate: '',
+  goodsId: '',
+  price: 0,
+  regCode: '',
+  renewDate: '',
+  saleTypeId: null,
+  serialNumber: '',
+  statusName: '',
+  firstPayment: 0,
+  payments: [],
+}
+
+export interface DistributeRenewFormModel {
+  contractId: string | null
+  saleTypeId: string | null
+  docDate: string | null
+}
+
+export interface SaleTypeGridModel {
+  id: string
+  name: string
+  price: number
+  minFirstPayment: number
+  firstPayment: number
+  monthCount: number
+  fromDate: string
+  toDate: string
+  note: string
+  bankCashName: string
+  saleViaBank: boolean
+  bankName: string
+}
+
+export interface SaleTypeFormModel {
+  name: string
+  price: number
+  firstPayment: number
+  minFirstPayment: number
+  monthCount: number
+  fromDate: string
+  toDate: string
+  minDealerPaymentAmount: number
+  minPaymentAmount: number
+  note: string
+  saleViaBank: boolean
+  bankId: string | null
+  awards: SaleTypeAwardOrDeposit[]
+  deposits: SaleTypeAwardOrDeposit[]
+}
+
+export interface SaleTypeAwardOrDeposit {
+  positionId: string | null
+  amount: number
+}
+
+export const DefaultSaleTypeFormModel: SaleTypeFormModel = {
+  awards: [],
+  bankId: null,
+  deposits: [],
+  firstPayment: 0,
+  fromDate: '',
+  minDealerPaymentAmount: 0,
+  minFirstPayment: 0,
+  minPaymentAmount: 0,
+  monthCount: 0,
+  name: '',
+  note: '',
+  price: 0,
+  saleViaBank: false,
+  toDate: '',
+}
+
+export interface SaleBonusGridModel {
+  id: string
+  branchName: string
+  productName: string
+  positionName: string
+  year: number
+  month: number
+  configs: SaleBonusConfig[]
+}
+
+export interface SaleBonusConfig {
+  fromCount: number | null
+  toCount: number | null
+  amount: number
+}
+
+export interface SaleBonusFormModel {
+  branchId: string | null
+  positionId: string | null
+  productId: string | null
+  year: number
+  month: number
+  configs: SaleBonusConfig[]
+}
+
+export const DefaultSaleBonusFormModel: SaleBonusFormModel = {
+  branchId: null,
+  configs: [],
+  month: 0,
+  positionId: null,
+  productId: null,
+  year: 0,
 }

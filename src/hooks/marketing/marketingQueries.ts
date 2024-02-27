@@ -4,13 +4,20 @@ import {
   ContractDetailedModel,
   ContractFormModel,
   ContractGridModel,
+  ContractRenewFormModel,
   ContractRewardGridModel,
+  DefaultSaleTypeFormModel,
+  DistributeRenewFormModel,
   PaymentScheduleDetailedGridModel,
   PaymentScheduleFormModel,
+  SaleBonusFormModel,
+  SaleBonusGridModel,
   SaleTypeDetailedModel,
+  SaleTypeFormModel,
+  SaleTypeGridModel,
 } from '../../models/marketing/MrkModels'
 import { CashDocGridByContextModel } from '../../models/finance/FinModels'
-import { RefOptionsModel } from '../../models/CommonModels'
+import { ContractRefModel, RefOptionsModel } from '../../models/CommonModels'
 
 export const useContractsListQuery = (params: {}) => {
   return useQuery<ContractGridModel[]>(
@@ -109,7 +116,7 @@ export const useContractPaymentsQuery = (contractId: string, enabled: boolean) =
 }
 
 export const useContractRefQuery = (branchId: string, regNumber: number, enabled: boolean) => {
-  return useQuery<ContractRewardGridModel[]>(
+  return useQuery<ContractRefModel>(
     ['mrk-get-contract-as-ref', `${branchId}-${regNumber}`],
     async () => {
       const { data } = await request.get(`/marketing/contracts/${branchId}/${regNumber}/as-ref`)
@@ -159,6 +166,107 @@ export const useContractSaveMutation = (id: string | undefined) => {
 
 export const useContractHandleActionQuery = () => {
   return useMutation(({ form }: { form: any }) => {
-    return request.put(`/marketing/contracts/handle-action`, form);
-  });
-};
+    return request.put(`/marketing/contracts/handle-action`, form)
+  })
+}
+
+export const useContractRenewFormQuery = (id: string | undefined, enabled: boolean) => {
+  return useQuery<ContractRenewFormModel>(
+    ['mrk-get-contract-renew-form', id],
+    async () => {
+      const { data } = await request.get(`/marketing/contracts/${id}/renew-form`)
+      return data
+    },
+    { enabled: enabled },
+  )
+}
+
+export const useContractRenewSaveMutation = (id: string | undefined) => {
+  return useMutation(({ form }: { form: ContractRenewFormModel }) =>
+    request.patch(`/marketing/contracts/${id}/renew`, form),
+  )
+}
+
+export const useDistributeContractRenewPaymentsMutation = () => {
+  return useMutation(({ form }: { form: DistributeRenewFormModel }) =>
+    request.put('/marketing/contracts/distribute-renew-payments', form),
+  )
+}
+
+export const useSaleTypeGridQuery = (params: { isActive: boolean }, enabled: boolean) => {
+  return useQuery<SaleTypeGridModel[]>(
+    ['mrk-get-sale-type-grid'],
+    async () => {
+      const { data } = await request.get('/marketing/sale-types', {
+        params: params,
+      })
+      return data
+    },
+    { enabled: enabled },
+  )
+}
+
+export const useSaleTypeFormQuery = (id: string | undefined, enabled: boolean) => {
+  return useQuery<SaleTypeFormModel>(
+    ['mrk-get-sale-type-form'],
+    async () => {
+      if (id) {
+        const { data } = await request.get(`/marketing/sale-types/${id}/form`)
+        return data
+      }
+
+      return DefaultSaleTypeFormModel
+    },
+    { enabled: enabled },
+  )
+}
+
+export const useSaleTypeSaveMutation = (id: string | undefined) => {
+  if (id) {
+    return useMutation(({ form }: { form: SaleTypeFormModel }) =>
+      request.put(`/marketing/sale-types/${id}`, form),
+    )
+  }
+
+  return useMutation(({ form }: { form: SaleTypeFormModel }) =>
+    request.post('/marketing/sale-types', form),
+  )
+}
+
+export const useSaleBonusGridQuery = (params: { isActive: boolean }, enabled: boolean) => {
+  return useQuery<SaleBonusGridModel[]>(
+    ['mrk-get-sale-bonus-grid'],
+    async () => {
+      const { data } = await request.get('/marketing/sale-bonuses', {
+        params: params,
+      })
+      return data
+    },
+    { enabled: enabled },
+  )
+}
+
+export const useSaleBonusFormQuery = (id: string | undefined, enabled: boolean) => {
+  return useQuery<SaleBonusFormModel>(
+    ['mrk-get-sale-bonus-form'],
+    async () => {
+      if (id) {
+        const { data } = await request.get(`/marketing/sale-bonuses/${id}/form`)
+        return data
+      }
+    },
+    { enabled: enabled },
+  )
+}
+
+export const useSaleBonusSaveMutation = (id: string | undefined) => {
+  if (id) {
+    return useMutation(({ form }: { form: SaleBonusFormModel }) =>
+      request.put(`/marketing/sale-bonuses/${id}`, form),
+    )
+  }
+
+  return useMutation(({ form }: { form: SaleBonusFormModel }) =>
+    request.post('/marketing/sale-bonuses', form),
+  )
+}

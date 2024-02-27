@@ -52,3 +52,18 @@ export interface CustomerGridModel {
   middlename: string;
   iin: string;
 }
+
+export interface GiftGridModel {
+  id: string
+  name: string
+  goodsName: string
+  price: number
+  createdAt: string
+  updatedAt: string
+}
+
+export interface GiftFormModel {
+  name: string
+  goodsId: string | null
+  price: number
+}

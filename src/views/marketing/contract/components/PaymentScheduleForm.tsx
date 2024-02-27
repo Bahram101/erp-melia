@@ -13,14 +13,22 @@ import {
 } from '@coreui/react-pro'
 import { DatePickerField } from '../../../../components/fields/DatePickerField'
 import CurrencyField from '../../../../components/fields/CurrencyField'
+import { formatMoney } from '../../../../utils/UtilFuncs'
 
 type Props = {
   items: PaymentScheduleFormModel[];
   handleContractPaymentChange: (idx: number, e: any) => void;
   distributePayments: () => void;
   distributing: boolean;
+  editMode?: boolean
 }
-const PaymentScheduleForm = ({ items, handleContractPaymentChange, distributePayments, distributing }: Props) => {
+const PaymentScheduleForm = ({
+                               items,
+                               handleContractPaymentChange,
+                               distributePayments,
+                               distributing,
+                               editMode = true,
+                             }: Props) => {
 
   return (
     <>
@@ -48,18 +56,18 @@ const PaymentScheduleForm = ({ items, handleContractPaymentChange, distributePay
                   <CTableRow key={i}>
                     <CTableHeaderCell>{i + 1}</CTableHeaderCell>
                     <CTableDataCell>
-                      {i === 0 ? <DatePickerField
+                      {i === 0 && editMode ? <DatePickerField
                         fieldName={'paymentDate'}
                         handleChange={(e: any) => handleContractPaymentChange(i, e)}
                         value={item.paymentDate}
                       /> : <p>{item.paymentDate}</p>}
                     </CTableDataCell>
                     <CTableDataCell>
-                      <CurrencyField
+                      {editMode ? <CurrencyField
                         fieldName={'amount'}
                         handleChange={(e: any) => handleContractPaymentChange(i, e)}
                         value={item.amount}
-                      />
+                      /> : <p>{formatMoney(item.amount)}</p>}
                     </CTableDataCell>
                     <CTableDataCell></CTableDataCell>
                   </CTableRow>
