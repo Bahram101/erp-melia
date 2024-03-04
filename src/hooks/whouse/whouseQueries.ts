@@ -1,6 +1,6 @@
 import { useQuery } from 'react-query'
 import { request } from '../../http'
-import { WhouseDocGridModel } from 'models/whouse/WhouseModels'
+import { WhouseDocGridModel } from 'models/whouse/whouseModels'
 
 export const useWhouseDocsListQuery = (params: {}) => {
   return useQuery<WhouseDocGridModel>(
