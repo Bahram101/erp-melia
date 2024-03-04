@@ -1,12 +1,16 @@
 import { CCol, CRow, CTable, CTableBody, CTableDataCell, CTableHeaderCell, CTableRow } from '@coreui/react-pro'
 import { formatMoney } from '../../../../utils/UtilFuncs'
 import { CashDocDetailedModel } from '../../../../models/finance/FinModels'
+import { Doctype } from '../../../../models/CommonModels'
+import { getOutCashDoctypes } from '../../../../utils/FinUtils'
+import CashDocStatusBadge from './CashDocStatusBadge'
+import RelatedDocGrid from '../../../../components/doc/RelatedDocGrid'
 
 type Props = {
   model: CashDocDetailedModel
 }
 const CashDocDetailedView = ({ model }: Props) => {
-  return (
+  return <>
     <CRow>
       <CCol md>
         <CTable className={'table table-striped item-detailed'}>
@@ -31,7 +35,9 @@ const CashDocDetailedView = ({ model }: Props) => {
               <CTableDataCell style={{ textAlign: 'end' }}>
                 Статус
               </CTableDataCell>
-              <CTableHeaderCell>{model.status.displayName}</CTableHeaderCell>
+              <CTableHeaderCell>
+                <CashDocStatusBadge status={model.status.status} statusName={model.status.displayName} />
+              </CTableHeaderCell>
             </CTableRow>
             <CTableRow>
               <CTableDataCell style={{ textAlign: 'end' }}>
@@ -67,20 +73,31 @@ const CashDocDetailedView = ({ model }: Props) => {
                 {model.branch?.displayName}
               </CTableHeaderCell>
             </CTableRow>
-            <CTableRow>
+            {getOutCashDoctypes().includes(model.doctype.name) || model.doctype.name === Doctype.CASH_DOC_MOVE_IN && <CTableRow>
+              <CTableDataCell style={{ textAlign: 'end' }}>
+                Из кассы
+              </CTableDataCell>
+              <CTableHeaderCell>
+                {model.fromCash?.displayName}
+              </CTableHeaderCell>
+            </CTableRow>}
+
+            {model.doctype && !getOutCashDoctypes().includes(model.doctype.name) && <CTableRow>
               <CTableDataCell style={{ textAlign: 'end' }}>
                 На кассу
               </CTableDataCell>
               <CTableHeaderCell>
                 {model.toCash?.displayName}
               </CTableHeaderCell>
-            </CTableRow>
-            <CTableRow>
+            </CTableRow>}
+
+
+            {model.doctype.name === Doctype.CASH_DOC_SERVICE_PAYMENT && <CTableRow>
               <CTableDataCell style={{ textAlign: 'end' }}>
                 Мастер
               </CTableDataCell>
               <CTableHeaderCell>{model.responsible?.empName}</CTableHeaderCell>
-            </CTableRow>
+            </CTableRow>}
             <CTableRow>
               <CTableDataCell style={{ textAlign: 'end' }}>
                 Сумма
@@ -101,7 +118,14 @@ const CashDocDetailedView = ({ model }: Props) => {
         </CTable>
       </CCol>
     </CRow>
-  )
+    <CRow>
+      <CCol>
+        <hr />
+        <h6>Связанные документы</h6>
+        <RelatedDocGrid docs={model.relatedDocs || []} />
+      </CCol>
+    </CRow>
+  </>
 }
 
 export default CashDocDetailedView

@@ -41,9 +41,8 @@ const GridDataWrapper = ({
               }
 
               return (
-                <>
-                  <ActionButtonContent
-                    key={idx}
+                <React.Fragment key={idx}>
+                  <ActionButtonContent                    
                     type={action.type}
                     onClick={action.handleClick}
                     item={item}
@@ -54,7 +53,7 @@ const GridDataWrapper = ({
                     }
                   />
                   &nbsp;
-                </>
+                </React.Fragment>
               )
             })}
         </td>

@@ -12,25 +12,27 @@ interface Props {
   whouseOptions: RefOptionsModel[]
   supplierOptions: RefOptionsModel[]
   goodsOptions: RefOptionsModel[]
-  goodsIds: string[]
+  hasSerialGoodsIds: string[]
   handleChange: (e: any) => void
   handleItemChange: (e: any, index: number) => void
   addItemRow: () => void
   deleteItemRow: (index: number) => void
+  showSnFormModal: (index: number, serialNumbers: string[]) => void
 }
 
 const WhouseDocForm = ({
-  model,
-  errors,
-  whouseOptions,
-  supplierOptions,
-  goodsOptions,
-  goodsIds,
-  handleChange,
-  handleItemChange,
-  addItemRow,
-  deleteItemRow,
-}: Props) => {
+                         model,
+                         errors,
+                         whouseOptions,
+                         supplierOptions,
+                         goodsOptions,
+                         hasSerialGoodsIds,
+                         handleChange,
+                         handleItemChange,
+                         addItemRow,
+                         deleteItemRow,
+                         showSnFormModal,
+                       }: Props) => {
   return (
     <CForm className="row g-3 needs-validation">
       <CCol md={4} className="pe-3">
@@ -136,15 +138,18 @@ const WhouseDocForm = ({
           error={errors.note}
         />
       </CCol>
+      <CCol md={8} className="goodsOptionsForm ">
       <WhouseDocsItemForm
         model={model}
         errors={errors}
         goodsOptions={goodsOptions || []}
-        goodsIds={goodsIds}
+        hasSerialGoodsIds={hasSerialGoodsIds}
         handleItemChange={handleItemChange}
         addItemRow={addItemRow}
         deleteItemRow={deleteItemRow}
+        showSnFormModal={showSnFormModal}
       />
+      </CCol>
     </CForm>
   )
 }

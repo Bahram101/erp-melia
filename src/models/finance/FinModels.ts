@@ -1,6 +1,7 @@
 import {
-  CommonRefModel,
-  CustomerRefModel, DocActionButton,
+  CommonRefModel, ContextDocGridModel,
+  CustomerRefModel,
+  DocActionButton,
   DocStatus,
   Doctype,
   DoctypeRefModel,
@@ -69,4 +70,41 @@ export interface CashDocDetailedModel {
   responsible?: PostRefModel
   note?: string
   actions: DocActionButton[]
+  relatedDocs?: ContextDocGridModel[]
 }
+
+export interface CashDocFormModel {
+  id?: string
+  branchId: string | null
+  fromCashId: string | null
+  toCashId: string | null
+  responsibleId: string | null
+  customerId: string | null
+  docDate: string | null
+  amount: number
+  doctype: Doctype | null
+  note: string
+  items: CashDocItemFormModel[]
+}
+
+export interface CashDocItemFormModel {
+  id?: string
+  itemId: string | null
+  amount: number
+  note: string | null
+}
+
+export const DefaultCashDocFormModel: CashDocFormModel = {
+  branchId: null,
+  fromCashId: null,
+  toCashId: null,
+  responsibleId: null,
+  customerId: null,
+  amount: 0,
+  docDate: null,
+  doctype: null,
+  items: [],
+  note: '',
+}
+
+export const DefaultCashDocItemFormModel: CashDocItemFormModel = { amount: 0, itemId: null, note: '' }

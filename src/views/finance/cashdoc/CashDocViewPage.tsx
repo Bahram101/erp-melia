@@ -2,16 +2,18 @@ import React, { useEffect, useState } from 'react'
 import { CCard, CCardBody, CCardHeader } from '@coreui/react-pro'
 import { useParams } from 'react-router-dom'
 import DocHeaderActionButtons from '../../../components/doc/DocHeaderActionButtons'
-import { DocAction } from '../../../models/CommonModels'
+import { DocAction, Doctype } from '../../../models/CommonModels'
 import { useCashDocDetailedQuery, useCashDocHandleActionQuery } from '../../../hooks/finance/financeQueries'
 import { CashDocDetailedModel } from '../../../models/finance/FinModels'
 import { getCashDocUriPathFromDoctype } from '../../../utils/UrlHelper'
 import CashDocDetailedView from './components/CashDocDetailedView'
 import CustomSpinner from '../../../components/spinner/CustomSpinner'
+import MoveInRegisterFormModal from './components/actionmodals/MoveInRegisterFormModal'
 
 const CashDocViewPage = () => {
   const { id } = useParams()
   const [model, setModel] = useState<CashDocDetailedModel | undefined>(undefined)
+  const [moveInRegisterModalVisible, setMoveInRegisterModalVisible] = useState<boolean>(false)
 
   const detailedQuery = useCashDocDetailedQuery(id, false)
   const handleActionQuery = useCashDocHandleActionQuery()
@@ -41,8 +43,19 @@ const CashDocViewPage = () => {
       }
     }
 
+    if (action === DocAction.CANCEL) {
+      if (!window.confirm('Действительно хотите отменить документ?')) {
+        return Promise.resolve()
+      }
+    }
+
     if (action === DocAction.UPDATE && model?.doctype) {
       window.location.pathname = `/finance/cash-docs/${getCashDocUriPathFromDoctype(model.doctype.name)}/edit/${id}`
+      return Promise.resolve()
+    }
+
+    if (model?.doctype && model.doctype.name === Doctype.CASH_DOC_MOVE_IN && action === DocAction.REGISTER) {
+      setMoveInRegisterModalVisible(true)
       return Promise.resolve()
     }
 
@@ -56,7 +69,7 @@ const CashDocViewPage = () => {
   return (
     <CCard>
       <CCardHeader>
-        <h4 className="float-start">{`Кассовый документ №${model?.regNumber}`}</h4>
+        <h4 className="float-start">{`Кассовый документ №${model?.regNumber || ''}`}</h4>
       </CCardHeader>
       <CCardHeader>
         <DocHeaderActionButtons
@@ -65,6 +78,15 @@ const CashDocViewPage = () => {
         />
       </CCardHeader>
       <CCardBody>
+        {id && <MoveInRegisterFormModal
+          visible={moveInRegisterModalVisible}
+          onClose={() => setMoveInRegisterModalVisible(false)}
+          handleAfterSubmit={() => {
+            setMoveInRegisterModalVisible(false)
+            loadDoc()
+          }}
+          docId={id}
+        />}
         {detailedQuery.isLoading ?
           <CustomSpinner />
           : (

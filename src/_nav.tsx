@@ -122,6 +122,21 @@ const _nav = [
         name: 'Сервис платежи',
         to: '/finance/cash-docs/service-payments',
       },
+      {
+        component: CNavItem,
+        name: 'Расходники',
+        to: '/finance/cash-docs/expenses',
+      },
+      {
+        component: CNavItem,
+        name: 'Отправки из кассы',
+        to: '/finance/cash-docs/move-outs',
+      },
+      {
+        component: CNavItem,
+        name: 'Постпуления в кассу',
+        to: '/finance/cash-docs/move-ins',
+      },
     ],
   },
   {

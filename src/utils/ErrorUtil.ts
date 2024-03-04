@@ -17,7 +17,7 @@ export const parseResponseFormErrors = (error: any) => {
 }
 
 export const parseResponseError = (error: any) => {
-  return (error && error.response && error.response.data && error.response.data.message)
+  return error && error.response && error.response.data && error.response.data.message
     ? error.response.data.message
     : null
 }

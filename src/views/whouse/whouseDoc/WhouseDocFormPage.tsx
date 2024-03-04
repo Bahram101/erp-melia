@@ -14,27 +14,29 @@ import {
   useSupplierOptionsQuery,
   useWhouseOptionsQuery,
 } from '../../../hooks/reference/refOptionsQueries'
-import {
-  useWhouseDocFormQuery,
-  useWhouseDocSaveMutation,
-} from '../../../hooks/whouse/whouseQueries'
+import { useWhouseDocFormQuery, useWhouseDocSaveMutation } from '../../../hooks/whouse/whouseQueries'
 import { parseResponseFormErrors } from '../../../utils/ErrorUtil'
-import {
-  getWhouseDoctypeFromUriPath,
-  getWhouseDocUriPathFromDoctype,
-} from '../../../utils/UrlHelper'
-import { DoctypeTitles } from '../../../models/CommonModels'
+import { getWhouseDoctypeFromUriPath, getWhouseDocUriPathFromDoctype } from '../../../utils/UrlHelper'
+import { DoctypeTitles, RefOptionsModel } from '../../../models/CommonModels'
+import ItemSerialNumberFormModal from './components/ItemSerialNumberFormModal'
 
 const WhouseDocFormPage = () => {
   const { whousedocpath, id } = useParams()
+  const [serialNumberFormModalVisible, setSerialNumberFormModalVisible] = useState<boolean>(false)
+  const [snFormModel, setSnFormModel] = useState<{ index: number, serialNumbers: string[] }>({
+    index: 0,
+    serialNumbers: [],
+  })
+
   const [model, setModel] = useState<WhouseDocFormModel>(DefaultWhouseDocFormModel)
   const [errors, setErrors] = useState<any>({})
-  const [goodsIds, setGoodsIds] = useState<any>([])
+  const [hasSerialGoodsIds, setHasSerialGoodsIds] = useState<string[]>([])
 
   const whouseOptionsQuery = useWhouseOptionsQuery(true)
   const supplierOptionsQuery = useSupplierOptionsQuery(true)
   const goodsOptionsQuery = useGoodsOptionsQuery({}, true)
-  const goodsHasSerialsQuery = useGoodsOptionsQuery({ hasSerial: true }, true)
+
+  const goodsHasSerialsQuery = useGoodsOptionsQuery({ hasSerial: true }, false)
 
   const whouseDocFormQuery = useWhouseDocFormQuery(id, false)
   const saveMutation = useWhouseDocSaveMutation(id)
@@ -55,9 +57,12 @@ const WhouseDocFormPage = () => {
   }, [whousedocpath, id])
 
   useEffect(() => {
-    const ids = goodsHasSerialsQuery.data?.map(({ id }: any) => id)
-    setGoodsIds(ids)
-  }, [goodsHasSerialsQuery.data])
+    goodsHasSerialsQuery.refetch()
+      .then(({ data }) => {
+        setHasSerialGoodsIds(data ? data.map((item: RefOptionsModel) => item.id || '') : [])
+      })
+
+  }, [])
 
   const handleSubmit = () => {
     saveMutation
@@ -79,6 +84,7 @@ const WhouseDocFormPage = () => {
     setModel({ ...model, [name]: value })
     setErrors({ ...errors, [name]: null })
   }
+
   const handleItemChange = (e: any, index: number) => {
     const { name, value } = e.target
     if (name === 'goodsId' && model.items.some((el) => el.goodsId === value)) {
@@ -88,14 +94,17 @@ const WhouseDocFormPage = () => {
     setModel((prev) => ({
       ...prev,
       items: prev.items?.map((el, i) =>
-        i === index
-          ? {
-              ...el,
-              [name]: value,
-            }
-          : el,
+        i === index ? (name === 'serialNumbers' ? { ...el, [name]: value, quantity: value.length } : {
+          ...el,
+          [name]: value,
+        }) : el,
       ),
     }))
+  }
+
+  const showSnFormModal = (index: number, serialNumbers: string[]) => {
+    setSnFormModel({ index: index, serialNumbers: serialNumbers })
+    setSerialNumberFormModalVisible(true)
   }
 
   const addItemRow = () => {
@@ -111,32 +120,42 @@ const WhouseDocFormPage = () => {
       items: prev.items?.filter((item, key) => key !== index),
     }))
   }
-  console.log('model', model)
+
   return (
-    <DocFormPageWrapper
-      saving={saveMutation.isLoading}
-      handleSubmit={handleSubmit}
-      cancelUrl={`/whouse/docs/${getWhouseDocUriPathFromDoctype(model.doctype)}`}
-      title={`Добавление документа "${DoctypeTitles[model.doctype]}"`}
-      children={
-        whouseDocFormQuery.isLoading ? (
-          <CustomSpinner />
-        ) : (
-          <WhouseDocForm
-            model={model}
-            errors={errors}
-            whouseOptions={whouseOptionsQuery.data || []}
-            supplierOptions={supplierOptionsQuery.data || []}
-            goodsOptions={goodsOptionsQuery.data || []}
-            goodsIds={goodsIds || []}
-            addItemRow={addItemRow}
-            deleteItemRow={deleteItemRow}
-            handleItemChange={handleItemChange}
-            handleChange={handleChange}
-          />
-        )
-      }
-    />
+    <>
+      <ItemSerialNumberFormModal
+        visible={serialNumberFormModalVisible}
+        onClose={() => setSerialNumberFormModalVisible(false)}
+        serialNumbers={snFormModel.serialNumbers}
+        index={snFormModel.index}
+        handleItemChange={handleItemChange}
+      />
+      <DocFormPageWrapper
+        saving={saveMutation.isLoading}
+        handleSubmit={handleSubmit}
+        cancelUrl={`/whouse/docs/${getWhouseDocUriPathFromDoctype(model.doctype)}`}
+        title={`Добавление документа "${DoctypeTitles[model.doctype]}"`}
+        children={
+          whouseDocFormQuery.isLoading ? (
+            <CustomSpinner />
+          ) : (
+            <WhouseDocForm
+              showSnFormModal={showSnFormModal}
+              model={model}
+              errors={errors}
+              whouseOptions={whouseOptionsQuery.data || []}
+              supplierOptions={supplierOptionsQuery.data || []}
+              goodsOptions={goodsOptionsQuery.data || []}
+              hasSerialGoodsIds={hasSerialGoodsIds || []}
+              addItemRow={addItemRow}
+              deleteItemRow={deleteItemRow}
+              handleItemChange={handleItemChange}
+              handleChange={handleChange}
+            />
+          )
+        }
+      />
+    </>
   )
 }
 

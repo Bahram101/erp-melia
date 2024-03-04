@@ -24,29 +24,21 @@ const CashDocGrid = ({ data, isLoading, doctype }: Props) => {
       key: 'branchName',
       label: 'Филиал',
     },
-    {
-      key: 'responsibleName',
-      label: 'Мастер',
-    },
-    {
-      key: 'amount',
-      label: 'Сумма',
-    },
     doctype === Doctype.CASH_DOC_SERVICE_PAYMENT
       ? [
+        { key: 'responsibleName', label: 'Мастер' },
         { key: 'toCashName', label: 'На кассу' },
       ]
       : [],
-    doctype === Doctype.SHIPMENT
+    doctype === Doctype.CASH_DOC_OUT
       ? [
-        { key: 'fromWhouseName', label: 'Со склада' },
-        { key: 'note', label: 'Род. документ' },
+        { key: 'fromCashName', label: 'Из кассы' },
       ]
       : [],
-    doctype === Doctype.MOVE_OUT || doctype === Doctype.MOVE_IN
+    doctype === Doctype.CASH_DOC_MOVE_OUT || doctype === Doctype.CASH_DOC_MOVE_IN
       ? [
-        { key: 'fromWhouseName', label: 'Со склада' },
-        { key: 'toWhouseName', label: 'На склад' },
+        { key: 'fromCashName', label: 'Из кассы' },
+        { key: 'toCashName', label: 'На кассу' },
         { key: 'note', label: 'Примечание' },
       ]
       : [],
@@ -64,13 +56,17 @@ const CashDocGrid = ({ data, isLoading, doctype }: Props) => {
       ]
       : [],
     {
+      key: 'amount',
+      label: 'Сумма',
+    },
+    {
       key: 'docDate',
       label: 'Дата',
     },
-    {
-      key: 'status',
-      label: 'Статус',
-    },
+    // {
+    //   key: 'status',
+    //   label: 'Статус',
+    // },
     {
       key: 'actions',
       label: '',

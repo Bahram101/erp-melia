@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react'
-import { CButton, CCard, CCardBody, CCardHeader, CCol, CNav, CRow, CTabContent, CTabPane } from '@coreui/react-pro'
+import { CButton, CCard, CCardBody, CCardHeader, CNav, CTabContent, CTabPane } from '@coreui/react-pro'
 import { Link, useParams } from 'react-router-dom'
 import { DocStatus, Doctype, DoctypeTitles } from '../../../models/CommonModels'
 import { useBranchOptionsQuery } from '../../../hooks/reference/refOptionsQueries'
-import { getCashDoctypeFromUriPath, getWhouseDocUriPathFromDoctype } from '../../../utils/UrlHelper'
-import { RefOptionsField } from '../../../components/fields/RefOptionsField'
+import { getCashDoctypeFromUriPath, getCashDocUriPathFromDoctype } from '../../../utils/UrlHelper'
 import TabNavItem from '../../../components/TabNavItem'
 import { useCashDocGridQuery } from '../../../hooks/finance/financeQueries'
 import CashDocGrid from './components/CashDocGrid'
 import { CashDocGridModel } from '../../../models/finance/FinModels'
+import CashDocGridSearchPanel from './components/CashDocGridSearchPanel'
 
 const Tabs = [
   {
@@ -57,6 +57,13 @@ const CashDocGridPage = () => {
     const doctype = getCashDoctypeFromUriPath(cashdoctype || '')
     if (doctype) {
       setParams({ ...params, doctype: doctype })
+
+      if (Doctype.CASH_DOC_MOVE_OUT === doctype) {
+        Tabs.splice(1, 0, {
+          key: DocStatus.MOVING,
+          label: 'В пути',
+        })
+      }
     } else {
       //ToDo show error
     }
@@ -72,13 +79,19 @@ const CashDocGridPage = () => {
     })
   }
 
+  const canAdd = () => {
+    return params.doctype
+      && params.doctype !== Doctype.CASH_DOC_SERVICE_PAYMENT
+      && params.doctype !== Doctype.CASH_DOC_MOVE_IN
+  }
+
   return (
     <CCard style={{ maxWidth: '100%' }}>
       <CCardHeader>
         <h4 className="float-start">{params.doctype && DoctypeTitles[params.doctype]}</h4>
         <div className="float-end">
-          {params.doctype && <Link to={`/whouse/docs/${getWhouseDocUriPathFromDoctype(params.doctype)}/create`}>
-            {params.doctype !== Doctype.CASH_DOC_SERVICE_PAYMENT && (
+          {params.doctype && <Link to={`/finance/cash-docs/${getCashDocUriPathFromDoctype(params.doctype)}/create`}>
+            {canAdd() && (
               <CButton color={'primary'} shape="square">
                 Добавить
               </CButton>
@@ -87,29 +100,16 @@ const CashDocGridPage = () => {
         </div>
       </CCardHeader>
       <CCardBody>
-        <CRow className="mb-2">
-          <CCol>
-            <RefOptionsField
-              label={'Филиал'}
-              fieldName={'branchId'}
-              error={errors.branchId}
-              options={branchOptionsQuery.data || []}
-              handleChange={handleChange}
-              value={params.branchId}
-            />
-          </CCol>
-          <CCol>
-            <br />
-            <CButton
-              style={{ marginTop: '10px' }}
-              color={'secondary'}
-              onClick={loadData}
-              disabled={gridQuery.isFetching}
-            >
-              Загрузить
-            </CButton>
-          </CCol>
-        </CRow>
+        <CashDocGridSearchPanel
+          doctype={params.doctype || undefined}
+          model={params}
+          loadData={loadData}
+          loading={gridQuery.isFetching}
+          handleChange={handleChange}
+          errors={errors}
+          branchOptions={branchOptionsQuery.data || []}
+          cashOptions={[]}
+        />
         <hr style={{ margin: '35px 0' }} />
         <div>
           <CNav variant="tabs" role="tablist" className="mb-3">
@@ -132,6 +132,13 @@ const CashDocGridPage = () => {
                 aria-labelledby="new-tab-pane"
                 visible={activeTabKey === DocStatus.NEW}
               >
+                <CashDocGrid
+                  data={dataMap[activeTabKey] || []}
+                  isLoading={gridQuery.isFetching}
+                  doctype={params.doctype}
+                />
+              </CTabPane>
+              <CTabPane visible={activeTabKey === DocStatus.MOVING}>
                 <CashDocGrid
                   data={dataMap[activeTabKey] || []}
                   isLoading={gridQuery.isFetching}

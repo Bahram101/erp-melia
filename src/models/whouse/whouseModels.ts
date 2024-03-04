@@ -15,15 +15,14 @@ export interface WhouseDocGridModel {
 
 export interface WhouseDocItemFormModel {
   id?: string
-  goodsId: string
+  goodsId: string | null
   quantity: number
   unitPrice: number
   serialNumbers: string[]
 }
 
 export const DefaultWhouseDocItemFormModel: WhouseDocItemFormModel = {
-  id: '',
-  goodsId: '',
+  goodsId: null,
   quantity: 0,
   unitPrice: 0,
   serialNumbers: [],

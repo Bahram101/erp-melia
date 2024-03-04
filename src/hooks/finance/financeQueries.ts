@@ -1,6 +1,11 @@
 import { useMutation, useQuery } from 'react-query'
 import { request } from '../../http'
-import { CashDocDetailedModel, CashDocGridModel, CustomerDeptFormModel } from 'models/finance/FinModels'
+import {
+  CashDocDetailedModel,
+  CashDocFormModel,
+  CashDocGridModel,
+  CustomerDeptFormModel,
+} from 'models/finance/FinModels'
 import { DocAction } from '../../models/CommonModels'
 
 export const useFinCustomerDepsMutation = () => {
@@ -33,8 +38,31 @@ export const useCashDocDetailedQuery = (id: string | undefined, enabled: boolean
   )
 }
 
+export const useCashDocFormQuery = (id: string | undefined, enabled: boolean) => {
+  return useQuery<CashDocFormModel>(
+    ['fin-get-cash-doc-form', id],
+    async () => {
+      const { data } = await request.get(`/finance/cash-docs/${id}/form`)
+      return data
+    },
+    { enabled: enabled },
+  )
+}
+
 export const useCashDocHandleActionQuery = () => {
   return useMutation(({ form }: { form: { docId: string, action: DocAction } }) => {
     return request.put(`/finance/cash-docs/handle-action`, form)
   })
+}
+
+export const useCashDocFormSaveMutation = (id: string | undefined) => {
+  if (id) {
+    return useMutation(({ form }: { form: CashDocFormModel }) =>
+      request.put(`/finance/cash-docs/${id}`, form),
+    )
+  }
+
+  return useMutation(({ form }: { form: CashDocFormModel }) =>
+    request.post('/finance/cash-docs', form),
+  )
 }

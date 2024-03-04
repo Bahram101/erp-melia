@@ -11,6 +11,7 @@ export enum DocStatus {
   ON_APPROVE = 'ON_APPROVE',
   DELETED = 'DELETED',
   APPROVED = 'APPROVED',
+  MOVING = 'MOVING',
 }
 
 export enum Doctype {
@@ -25,6 +26,14 @@ export enum Doctype {
   CASH_DOC_SERVICE_PAYMENT = 'CASH_DOC_SERVICE_PAYMENT',
   CASH_DOC_FIRST_PAYMENT = 'CASH_DOC_FIRST_PAYMENT',
   CASH_DOC_MONTHLY_PAYMENT = 'CASH_DOC_MONTHLY_PAYMENT',
+  CASH_DOC_OUT = 'CASH_DOC_OUT',
+  CASH_DOC_MOVE_OUT = 'CASH_DOC_MOVE_OUT',
+  CASH_DOC_MOVE_IN = 'CASH_DOC_MOVE_IN',
+  CASH_DOC_CUSTOMER_OUT = 'CASH_DOC_CUSTOMER_OUT',
+  CASH_DOC_REWARD_OUT = 'CASH_DOC_REWARD_OUT',
+  CASH_DOC_CONTRACT_CANCEL = 'CASH_DOC_CONTRACT_CANCEL',
+  CASH_DOC_SALARY_OUT = 'CASH_DOC_SALARY_OUT',
+  CASH_DOC_PREPAYMENT_OUT = 'CASH_DOC_PREPAYMENT_OUT',
 }
 
 export enum DocAction {
@@ -39,6 +48,7 @@ export enum DocAction {
   ADD_GIFT = 'ADD_GIFT',
   APPROVE = 'APPROVE',
   REJECT = 'REJECT',
+  REGISTER = 'REGISTER',
 }
 
 export interface DocActionButton {
@@ -119,6 +129,9 @@ export const DoctypeTitles: { [key in Doctype]?: string } = {
   [Doctype.RETURN]: 'Возврат товара от клиента',
   [Doctype.WRITEOFF_LOST]: 'Списание по потере',
   [Doctype.CASH_DOC_SERVICE_PAYMENT]: 'Сервис платежи',
+  [Doctype.CASH_DOC_OUT]: 'Расходники',
+  [Doctype.CASH_DOC_MOVE_IN]: 'Постпуления в кассу',
+  [Doctype.CASH_DOC_MOVE_OUT]: 'Отправки из кассы',
 }
 
 export const DocStatusTitles: { [key in DocStatus]?: string } = {
@@ -141,4 +154,13 @@ export interface ContextDocDetailedModel {
   branch?: CommonRefModel
   customer?: CustomerRefModel
   responsible?: PostRefModel
+}
+
+export interface ContextDocGridModel {
+  id: string
+  doctype: Doctype
+  doctypeName: string
+  status: DocStatus
+  statusName: string
+  docDate: string
 }

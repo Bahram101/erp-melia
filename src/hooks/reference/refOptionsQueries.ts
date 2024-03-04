@@ -31,7 +31,7 @@ export const useCashOptionsQuery = (params: {
     ['get-reference-chashes-as-options'],
     async () => {
       const { data } = await request.get('/reference/cashes/as-options', {
-        params: params
+        params: params,
       })
       return data
     },
@@ -90,6 +90,22 @@ export const useBankOptionsQuery = (enabled: boolean) => {
     ['get-reference-banks-as-options'],
     async () => {
       const { data } = await request.get('/reference/banks/as-options')
+      return data
+    },
+    { enabled: enabled },
+  )
+}
+
+export const useExpInItemOptionsQuery = (params: {
+  isSystem?: boolean
+  type?: 'IN' | 'OUT'
+}, enabled: boolean) => {
+  return useQuery<RefOptionsModel[]>(
+    ['get-reference-exp-in-item-as-options'],
+    async () => {
+      const { data } = await request.get('/reference/exp-in-items/as-options', {
+        params: params,
+      })
       return data
     },
     { enabled: enabled },
