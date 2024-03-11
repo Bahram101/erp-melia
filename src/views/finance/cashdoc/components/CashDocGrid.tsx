@@ -20,10 +20,18 @@ const CashDocGrid = ({ data, isLoading, doctype }: Props) => {
       label: 'Рег. номер',
       _style: { width: '130px' },
     },
-    {
-      key: 'branchName',
-      label: 'Филиал',
-    },
+
+    doctype === Doctype.CASH_DOC_FIRST_PAYMENT
+      ? [
+        { key: 'responsibleName', label: 'SN' },
+        { key: 'toCashName', label: 'На кассу' },
+      ]
+      : [
+        {
+          key: 'branchName',
+          label: 'Филиал',
+        },
+      ],
     doctype === Doctype.CASH_DOC_SERVICE_PAYMENT
       ? [
         { key: 'responsibleName', label: 'Мастер' },

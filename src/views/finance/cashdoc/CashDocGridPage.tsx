@@ -10,25 +10,11 @@ import CashDocGrid from './components/CashDocGrid'
 import { CashDocGridModel } from '../../../models/finance/FinModels'
 import CashDocGridSearchPanel from './components/CashDocGridSearchPanel'
 
-const Tabs = [
-  {
-    key: DocStatus.NEW,
-    label: 'Новые',
-  },
-  {
-    key: DocStatus.CLOSED,
-    label: 'Закрытые',
-  },
-  {
-    key: DocStatus.CANCELLED,
-    label: 'Отмененные',
-  },
-]
-
 const CashDocGridPage = () => {
   let { cashdoctype } = useParams()
   const [errors, setErrors] = useState<any>({})
   const [activeTabKey, setActiveTabKey] = useState<DocStatus>(DocStatus.NEW)
+  const [tabs, setTabs] = useState<{ key: DocStatus, label: string }[]>([])
   const [params, setParams] = useState<{
     doctype: Doctype | null,
     status: DocStatus | null,
@@ -38,11 +24,7 @@ const CashDocGridPage = () => {
     status: null,
     branchId: null,
   })
-  const [dataMap, setDataMap] = useState<{ [key in DocStatus]?: CashDocGridModel[] }>({
-    [DocStatus.NEW]: [],
-    [DocStatus.CLOSED]: [],
-    [DocStatus.CANCELLED]: [],
-  })
+  const [dataMap, setDataMap] = useState<{ [key in string]: CashDocGridModel[] }>({})
 
   const branchOptionsQuery = useBranchOptionsQuery(true)
   const gridQuery = useCashDocGridQuery(params, false)
@@ -57,12 +39,17 @@ const CashDocGridPage = () => {
     const doctype = getCashDoctypeFromUriPath(cashdoctype || '')
     if (doctype) {
       setParams({ ...params, doctype: doctype })
-
-      if (Doctype.CASH_DOC_MOVE_OUT === doctype) {
-        Tabs.splice(1, 0, {
-          key: DocStatus.MOVING,
-          label: 'В пути',
+      setTabs(getTabs(doctype));
+      [DocStatus.NEW, DocStatus.MOVING, DocStatus.CLOSED, DocStatus.CANCELLED]
+        .map((status) => {
+          const key = dataMapKey(doctype, status)
+          if (!(key in dataMap)) {
+            setDataMap({ ...dataMap, [key]: [] })
+          }
         })
+
+      if (doctype !== Doctype.CASH_DOC_MOVE_OUT && activeTabKey === DocStatus.MOVING) {
+        setActiveTabKey(DocStatus.NEW)
       }
     } else {
       //ToDo show error
@@ -73,9 +60,50 @@ const CashDocGridPage = () => {
     setParams((prev: any) => ({ ...prev, status: activeTabKey }))
   }, [activeTabKey])
 
+  const dataMapKey = (doctype: Doctype | null, status: DocStatus) => {
+    return `${doctype}_${status}`
+  }
+  const getTabs = (doctype: Doctype) => {
+    if (Doctype.CASH_DOC_MOVE_OUT === doctype) {
+      return [
+        {
+          key: DocStatus.NEW,
+          label: 'Новые',
+        },
+        {
+          key: DocStatus.MOVING,
+          label: 'В пути',
+        },
+        {
+          key: DocStatus.CLOSED,
+          label: 'Закрытые',
+        },
+        {
+          key: DocStatus.CANCELLED,
+          label: 'Отмененные',
+        },
+      ]
+    }
+
+    return [
+      {
+        key: DocStatus.NEW,
+        label: 'Новые',
+      },
+      {
+        key: DocStatus.CLOSED,
+        label: 'Закрытые',
+      },
+      {
+        key: DocStatus.CANCELLED,
+        label: 'Отмененные',
+      },
+    ]
+  }
+
   const loadData = () => {
     gridQuery.refetch().then(({ data }) => {
-      setDataMap({ ...dataMap, [activeTabKey]: data || [] })
+      setDataMap({ ...dataMap, [dataMapKey(params.doctype, activeTabKey)]: data || [] })
     })
   }
 
@@ -113,7 +141,7 @@ const CashDocGridPage = () => {
         <hr style={{ margin: '35px 0' }} />
         <div>
           <CNav variant="tabs" role="tablist" className="mb-3">
-            {Tabs.map((item) => {
+            {tabs.map((item) => {
               return (
                 <TabNavItem
                   key={item.key}
@@ -127,42 +155,30 @@ const CashDocGridPage = () => {
           </CNav>
           <CTabContent>
             <>
-              <CTabPane
-                role="tabpanel"
-                aria-labelledby="new-tab-pane"
-                visible={activeTabKey === DocStatus.NEW}
-              >
+              <CTabPane visible={activeTabKey === DocStatus.NEW}>
                 <CashDocGrid
-                  data={dataMap[activeTabKey] || []}
+                  data={dataMap[dataMapKey(params.doctype, DocStatus.NEW)]}
                   isLoading={gridQuery.isFetching}
                   doctype={params.doctype}
                 />
               </CTabPane>
               <CTabPane visible={activeTabKey === DocStatus.MOVING}>
                 <CashDocGrid
-                  data={dataMap[activeTabKey] || []}
+                  data={dataMap[dataMapKey(params.doctype, DocStatus.MOVING)]}
                   isLoading={gridQuery.isFetching}
                   doctype={params.doctype}
                 />
               </CTabPane>
-              <CTabPane
-                role="tabpanel"
-                aria-labelledby="closed-tab-pane"
-                visible={activeTabKey === DocStatus.CLOSED}
-              >
+              <CTabPane visible={activeTabKey === DocStatus.CLOSED}>
                 <CashDocGrid
-                  data={dataMap[activeTabKey] || []}
+                  data={dataMap[dataMapKey(params.doctype, DocStatus.CLOSED)]}
                   isLoading={gridQuery.isFetching}
                   doctype={params.doctype}
                 />
               </CTabPane>
-              <CTabPane
-                role="tabpanel"
-                aria-labelledby="cancelled-tab-pane"
-                visible={activeTabKey === DocStatus.CANCELLED}
-              >
+              <CTabPane visible={activeTabKey === DocStatus.CANCELLED}>
                 <CashDocGrid
-                  data={dataMap[activeTabKey] || []}
+                  data={dataMap[dataMapKey(params.doctype, DocStatus.CANCELLED)]}
                   isLoading={gridQuery.isFetching}
                   doctype={params.doctype}
                 />

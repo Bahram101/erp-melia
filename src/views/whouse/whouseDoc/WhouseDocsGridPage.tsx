@@ -122,9 +122,6 @@ const WhouseDocsGridPage = () => {
             })}
           </CNav>
           <CTabContent>
-            {/* {listQuery.isFetching ? (
-              <CSpinner color="primary" />
-            ) : ( */}
             <>
               <CTabPane
                 role="tabpanel"
@@ -160,7 +157,6 @@ const WhouseDocsGridPage = () => {
                 />
               </CTabPane>
             </>
-            {/* )} */}
           </CTabContent>
         </div>
       </CCardBody>

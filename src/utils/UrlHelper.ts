@@ -48,6 +48,8 @@ export const getCashDoctypeFromUriPath = (path: string): Doctype | null => {
       return Doctype.CASH_DOC_MOVE_IN
     case 'move-outs':
       return Doctype.CASH_DOC_MOVE_OUT
+    case 'first-payments':
+      return Doctype.CASH_DOC_FIRST_PAYMENT
     default:
       return null
   }
@@ -63,6 +65,8 @@ export const getCashDocUriPathFromDoctype = (doctype: Doctype): string => {
       return 'move-ins'
     case Doctype.CASH_DOC_MOVE_OUT:
       return 'move-outs'
+    case Doctype.CASH_DOC_FIRST_PAYMENT:
+      return 'first-payments'
     default:
       return ''
   }

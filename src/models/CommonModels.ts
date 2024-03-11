@@ -132,6 +132,7 @@ export const DoctypeTitles: { [key in Doctype]?: string } = {
   [Doctype.CASH_DOC_OUT]: 'Расходники',
   [Doctype.CASH_DOC_MOVE_IN]: 'Постпуления в кассу',
   [Doctype.CASH_DOC_MOVE_OUT]: 'Отправки из кассы',
+  [Doctype.CASH_DOC_FIRST_PAYMENT]: 'Первоначальные взносы',
 }
 
 export const DocStatusTitles: { [key in DocStatus]?: string } = {

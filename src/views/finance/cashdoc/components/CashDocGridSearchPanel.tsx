@@ -25,7 +25,7 @@ const CashDocGridSearchPanel = ({
                                 }: Props) => {
   return <CRow className="mb-2">
     <>
-      {doctype === Doctype.CASH_DOC_SERVICE_PAYMENT && <CCol>
+      {(doctype === Doctype.CASH_DOC_SERVICE_PAYMENT || doctype === Doctype.CASH_DOC_FIRST_PAYMENT) && <CCol>
         <RefOptionsField
           label={'Филиал'}
           fieldName={'branchId'}
@@ -35,7 +35,7 @@ const CashDocGridSearchPanel = ({
           value={model.branchId}
         />
       </CCol>}
-      {doctype === Doctype.CASH_DOC_MOVE_IN || doctype === Doctype.CASH_DOC_MOVE_OUT && <>
+      {(doctype === Doctype.CASH_DOC_MOVE_IN || doctype === Doctype.CASH_DOC_MOVE_OUT) && <>
         <CCol>
           <RefOptionsField
             label={'Из кассы'}

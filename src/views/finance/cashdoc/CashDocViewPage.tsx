@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { CCard, CCardBody, CCardHeader } from '@coreui/react-pro'
 import { useParams } from 'react-router-dom'
 import DocHeaderActionButtons from '../../../components/doc/DocHeaderActionButtons'
-import { DocAction, Doctype } from '../../../models/CommonModels'
+import { DocAction, Doctype, DoctypeTitles } from '../../../models/CommonModels'
 import { useCashDocDetailedQuery, useCashDocHandleActionQuery } from '../../../hooks/finance/financeQueries'
 import { CashDocDetailedModel } from '../../../models/finance/FinModels'
 import { getCashDocUriPathFromDoctype } from '../../../utils/UrlHelper'
@@ -69,7 +69,9 @@ const CashDocViewPage = () => {
   return (
     <CCard>
       <CCardHeader>
-        <h4 className="float-start">{`Кассовый документ №${model?.regNumber || ''}`}</h4>
+        <h4 className="float-start">
+          {`${model?.doctype ? DoctypeTitles[model.doctype.name] : ''} №${model?.regNumber || ''}`}
+        </h4>
       </CCardHeader>
       <CCardHeader>
         <DocHeaderActionButtons

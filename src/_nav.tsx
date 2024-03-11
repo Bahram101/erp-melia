@@ -137,6 +137,11 @@ const _nav = [
         name: 'Постпуления в кассу',
         to: '/finance/cash-docs/move-ins',
       },
+      {
+        component: CNavItem,
+        name: 'Перв. взносы',
+        to: '/finance/cash-docs/first-payments',
+      },
     ],
   },
   {
