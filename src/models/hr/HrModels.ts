@@ -40,6 +40,7 @@ export const DefaultEmployeePostFormModel: EmployeePostFormModel = {
   salary: 0,
 }
 
+//CompanyStructureForm
 export interface CompanyStructureModel {
   children?: CompanyStructureModel[] | []
   expanded: boolean
@@ -76,3 +77,37 @@ export interface StructureSearchParamModel {
   year: string
   month: string
 }
+
+//EmployeeFormModel
+export interface EmployeeFormModel {
+  id: string
+  lastname: string
+  firstname: string
+  middlename: string
+  iin: string
+  gender: string
+  birthDate: string
+  phoneNumbers: EmployeePhoneFormModel[]
+  addresses: EmployeeAddressFormModel[]
+}
+
+export interface EmployeePhoneFormModel {
+  type: string
+  number: string
+}
+
+export interface EmployeeAddressFormModel {
+  id: string
+  name: string
+  regionId: string
+  districtId: string
+  cityId: string
+  village: string
+  cityDistrict: string
+  microDistrict: string
+  street: string
+  houseNumber: string
+  flatNumber: number
+}
+
+

@@ -40,8 +40,7 @@ export const DatePickerField = ({
 
   return (
     <>
-      <CDatePicker
-        className="mb-1 mt-1"
+      <CDatePicker 
         label={label}
         feedbackInvalid={invalid && error}
         invalid={invalid}

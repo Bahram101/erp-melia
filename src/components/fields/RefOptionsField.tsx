@@ -3,7 +3,7 @@ import { CFormLabel, CFormSelect } from '@coreui/react-pro'
 import { CustomFieldProps } from 'models/customField/CustomFieldProps'
 import { RefOptionsModel } from '../../models/CommonModels'
 
-interface Props extends CustomFieldProps {
+interface Props extends CustomFieldProps { 
   fieldLabel?: string
   optionLabel?: string
   options: RefOptionsModel[]
@@ -11,7 +11,7 @@ interface Props extends CustomFieldProps {
 }
 
 export const RefOptionsField = ({
-  fieldName,
+  fieldName, 
   optionLabel,
   options,
   handleChange,
@@ -42,9 +42,8 @@ export const RefOptionsField = ({
 
   return (
     <>
-      <CFormSelect
-        className="mb-1 mt-1"
-        label={label}
+      <CFormSelect 
+        label={label} 
         name={fieldName}
         options={preparedOptions}
         value={value || ''}

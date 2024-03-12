@@ -1,8 +1,9 @@
 import React from 'react'
-import { CFormInput } from '@coreui/react-pro'
+import { CCol, CFormInput } from '@coreui/react-pro'
 import { CustomFieldProps } from '../../models/customField/CustomFieldProps'
 
 interface Props extends CustomFieldProps {
+  label?: string   
   type?: 'color' | 'file' | 'text' | string
   disabled?: boolean
   value?: string | string[] | number
@@ -31,8 +32,7 @@ const InputField = ({
 
   const invalid = error && error.length > 0
   return (
-    <CFormInput
-      className="mb-1 mt-1"
+    <CFormInput 
       disabled={disabled}
       type={type || 'text'}
       name={fieldName}

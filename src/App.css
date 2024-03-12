@@ -16,6 +16,9 @@
 .translateY-2 {
   transform: translateY(-2px);
 }
+.form-label {
+  margin-bottom: 0.2rem !important; 
+}
 
 @media (min-width: 768px) {
   .goodListForm {
