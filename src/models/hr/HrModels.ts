@@ -97,7 +97,7 @@ export interface EmployeePhoneFormModel {
 }
 
 export interface EmployeeAddressFormModel {
-  id: string
+  id?: string
   name: string
   regionId: string
   districtId: string
@@ -108,6 +108,37 @@ export interface EmployeeAddressFormModel {
   street: string
   houseNumber: string
   flatNumber: number
+}
+
+export const DefaultEmployeePhoneFormModel: EmployeePhoneFormModel = {
+  type: 'MOBILE',
+  number: '',
+}
+
+export const DefaultEmployeeAdressFormModel: EmployeeAddressFormModel = {
+  id: '',
+  name: '',
+  regionId: '',
+  districtId: '',
+  cityId: '',
+  village: '',
+  cityDistrict: '',
+  microDistrict: '',
+  street: '',
+  houseNumber: '',
+  flatNumber: 0,
+}
+
+export const DefaultEmployeeFormModel: EmployeeFormModel = {
+  id: '',
+  lastname: '',
+  firstname: '',
+  middlename: '',
+  iin: '',
+  gender: '',
+  birthDate: '',
+  phoneNumbers: [DefaultEmployeePhoneFormModel],
+  addresses: [DefaultEmployeeAdressFormModel],
 }
 
 
