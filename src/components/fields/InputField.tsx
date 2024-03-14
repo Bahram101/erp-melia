@@ -7,7 +7,7 @@ interface Props extends CustomFieldProps {
   type?: 'color' | 'file' | 'text' | string
   disabled?: boolean
   value?: string | string[] | number
-  placeholder?: string
+  placeholder?: string 
 }
 
 const InputField = ({

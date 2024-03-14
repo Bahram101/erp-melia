@@ -63,3 +63,14 @@ export const getMonthOptions = () => [
     label: 'Декабрь',
   },
 ]
+
+export const genderList = [
+  {
+    id: '1',
+    label: 'MALE',
+  },
+  {
+    id: '2',
+    label: 'FEMALE',
+  },
+]

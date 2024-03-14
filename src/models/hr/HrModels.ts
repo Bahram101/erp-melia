@@ -140,5 +140,3 @@ export const DefaultEmployeeFormModel: EmployeeFormModel = {
   phoneNumbers: [DefaultEmployeePhoneFormModel],
   addresses: [DefaultEmployeeAdressFormModel],
 }
-
-
