@@ -1,17 +1,19 @@
-import React from 'react'
+import React from 'react';
 
 type Props = {
-  children: React.ReactNode
-}
+  children: React.ReactNode;
+};
 
 const FormWrapper = ({ children }: Props) => {
-  const childrenArr = React.Children.toArray(children)
-
-  return childrenArr.map((child: any, index: number) => (
-    <div key={index} style={{ marginBottom: '15px' }}>
-      {child}
+  return (
+    <div>
+      {React.Children.map(children, (child, index) => (
+        <div key={index} style={{ marginBottom: '15px' }}>
+          {child}
+        </div>
+      ))}
     </div>
-  ))  
-}
+  );
+};
 
-export default FormWrapper
+export default FormWrapper;

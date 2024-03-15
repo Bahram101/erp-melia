@@ -1,3 +1,4 @@
+import { ChangeEvent } from 'react'
 import DocFormPageWrapper from 'components/doc/DocFormPageWrapper'
 import EmployeeForm from './components/EmployeeForm'
 import CustomSpinner from 'components/spinner/CustomSpinner'
@@ -7,6 +8,7 @@ import { useState } from 'react'
 import {
   DefaultEmployeeFormModel,
   DefaultEmployeePhoneFormModel,
+  EmployeeAddressFormModel,
   EmployeeFormModel,
 } from 'models/hr/HrModels'
 
@@ -14,16 +16,18 @@ const EmployeeFormPage = () => {
   const [model, setModel] = useState<EmployeeFormModel>(DefaultEmployeeFormModel)
   const [errors, setErrors] = useState<any>({})
 
-  const handleChange = (e: any) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
     setModel({ ...model, [name]: value })
     setErrors({ ...errors, [name]: null })
   }
 
-  const handlePhoneChange = (e: any, itemNumber: number) => {
+  const handlePhoneChange = (e: ChangeEvent<HTMLInputElement>, itemNumber: number) => {
     const { name, value } = e.target
-    console.log('name', name)
-    console.log('value', value)
+    setModel(prev => ({ ...prev, phoneNumbers: prev.phoneNumbers.map((el, i) => 
+      i === itemNumber 
+        ? { ...el, [name]: value } 
+        : el) }))
   }
 
   const onClickAddPhone = () => {
@@ -40,13 +44,21 @@ const EmployeeFormPage = () => {
     }))
   }
 
+  const handleAddressChange = (e: any, itemNumber: number) => {
+    const { name, value } = e.target
+    setModel(prev => ({ ...prev, phoneNumbers: prev.phoneNumbers.map((el, i) => 
+      i === itemNumber 
+        ? { ...el, [name]: value } 
+        : el) }))
+  }
+
   console.log('model', model)
 
   return (
     <>
       <DocFormPageWrapper
         saving={false}
-        handleSubmit={() => {}}
+        handleSubmit={() => { }}
         cancelUrl={``}
         title={`Создание сотрудника`}
         children={
@@ -62,8 +74,16 @@ const EmployeeFormPage = () => {
                 onClickAddPhone={onClickAddPhone}
                 onClickRemovePhone={onClickRemovePhone}
               />
-              <EmployeeFormAddress title="Проживающий адрес" live />
-              <EmployeeFormAddress title="Адрес регистрации" />
+              {model.addresses.map((item: EmployeeAddressFormModel, index:number) => (
+                <EmployeeFormAddress 
+                  key={index}
+                  title={index === 0 ? "Проживающий адрес" : 'Адрес регистрации'}
+                  item = {item} 
+                  errors = {errors} 
+                  handleAddressChange = {handleAddressChange} 
+                  live = {index === 0 ? true : false } 
+                />
+              ))}
             </CForm>
           )
         }

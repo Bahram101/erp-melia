@@ -1,3 +1,4 @@
+import { ChangeEvent } from 'react'
 import { CButton, CCol } from '@coreui/react-pro'
 import { FaPlus } from 'react-icons/fa'
 import { SlClose } from 'react-icons/sl'
@@ -5,7 +6,7 @@ import { SlClose } from 'react-icons/sl'
 import FormWrapper from 'components/FormWrapper'
 import { DatePickerField } from 'components/fields/DatePickerField'
 import InputField from 'components/fields/InputField'
-import { EmployeeFormModel } from 'models/hr/HrModels'
+import { EmployeeFormModel, EmployeePhoneFormModel } from 'models/hr/HrModels'
 import { RefOptionsField } from 'components/fields/RefOptionsField'
 import { genderList } from 'utils/Helpers'
 
@@ -13,9 +14,9 @@ type Props = {
   model: EmployeeFormModel
   errors: any
   handleChange: (e: any) => void
-  handlePhoneChange: (e: React.ChangeEventHandler<HTMLInputElement>, itemNumber: number) => void
-  onClickAddPhone: (e: any) => void
-  onClickRemovePhone: (e: any) => void
+  handlePhoneChange: (e: ChangeEvent<HTMLInputElement>, itemNumber: number) => void
+  onClickAddPhone: () => void
+  onClickRemovePhone: (index:number) => void
 }
 
 const EmployeeForm = ({
@@ -74,14 +75,14 @@ const EmployeeForm = ({
           value={model.gender}
           handleChange={handleChange}
         />
-        {model.phoneNumbers.map((item: any, index: number) => (
+        {model.phoneNumbers.map((item: EmployeePhoneFormModel, index: number) => (
           <div className="d-flex align-items-center" key={index}>
             <InputField
               label={'Тел. номер'}
               fieldName={'number'}
               error={errors.number}
               value={item.number}
-              handleChange={(e: any) => handlePhoneChange(e, index)}
+              handleChange={(e: ChangeEvent<HTMLInputElement>) => handlePhoneChange(e, index)}
             />
             {index !== 0 && (
               <SlClose

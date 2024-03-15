@@ -1,14 +1,21 @@
+import { ChangeEvent } from 'react'
 import { CCol } from '@coreui/react-pro'
 import FormWrapper from 'components/FormWrapper'
 import InputField from 'components/fields/InputField'
 import { RefOptionsField } from 'components/fields/RefOptionsField'
+import { EmployeeAddressFormModel } from 'models/hr/HrModels'
 
 type Props = {
+  key:number
   title: string
   live?: boolean
+  item: EmployeeAddressFormModel
+  errors: any
+  handleAddressChange: (e: ChangeEvent<HTMLInputElement>, index: number)=>void
 }
 
-const EmployeeFormAdress = ({ title, live }: Props) => {
+const EmployeeFormAdress = ({ key, title, live, item, errors, handleAddressChange }: Props) => {
+
   return (
     <CCol
       xl={live ? 4 : { span: 4, offset: 0 }}
@@ -22,10 +29,10 @@ const EmployeeFormAdress = ({ title, live }: Props) => {
           <InputField
             label="Название адреса"
             placeholder={title}
-            fieldName={'lastname'}
-            handleChange={() => {}}
-            value={''}
+            fieldName={'name'}
             error={''}
+            value={item.name}
+            handleChange={(e: ChangeEvent<HTMLInputElement>)=> handleAddressChange(e, key )}
           />
           <RefOptionsField
             label={'Область'}

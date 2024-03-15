@@ -138,5 +138,5 @@ export const DefaultEmployeeFormModel: EmployeeFormModel = {
   gender: '',
   birthDate: '',
   phoneNumbers: [DefaultEmployeePhoneFormModel],
-  addresses: [DefaultEmployeeAdressFormModel],
+  addresses: [DefaultEmployeeAdressFormModel, DefaultEmployeeAdressFormModel],
 }

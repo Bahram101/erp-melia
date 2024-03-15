@@ -66,11 +66,11 @@ export const getMonthOptions = () => [
 
 export const genderList = [
   {
-    id: '1',
-    label: 'MALE',
+    id: 'MALE',
+    label: 'Муж.',
   },
   {
-    id: '2',
-    label: 'FEMALE',
+    id: 'FEMALE',
+    label: 'Жен.',
   },
 ]
