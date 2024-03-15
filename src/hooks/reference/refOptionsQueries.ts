@@ -24,9 +24,12 @@ export const usePositionOptionsQuery = (enabled: boolean) => {
   )
 }
 
-export const useCashOptionsQuery = (params: {
-  type?: string
-}, enabled: boolean) => {
+export const useCashOptionsQuery = (
+  params: {
+    type?: string
+  },
+  enabled: boolean,
+) => {
   return useQuery<RefOptionsModel[]>(
     ['get-reference-chashes-as-options'],
     async () => {
@@ -96,10 +99,13 @@ export const useBankOptionsQuery = (enabled: boolean) => {
   )
 }
 
-export const useExpInItemOptionsQuery = (params: {
-  isSystem?: boolean
-  type?: 'IN' | 'OUT'
-}, enabled: boolean) => {
+export const useExpInItemOptionsQuery = (
+  params: {
+    isSystem?: boolean
+    type?: 'IN' | 'OUT'
+  },
+  enabled: boolean,
+) => {
   return useQuery<RefOptionsModel[]>(
     ['get-reference-exp-in-item-as-options'],
     async () => {
@@ -109,5 +115,32 @@ export const useExpInItemOptionsQuery = (params: {
       return data
     },
     { enabled: enabled },
+  )
+}
+
+export const useRegionOptionsQuery = (enabled: boolean) => {
+  return useQuery<RefOptionsModel[]>(
+    ['get-regions-as-options'],
+    async () => {
+      const { data } = await request.get('/reference/regions/as-options')
+      return data
+    },
+    { enabled: enabled },
+  )
+}
+
+export const useDistrictOptionsQuery = (regionId: string, enabled: boolean) => {  
+  console.log('rere', regionId);
+  
+  return useQuery<RefOptionsModel[]>(
+    ['get-districts-as-options'],
+    async () => {
+      if (regionId) {
+        const { data } = await request.get(`/reference/districts/as-options?regionId=${regionId}`)        
+        console.log('data', data);
+        return data
+      }
+    },
+    { enabled:enabled },
   )
 }

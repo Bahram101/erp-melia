@@ -1,4 +1,4 @@
-import { ChangeEvent } from 'react'
+import { ChangeEvent, Fragment, useEffect } from 'react'
 import DocFormPageWrapper from 'components/doc/DocFormPageWrapper'
 import EmployeeForm from './components/EmployeeForm'
 import CustomSpinner from 'components/spinner/CustomSpinner'
@@ -8,13 +8,24 @@ import { useState } from 'react'
 import {
   DefaultEmployeeFormModel,
   DefaultEmployeePhoneFormModel,
-  EmployeeAddressFormModel,
   EmployeeFormModel,
 } from 'models/hr/HrModels'
+import { useDistrictOptionsQuery, useRegionOptionsQuery } from 'hooks/reference/refOptionsQueries'
 
 const EmployeeFormPage = () => {
   const [model, setModel] = useState<EmployeeFormModel>(DefaultEmployeeFormModel)
   const [errors, setErrors] = useState<any>({})
+
+  const regionOptionsQuery = useRegionOptionsQuery(true)
+  const districtOptionsQuery = useDistrictOptionsQuery(model.addresses[0].regionId, true)
+
+  // useEffect(() => {
+  //   regionOptionsQuery.refetch()
+  // }, [model])
+
+  useEffect(() => {
+    districtOptionsQuery.refetch()
+  }, [model.addresses[0].regionId])
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
@@ -24,10 +35,12 @@ const EmployeeFormPage = () => {
 
   const handlePhoneChange = (e: ChangeEvent<HTMLInputElement>, itemNumber: number) => {
     const { name, value } = e.target
-    setModel(prev => ({ ...prev, phoneNumbers: prev.phoneNumbers.map((el, i) => 
-      i === itemNumber 
-        ? { ...el, [name]: value } 
-        : el) }))
+    setModel((prev) => ({
+      ...prev,
+      phoneNumbers: prev.phoneNumbers.map((el, i) =>
+        i === itemNumber ? { ...el, [name]: value } : el,
+      ),
+    }))
   }
 
   const onClickAddPhone = () => {
@@ -44,21 +57,25 @@ const EmployeeFormPage = () => {
     }))
   }
 
-  const handleAddressChange = (e: any, itemNumber: number) => {
+  const handleAddressChange = (
+    e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>,
+    itemNumber: number,
+  ) => {
     const { name, value } = e.target
-    setModel(prev => ({ ...prev, phoneNumbers: prev.phoneNumbers.map((el, i) => 
-      i === itemNumber 
-        ? { ...el, [name]: value } 
-        : el) }))
+    setModel((prev) => ({
+      ...prev,
+      addresses: prev.addresses.map((el, i) => (i === itemNumber ? { ...el, [name]: value } : el)),
+    }))
   }
 
   console.log('model', model)
+  console.log('districtOptionsQuery', districtOptionsQuery)
 
   return (
     <>
       <DocFormPageWrapper
         saving={false}
-        handleSubmit={() => { }}
+        handleSubmit={() => {}}
         cancelUrl={``}
         title={`Создание сотрудника`}
         children={
@@ -74,16 +91,23 @@ const EmployeeFormPage = () => {
                 onClickAddPhone={onClickAddPhone}
                 onClickRemovePhone={onClickRemovePhone}
               />
-              {model.addresses.map((item: EmployeeAddressFormModel, index:number) => (
-                <EmployeeFormAddress 
-                  key={index}
-                  title={index === 0 ? "Проживающий адрес" : 'Адрес регистрации'}
-                  item = {item} 
-                  errors = {errors} 
-                  handleAddressChange = {handleAddressChange} 
-                  live = {index === 0 ? true : false } 
+              <>
+                <EmployeeFormAddress
+                  regionOptions={regionOptionsQuery.data || []}  
+                  title='Проживающий адрес'
+                  errors={errors}
+                  model={model}
+                  live
+                  handleAddressChange={handleAddressChange}
                 />
-              ))}
+                <EmployeeFormAddress
+                  regionOptions={regionOptionsQuery.data || []}  
+                  title='Адрес регистрации'
+                  errors={errors}
+                  model={model}
+                  handleAddressChange={handleAddressChange}
+                />
+              </>
             </CForm>
           )
         }

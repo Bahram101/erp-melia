@@ -39,7 +39,7 @@ const EmployeeDetailedPage = () => {
 
   useEffect(() => {
     if (employeeDetailedQuery.data) {
-      customerAddressesQuery.refetch()
+      customerAddressesQuery.refetch() 
     }
   }, [employeeDetailedQuery.data])
 
