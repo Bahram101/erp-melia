@@ -12,6 +12,8 @@ type Props = {
   model: EmployeeFormModel
   errors: any
   regionOptions: RefOptionsModel[]
+  districtOptions: RefOptionsModel[]
+  cityOptions: RefOptionsModel[]
   handleAddressChange: (
     e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>,
     index: number,
@@ -24,6 +26,8 @@ const EmployeeFormAdress = ({
   model,
   errors,
   regionOptions,
+  districtOptions,
+  cityOptions,
   handleAddressChange,
 }: Props) => {
 
@@ -57,20 +61,20 @@ const EmployeeFormAdress = ({
           />
           <RefOptionsField
             label={'Район'}
-            fieldName={''}
+            fieldName={'districtId'}
             optionLabel="Выберите район..."
             error={''}
-            options={[]}
-            value={''}
+            options={districtOptions}
+            value={model.addresses[index].districtId}
             handleChange={(e) => handleAddressChange(e, index)}
           />
           <RefOptionsField
             label={'Город'}
-            fieldName={''}
+            fieldName={'cityId'}
             optionLabel="Выберите город..."
             error={''}
-            options={[]}
-            value={''}
+            options={cityOptions}
+            value={model.addresses[index].cityId}
             handleChange={(e) => handleAddressChange(e, index)}
           />
           <InputField

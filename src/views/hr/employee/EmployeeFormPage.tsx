@@ -10,22 +10,41 @@ import {
   DefaultEmployeePhoneFormModel,
   EmployeeFormModel,
 } from 'models/hr/HrModels'
-import { useDistrictOptionsQuery, useRegionOptionsQuery } from 'hooks/reference/refOptionsQueries'
+import { useCityOptionsQuery, useDistrictOptionsQuery, useRegionOptionsQuery } from 'hooks/reference/refOptionsQueries'
 
 const EmployeeFormPage = () => {
   const [model, setModel] = useState<EmployeeFormModel>(DefaultEmployeeFormModel)
   const [errors, setErrors] = useState<any>({})
-
+  const [addressData, setAddressData] = useState<any>({
+    districts1: [],
+    districts2: [],
+    cities1:[],
+    cities2:[]
+  })
   const regionOptionsQuery = useRegionOptionsQuery(true)
-  const districtOptionsQuery = useDistrictOptionsQuery(model.addresses[0].regionId, true)
-
-  // useEffect(() => {
-  //   regionOptionsQuery.refetch()
-  // }, [model])
+  const districtOptionsQuery1 = useDistrictOptionsQuery(model.addresses[0].regionId, true)
+  const districtOptionsQuery2 = useDistrictOptionsQuery(model.addresses[1].regionId, true)
+  const cityOptionsQuery1 = useCityOptionsQuery(model.addresses[0].regionId, true)
+  const cityOptionsQuery2 = useCityOptionsQuery(model.addresses[1].regionId, true)
 
   useEffect(() => {
-    districtOptionsQuery.refetch()
+    districtOptionsQuery1.refetch().then(({data}) => 
+      setAddressData((prev:any) => ({...prev, districts1: data}))
+    )
+    cityOptionsQuery1.refetch().then(({data}) => 
+      setAddressData((prev:any) => ({...prev, cities1: data}))
+    )
   }, [model.addresses[0].regionId])
+
+  useEffect(() => {
+    districtOptionsQuery2.refetch().then(({data}) => 
+      setAddressData((prev:any) => ({...prev, districts2: data}))
+    )
+    cityOptionsQuery2.refetch().then(({data}) => 
+      setAddressData((prev:any) => ({...prev, cities2: data}))
+    )
+  }, [model.addresses[1].regionId])
+
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
@@ -62,15 +81,19 @@ const EmployeeFormPage = () => {
     itemNumber: number,
   ) => {
     const { name, value } = e.target
+    console.log('name',name);
+    console.log('value',value);
+    
+    
     setModel((prev) => ({
       ...prev,
       addresses: prev.addresses.map((el, i) => (i === itemNumber ? { ...el, [name]: value } : el)),
     }))
   }
 
-  console.log('model', model)
-  console.log('districtOptionsQuery', districtOptionsQuery)
-
+  console.log('model', model) 
+  console.log('addressData', addressData);
+  
   return (
     <>
       <DocFormPageWrapper
@@ -93,16 +116,20 @@ const EmployeeFormPage = () => {
               />
               <>
                 <EmployeeFormAddress
-                  regionOptions={regionOptionsQuery.data || []}  
+                  live
                   title='Проживающий адрес'
+                  regionOptions={regionOptionsQuery.data || []}  
+                  districtOptions={addressData.districts1}
+                  cityOptions={addressData.cities1}
                   errors={errors}
                   model={model}
-                  live
                   handleAddressChange={handleAddressChange}
                 />
                 <EmployeeFormAddress
-                  regionOptions={regionOptionsQuery.data || []}  
                   title='Адрес регистрации'
+                  regionOptions={regionOptionsQuery.data || []}  
+                  districtOptions={addressData.districts2}
+                  cityOptions={addressData.cities2}
                   errors={errors}
                   model={model}
                   handleAddressChange={handleAddressChange}

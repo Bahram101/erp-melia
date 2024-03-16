@@ -129,15 +129,25 @@ export const useRegionOptionsQuery = (enabled: boolean) => {
   )
 }
 
-export const useDistrictOptionsQuery = (regionId: string, enabled: boolean) => {  
-  console.log('rere', regionId);
-  
+export const useDistrictOptionsQuery = (regionId: string, enabled: boolean) => {
   return useQuery<RefOptionsModel[]>(
     ['get-districts-as-options'],
     async () => {
       if (regionId) {
-        const { data } = await request.get(`/reference/districts/as-options?regionId=${regionId}`)        
-        console.log('data', data);
+        const { data } = await request.get(`/reference/districts/as-options?regionId=${regionId}`) 
+        return data
+      }
+    },
+    { enabled:enabled },
+  )
+}
+
+export const useCityOptionsQuery = (regionId: string, enabled: boolean) => {
+  return useQuery<RefOptionsModel[]>(
+    ['get-cities-as-options'],
+    async () => {
+      if (regionId) {
+        const { data } = await request.get(`/reference/cities/as-options?regionId=${regionId}`) 
         return data
       }
     },
