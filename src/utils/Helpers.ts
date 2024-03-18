@@ -64,7 +64,7 @@ export const getMonthOptions = () => [
   },
 ]
 
-export const genderList = [
+export const getGenderOptions  = [
   {
     id: 'MALE',
     label: 'Муж.',

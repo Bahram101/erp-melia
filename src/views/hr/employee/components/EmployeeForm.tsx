@@ -8,15 +8,15 @@ import { DatePickerField } from 'components/fields/DatePickerField'
 import InputField from 'components/fields/InputField'
 import { EmployeeFormModel, EmployeePhoneFormModel } from 'models/hr/HrModels'
 import { RefOptionsField } from 'components/fields/RefOptionsField'
-import { genderList } from 'utils/Helpers'
+import { getGenderOptions  } from 'utils/Helpers'
 
 type Props = {
   model: EmployeeFormModel
   errors: any
   handleChange: (e: any) => void
   handlePhoneChange: (e: ChangeEvent<HTMLInputElement>, itemNumber: number) => void
-  onClickAddPhone: () => void
-  onClickRemovePhone: (index:number) => void
+  addPhoneRow: () => void
+  removePhoneRow: (index:number) => void
 }
 
 const EmployeeForm = ({
@@ -24,8 +24,8 @@ const EmployeeForm = ({
   errors,
   handleChange,
   handlePhoneChange,
-  onClickAddPhone,
-  onClickRemovePhone,
+  addPhoneRow,
+  removePhoneRow,
 }: Props) => {
   return (
     <CCol xl={4} lg={6} md={6} className="mb-4">
@@ -71,7 +71,7 @@ const EmployeeForm = ({
           label={'Пол'}
           fieldName={'gender'}
           error={errors.gender}
-          options={genderList}
+          options={getGenderOptions }
           value={model.gender}
           handleChange={handleChange}
         />
@@ -89,7 +89,7 @@ const EmployeeForm = ({
                 size={28}
                 color="red"
                 className="closeIcon"
-                onClick={() => onClickRemovePhone(index)}
+                onClick={() => removePhoneRow(index)}
               />
             )}
           </div>
@@ -99,7 +99,7 @@ const EmployeeForm = ({
           variant="outline"
           color="secondary"
           className="float-end"
-          onClick={onClickAddPhone}
+          onClick={addPhoneRow}
           disabled={model.phoneNumbers.length > 4}
         >
           <FaPlus style={{ transform: 'translateY(-1px)' }} />

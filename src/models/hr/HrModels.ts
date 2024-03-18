@@ -80,7 +80,7 @@ export interface StructureSearchParamModel {
 
 //EmployeeFormModel
 export interface EmployeeFormModel {
-  id: string
+  id?: string
   lastname: string
   firstname: string
   middlename: string

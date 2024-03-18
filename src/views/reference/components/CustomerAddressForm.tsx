@@ -6,36 +6,38 @@ import { RefOptionsField } from 'components/fields/RefOptionsField'
 import { EmployeeAddressFormModel, EmployeeFormModel } from 'models/hr/HrModels'
 import { RefOptionsModel } from 'models/CommonModels'
 
-type Props = { 
+type Props = {
+  index: number
   title: string
   live?: boolean
-  model: EmployeeFormModel
+  address: EmployeeAddressFormModel
   errors: any
   regionOptions: RefOptionsModel[]
+  districtOptions: RefOptionsModel[]
+  cityOptions: RefOptionsModel[]
   handleAddressChange: (
     e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>,
     index: number,
   ) => void
 }
 
-const EmployeeFormAdress = ({ 
-  live,
-  title, 
-  model,
+const CustomerAddressForm = ({
+  index,
+  title,
+  address,
   errors,
   regionOptions,
+  districtOptions,
+  cityOptions,
   handleAddressChange,
 }: Props) => {
-
-  const index = live === true ? 0 : 1
-
   return (
     <CCol
-      xl={live ? 4 : { span: 4, offset: 0 }}
-      lg={live ? 6 : { span: 6, offset: 6 }}
-      md={live ? 6 : { span: 6, offset: 6 }}
+      xl={index === 0 ? 4 : { span: 4, offset: 0 }}
+      lg={index === 0 ? 6 : { span: 6, offset: 6 }}
+      md={index === 0 ? 6 : { span: 6, offset: 6 }}
     >
-      <div className={live ? 'mb-5' : ''}>
+      <div className={index === 0 ? 'mb-5' : ''}>
         <h6>{title}</h6>
         <hr />
         <FormWrapper>
@@ -44,7 +46,7 @@ const EmployeeFormAdress = ({
             placeholder={title}
             fieldName={'name'}
             error={''}
-            value={model.addresses[index].name}
+            value={address.name}
             handleChange={(e: ChangeEvent<HTMLInputElement>) => handleAddressChange(e, index)}
           />
           <RefOptionsField
@@ -52,25 +54,25 @@ const EmployeeFormAdress = ({
             fieldName={'regionId'}
             error={''}
             options={regionOptions}
-            value={model.addresses[index].regionId}
+            value={address.regionId}
             handleChange={(e) => handleAddressChange(e, index)}
           />
           <RefOptionsField
             label={'Район'}
-            fieldName={''}
+            fieldName={'districtId'}
             optionLabel="Выберите район..."
             error={''}
-            options={[]}
-            value={''}
+            options={districtOptions}
+            value={address.districtId}
             handleChange={(e) => handleAddressChange(e, index)}
           />
           <RefOptionsField
             label={'Город'}
-            fieldName={''}
+            fieldName={'cityId'}
             optionLabel="Выберите город..."
             error={''}
-            options={[]}
-            value={''}
+            options={cityOptions}
+            value={address.cityId}
             handleChange={(e) => handleAddressChange(e, index)}
           />
           <InputField
@@ -126,4 +128,4 @@ const EmployeeFormAdress = ({
   )
 }
 
-export default EmployeeFormAdress
+export default CustomerAddressForm
