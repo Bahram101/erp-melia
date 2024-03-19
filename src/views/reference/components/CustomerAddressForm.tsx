@@ -3,18 +3,19 @@ import { CCol } from '@coreui/react-pro'
 import FormWrapper from 'components/FormWrapper'
 import InputField from 'components/fields/InputField'
 import { RefOptionsField } from 'components/fields/RefOptionsField'
-import { EmployeeAddressFormModel, EmployeeFormModel } from 'models/hr/HrModels'
+import { CustomerAddressFormModel, EmployeeFormModel } from 'models/hr/HrModels'
 import { RefOptionsModel } from 'models/CommonModels'
 
 type Props = {
   index: number
   title: string
   live?: boolean
-  address: EmployeeAddressFormModel
+  address: CustomerAddressFormModel
   errors: any
   regionOptions: RefOptionsModel[]
   districtOptions: RefOptionsModel[]
   cityOptions: RefOptionsModel[]
+  villageOptions: RefOptionsModel[]
   handleAddressChange: (
     e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>,
     index: number,
@@ -78,10 +79,10 @@ const CustomerAddressForm = ({
           <InputField
             label={'Аул'}
             placeholder="Введите название аула..."
-            fieldName={'middlename'}
-            handleChange={() => {}}
-            value={''}
+            fieldName={'village'}
             error={''}
+            value={address.village}
+            handleChange={(e: ChangeEvent<HTMLInputElement>) => handleAddressChange(e, index)}
           />
           <InputField
             label={'Район в городе'}

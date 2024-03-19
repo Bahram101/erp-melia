@@ -1,70 +1,75 @@
 import React, { ChangeEvent, useCallback, useEffect, useState } from 'react'
-import { EmployeeAddressFormModel, EmployeeFormModel } from 'models/hr/HrModels'
+import { CustomerAddressFormModel, EmployeeFormModel } from 'models/hr/HrModels'
 import CustomerAddressForm from './CustomerAddressForm'
 import {
   useCityOptionsQuery,
   useDistrictOptionsQuery,
   useRegionOptionsQuery,
+  useVillageOptionsQuery,
 } from 'hooks/reference/refOptionsQueries'
 
 type Props = {
   index: number
   errors: any
-  model: EmployeeFormModel
   setModel: (val: any) => void
-  address: EmployeeAddressFormModel
+  address: CustomerAddressFormModel
 }
 
-const CustomerAddressWrapper = ({ index, model, errors, address, setModel }: Props) => {
-  const [addressData, setAddressData] = useState<any>([])
+const CustomerAddressWrapper = ({ index, errors, address, setModel }: Props) => {
+  const [addressData, setAddressData] = useState<any>({
+    districts: [],
+    cities: [],
+    villages: [],
+  })
 
   const regionOptionsQuery = useRegionOptionsQuery(true)
   const districtOptionsQuery = useDistrictOptionsQuery(address.regionId, true)
+  const cityOptionsQuery = useCityOptionsQuery(address.regionId, true)
+  const villageOptionsQuery = useVillageOptionsQuery(address.village, true)
 
   useEffect(() => {
-    if (address.regionId && !districtOptionsQuery.isFetching) {
-      districtOptionsQuery.refetch().then(({ data }: any) => {
-        setAddressData(data || [])
+    if (address.regionId) {
+      districtOptionsQuery.refetch().then(({ data }) => {
+        setAddressData((prev: any) => ({ ...prev, districts: data }))
+      })
+      cityOptionsQuery.refetch().then(({ data }) => {
+        setAddressData((prev: any) => ({ ...prev, cities: data }))
       })
     }
-  }, [address.regionId ])
+  }, [address.regionId])
 
-  // const handleAddressChange = (
-  //   e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>,
-  //   itemNumber: number,
-  // ) => {
-  //   const { name, value } = e.target
+  useEffect(() => {
+    if (address.village && address.village.length > 2) {
+      villageOptionsQuery.refetch().then(({ data }) => {
+        setAddressData((prev: any) => ({ ...prev, villages: data }))
+      })
+    }
+  }, [address.village])
 
-  //   setModel((prev: any) => ({
-  //     ...prev,
-  //     addresses: prev.addresses.map((el: EmployeeAddressFormModel, i: number) =>
-  //       i === itemNumber ? { ...el, [name]: value } : el,
-  //     ),
-  //   }))
-  // }
-  
-  const handleAddressChange = useCallback(
-    (e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>, itemNumber: number) => {
-      const { name, value } = e.target
-      setModel((prev: any) => ({
-        ...prev,
-        addresses: prev.addresses.map((el: EmployeeAddressFormModel, i: number) =>
-          i === itemNumber ? { ...el, [name]: value } : el,
-        ),
-      }))
-    },
-    [setModel],
-  )
+  const handleAddressChange = (
+    e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>,
+    itemNumber: number,
+  ) => {
+    const { name, value } = e.target
+    setModel((prev: any) => ({
+      ...prev,
+      addresses: prev.addresses.map((el: CustomerAddressFormModel, i: number) =>
+        i === itemNumber ? { ...el, [name]: value } : el,
+      ),
+    }))
+  }
 
   console.log('addressData', addressData)
+  console.log('address', address)
 
   return (
     <CustomerAddressForm
       index={index}
       title={index === 0 ? 'Проживающий адрес' : 'Адрес регистрации'}
       regionOptions={regionOptionsQuery.data || []}
-      districtOptions={[]}
-      cityOptions={[]}
+      districtOptions={addressData.districts || []}
+      cityOptions={addressData.cities || []}
+      villageOptions={addressData.cities || []}
       errors={errors}
       address={address}
       handleAddressChange={handleAddressChange}
@@ -72,4 +77,4 @@ const CustomerAddressWrapper = ({ index, model, errors, address, setModel }: Pro
   )
 }
 
-export default React.memo(CustomerAddressWrapper)
+export default CustomerAddressWrapper

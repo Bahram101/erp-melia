@@ -154,3 +154,16 @@ export const useCityOptionsQuery = (regionId: string, enabled: boolean) => {
     { enabled:enabled },
   )
 }
+
+export const useVillageOptionsQuery = (str: string, enabled: boolean) => {
+  return useQuery<RefOptionsModel[]>(
+    ['get-reference-cities-as-options'],
+    async () => {
+      if (str) {
+        const { data } = await request.get(`/reference/villages/as-options?q=${str}`) 
+        return data
+      }
+    },
+    { enabled:enabled },
+  )
+}

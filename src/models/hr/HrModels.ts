@@ -88,7 +88,7 @@ export interface EmployeeFormModel {
   gender: string
   birthDate: string
   phoneNumbers: EmployeePhoneFormModel[]
-  addresses: EmployeeAddressFormModel[]
+  addresses: CustomerAddressFormModel[]
 }
 
 export interface EmployeePhoneFormModel {
@@ -96,7 +96,7 @@ export interface EmployeePhoneFormModel {
   number: string
 }
 
-export interface EmployeeAddressFormModel {
+export interface CustomerAddressFormModel {
   id?: string
   name: string
   regionId: string
@@ -115,7 +115,7 @@ export const DefaultEmployeePhoneFormModel: EmployeePhoneFormModel = {
   number: '',
 }
 
-export const DefaultEmployeeAdressFormModel: EmployeeAddressFormModel = {
+export const DefaultCustomerAddressFormModel: CustomerAddressFormModel = {
   id: '',
   name: '',
   regionId: '',
@@ -138,5 +138,5 @@ export const DefaultEmployeeFormModel: EmployeeFormModel = {
   gender: '',
   birthDate: '',
   phoneNumbers: [DefaultEmployeePhoneFormModel],
-  addresses: [DefaultEmployeeAdressFormModel, DefaultEmployeeAdressFormModel],
+  addresses: [DefaultCustomerAddressFormModel],
 }

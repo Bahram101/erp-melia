@@ -19,8 +19,7 @@ const EmployeeFormPage = () => {
     const { name, value } = e.target
     setModel({ ...model, [name]: value })
     setErrors({ ...errors, [name]: null })
-  }
-  
+  }  
 
   const handlePhoneChange = (e: ChangeEvent<HTMLInputElement>, itemNumber: number) => {
     const { name, value } = e.target
@@ -46,7 +45,7 @@ const EmployeeFormPage = () => {
     }))
   }
 
-  console.log('model', model)
+  // console.log('model', model)
 
   return (
     <>
@@ -71,8 +70,7 @@ const EmployeeFormPage = () => {
               {model.addresses.map((address: any, index: number) => (
                 <Fragment key={index}>
                   <CustomerAddressWrapper
-                    index={index}
-                    model={model}
+                    index={index} 
                     setModel={setModel}
                     errors={errors}
                     address={address}
