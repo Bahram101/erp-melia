@@ -20,6 +20,9 @@ const CustomerAddressWrapper = ({ index, errors, address, setModel }: Props) => 
     districts: [],
     cities: [],
     villages: [],
+    cityDistricts: [],
+    microDistricts: [],
+    streets: [],
   })
 
   const regionOptionsQuery = useRegionOptionsQuery(true)
@@ -39,7 +42,7 @@ const CustomerAddressWrapper = ({ index, errors, address, setModel }: Props) => 
   }, [address.regionId])
 
   useEffect(() => {
-    if (address.village && address.village.length > 2) {
+    if (address.village?.length > 2) {
       villageOptionsQuery.refetch().then(({ data }) => {
         setAddressData((prev: any) => ({ ...prev, villages: data }))
       })
@@ -50,7 +53,7 @@ const CustomerAddressWrapper = ({ index, errors, address, setModel }: Props) => 
     e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>,
     itemNumber: number,
   ) => {
-    const { name, value } = e.target
+    const { name, value } = e.target 
     setModel((prev: any) => ({
       ...prev,
       addresses: prev.addresses.map((el: CustomerAddressFormModel, i: number) =>
@@ -69,7 +72,7 @@ const CustomerAddressWrapper = ({ index, errors, address, setModel }: Props) => 
       regionOptions={regionOptionsQuery.data || []}
       districtOptions={addressData.districts || []}
       cityOptions={addressData.cities || []}
-      villageOptions={addressData.cities || []}
+      villageList={addressData.villages || []}
       errors={errors}
       address={address}
       handleAddressChange={handleAddressChange}

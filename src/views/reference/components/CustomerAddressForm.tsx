@@ -5,6 +5,7 @@ import InputField from 'components/fields/InputField'
 import { RefOptionsField } from 'components/fields/RefOptionsField'
 import { CustomerAddressFormModel, EmployeeFormModel } from 'models/hr/HrModels'
 import { RefOptionsModel } from 'models/CommonModels'
+import { InputAutoComplete } from 'components/fields/InputAutoComplete'
 
 type Props = {
   index: number
@@ -15,7 +16,7 @@ type Props = {
   regionOptions: RefOptionsModel[]
   districtOptions: RefOptionsModel[]
   cityOptions: RefOptionsModel[]
-  villageOptions: RefOptionsModel[]
+  villageList: RefOptionsModel[]
   handleAddressChange: (
     e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>,
     index: number,
@@ -30,6 +31,7 @@ const CustomerAddressForm = ({
   regionOptions,
   districtOptions,
   cityOptions,
+  villageList,
   handleAddressChange,
 }: Props) => {
   return (
@@ -76,13 +78,14 @@ const CustomerAddressForm = ({
             value={address.cityId}
             handleChange={(e) => handleAddressChange(e, index)}
           />
-          <InputField
+          <InputAutoComplete
             label={'Аул'}
-            placeholder="Введите название аула..."
-            fieldName={'village'}
-            error={''}
+            placeholder='Введите название аула...'
+            index={index}
+            fieldName="village"
+            list={villageList}
             value={address.village}
-            handleChange={(e: ChangeEvent<HTMLInputElement>) => handleAddressChange(e, index)}
+            handleAddressChange={handleAddressChange}
           />
           <InputField
             label={'Район в городе'}
