@@ -157,10 +157,22 @@ export const useCityOptionsQuery = (regionId: string, enabled: boolean) => {
 
 export const useVillageOptionsQuery = (str: string, enabled: boolean) => {
   return useQuery<RefOptionsModel[]>(
-    ['get-reference-cities-as-options'],
+    ['get-reference-villages-as-options'],
     async () => {
       if (str) {
         const { data } = await request.get(`/reference/villages/as-options?q=${str}`) 
+        return data
+      }
+    },
+    { enabled:enabled },
+  )
+}
+export const useCityDistrictOptionsQuery = (str: string, enabled: boolean) => {
+  return useQuery<RefOptionsModel[]>(
+    ['get-reference-city-districts-as-options'],
+    async () => {
+      if (str) {
+        const { data } = await request.get(`/reference/city-districts/as-options?q=${str}`) 
         return data
       }
     },

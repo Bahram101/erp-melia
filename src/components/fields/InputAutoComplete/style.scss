@@ -1,0 +1,17 @@
+.list {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-top: 1px;
+  position: absolute;
+  width: 100%;
+  background: white;
+  z-index: 10;
+  .item {
+    padding: 5px;
+    &:hover {
+      background-color: #1967D2;
+      cursor:pointer;
+      color:white
+    }
+  }
+}

@@ -16,7 +16,10 @@ type Props = {
   regionOptions: RefOptionsModel[]
   districtOptions: RefOptionsModel[]
   cityOptions: RefOptionsModel[]
-  villageList: RefOptionsModel[]
+  villageOptions: RefOptionsModel[]
+  cityDistrictOptions: RefOptionsModel[]
+  microDistrictOptions: RefOptionsModel[]
+  streetOptions: RefOptionsModel[]
   handleAddressChange: (
     e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>,
     index: number,
@@ -31,7 +34,10 @@ const CustomerAddressForm = ({
   regionOptions,
   districtOptions,
   cityOptions,
-  villageList,
+  villageOptions,
+  cityDistrictOptions,
+  microDistrictOptions,
+  streetOptions,
   handleAddressChange,
 }: Props) => {
   return (
@@ -53,16 +59,16 @@ const CustomerAddressForm = ({
             handleChange={(e: ChangeEvent<HTMLInputElement>) => handleAddressChange(e, index)}
           />
           <RefOptionsField
-            label={'Область'}
-            fieldName={'regionId'}
+            label='Область'
+            fieldName='regionId'
             error={''}
             options={regionOptions}
             value={address.regionId}
             handleChange={(e) => handleAddressChange(e, index)}
           />
           <RefOptionsField
-            label={'Район'}
-            fieldName={'districtId'}
+            label='Район'
+            fieldName='districtId'
             optionLabel="Выберите район..."
             error={''}
             options={districtOptions}
@@ -70,8 +76,8 @@ const CustomerAddressForm = ({
             handleChange={(e) => handleAddressChange(e, index)}
           />
           <RefOptionsField
-            label={'Город'}
-            fieldName={'cityId'}
+            label='Город'
+            fieldName='cityId'
             optionLabel="Выберите город..."
             error={''}
             options={cityOptions}
@@ -79,52 +85,55 @@ const CustomerAddressForm = ({
             handleChange={(e) => handleAddressChange(e, index)}
           />
           <InputAutoComplete
-            label={'Аул'}
+            label='Аул'
             placeholder='Введите название аула...'
             index={index}
             fieldName="village"
-            list={villageList}
+            options={villageOptions}
             value={address.village}
             handleAddressChange={handleAddressChange}
           />
-          <InputField
-            label={'Район в городе'}
-            placeholder="Введите название района..."
-            fieldName={'middlename'}
-            handleChange={() => {}}
-            value={''}
-            error={''}
-          />
-          <InputField
-            label={'Микрорайон'}
-            placeholder="Введите название микрорайона..."
-            fieldName={''}
-            handleChange={() => {}}
-            value={''}
-            error={''}
-          />
-          <InputField
-            label={'Улица'}
-            placeholder="Введите название улицы..."
-            fieldName={''}
-            handleChange={() => {}}
-            value={''}
-            error={''}
+          <InputAutoComplete
+            label='Район в городе'
+            placeholder='Введите название района...'
+            index={index}
+            fieldName="cityDistrict"
+            options={cityDistrictOptions}
+            value={address.cityDistrict}
+            handleAddressChange={handleAddressChange}
+          /> 
+          <InputAutoComplete
+            label='Микрорайон'
+            placeholder='Введите название микрорайона...'
+            index={index}
+            fieldName="microDistrict"
+            options={microDistrictOptions}
+            value={address.microDistrict}
+            handleAddressChange={handleAddressChange}
+          /> 
+          <InputAutoComplete
+            label='Улица'
+            placeholder='Введите название улицы...'
+            index={index}
+            fieldName="street"
+            options={streetOptions}
+            value={address.street}
+            handleAddressChange={handleAddressChange}
           />
           <InputField
             label={'Номер дома'}
-            fieldName={''}
-            handleChange={() => {}}
-            value={''}
+            fieldName='houseNumber'
             error={''}
+            value={address.houseNumber}
+            handleChange={handleAddressChange}
           />
           <InputField
             label={'Номер квартиры'}
-            fieldName={'lastname'}
+            fieldName={'flatNumber'}
             type="number"
-            handleChange={() => {}}
-            value={''}
             error={''}
+            value={address.flatNumber}
+            handleChange={handleAddressChange}
           />
         </FormWrapper>
       </div>

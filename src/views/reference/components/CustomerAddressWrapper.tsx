@@ -2,6 +2,7 @@ import React, { ChangeEvent, useCallback, useEffect, useState } from 'react'
 import { CustomerAddressFormModel, EmployeeFormModel } from 'models/hr/HrModels'
 import CustomerAddressForm from './CustomerAddressForm'
 import {
+  useCityDistrictOptionsQuery,
   useCityOptionsQuery,
   useDistrictOptionsQuery,
   useRegionOptionsQuery,
@@ -29,6 +30,7 @@ const CustomerAddressWrapper = ({ index, errors, address, setModel }: Props) => 
   const districtOptionsQuery = useDistrictOptionsQuery(address.regionId, true)
   const cityOptionsQuery = useCityOptionsQuery(address.regionId, true)
   const villageOptionsQuery = useVillageOptionsQuery(address.village, true)
+  const cityDistrictOptionsQuery = useCityDistrictOptionsQuery(address.cityDistrict, true)
 
   useEffect(() => {
     if (address.regionId) {
@@ -42,18 +44,23 @@ const CustomerAddressWrapper = ({ index, errors, address, setModel }: Props) => 
   }, [address.regionId])
 
   useEffect(() => {
-    if (address.village?.length > 2) {
+    if (address.village && address.village?.length > 2) {
       villageOptionsQuery.refetch().then(({ data }) => {
         setAddressData((prev: any) => ({ ...prev, villages: data }))
       })
     }
-  }, [address.village])
+    if (address.cityDistrict && address.cityDistrict?.length > 1) {
+      cityDistrictOptionsQuery.refetch().then(({ data }) => {
+        setAddressData((prev: any) => ({ ...prev, cityDistricts: data }))
+      })
+    } 
+  }, [address.village, address.cityDistrict, address.microDistrict, address.street])
 
   const handleAddressChange = (
-    e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>,
+    e: any,
     itemNumber: number,
   ) => {
-    const { name, value } = e.target 
+    const { name, value } = e.target
     setModel((prev: any) => ({
       ...prev,
       addresses: prev.addresses.map((el: CustomerAddressFormModel, i: number) =>
@@ -61,6 +68,7 @@ const CustomerAddressWrapper = ({ index, errors, address, setModel }: Props) => 
       ),
     }))
   }
+
 
   console.log('addressData', addressData)
   console.log('address', address)
@@ -72,7 +80,10 @@ const CustomerAddressWrapper = ({ index, errors, address, setModel }: Props) => 
       regionOptions={regionOptionsQuery.data || []}
       districtOptions={addressData.districts || []}
       cityOptions={addressData.cities || []}
-      villageList={addressData.villages || []}
+      villageOptions={addressData.villages || []}
+      cityDistrictOptions={addressData.cityDistricts || []}
+      microDistrictOptions={addressData.microDistricts || []}
+      streetOptions={addressData.streetList || []}
       errors={errors}
       address={address}
       handleAddressChange={handleAddressChange}
