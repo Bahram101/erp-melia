@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from 'react'
+import React, { ChangeEvent, useState } from 'react'
 import { RefOptionsModel } from 'models/CommonModels'
 import './style.scss'
 
@@ -24,9 +24,12 @@ export const InputAutoComplete = ({
   fieldName,
   value,
 }: Props) => {
+
+  const [hideList, setHideList] = useState(false)
+
   return (
     <div className="form-group" style={{ position: 'relative' }}>
-      <label>{label}</label>
+      <label  style={{marginBottom:3}}>{label}</label>
       <input
         type="text"
         placeholder={placeholder}
@@ -35,9 +38,13 @@ export const InputAutoComplete = ({
         id="input-datalist"
         name={fieldName}
         value={value}
-        onChange={(e: ChangeEvent<HTMLInputElement>) => handleAddressChange(e, index)}
+        onChange={(e: ChangeEvent<HTMLInputElement>) => {
+            handleAddressChange(e, index)
+            setHideList(false)
+          }
+        }
       />
-      <div id="list" className={`${options.length > 0 && 'list'}`}>
+      <div className={`${options.length > 0 && 'list'} ${hideList && 'd-none'}`} >
         {options.map((item: any, i) => (
           <div
             className="item"
@@ -49,8 +56,8 @@ export const InputAutoComplete = ({
                   value: item.label,
                 },
               }
-              handleAddressChange(obj, i)
-
+              handleAddressChange(obj, index)
+              setHideList(true)
             }}
           >
             {item.label}

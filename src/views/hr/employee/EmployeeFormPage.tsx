@@ -10,10 +10,15 @@ import {
   EmployeeFormModel,
 } from 'models/hr/HrModels'
 import CustomerAddressWrapper from 'views/reference/components/CustomerAddressWrapper'
+import { useEmployeeInfoSaveMutation } from 'hooks/hr/employeeQueries'
+import { useParams } from 'react-router-dom'
+import { parseResponseFormErrors } from 'utils/ErrorUtil'
 
 const EmployeeFormPage = () => {
+  const { id } = useParams()
   const [model, setModel] = useState<EmployeeFormModel>(DefaultEmployeeFormModel)
   const [errors, setErrors] = useState<any>({})
+  const saveMutation = useEmployeeInfoSaveMutation(id)
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
@@ -45,13 +50,24 @@ const EmployeeFormPage = () => {
     }))
   }
 
-  // console.log('model', model)
+  const handleSubmit = () => {
+    saveMutation
+      .mutateAsync({
+        form: model,
+      })
+      .then(({ data }) => {
+        location.pathname = `/hr/employees/view`
+      })
+      .catch((error) => {
+        setErrors(parseResponseFormErrors(error))
+      })
+  }
 
   return (
     <>
       <DocFormPageWrapper
         saving={false}
-        handleSubmit={() => {}}
+        handleSubmit={handleSubmit}
         cancelUrl={``}
         title={`Создание сотрудника`}
         children={

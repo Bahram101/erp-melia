@@ -11,8 +11,8 @@ type Props = {
   index: number
   title: string
   live?: boolean
-  address: CustomerAddressFormModel
   errors: any
+  address: CustomerAddressFormModel
   regionOptions: RefOptionsModel[]
   districtOptions: RefOptionsModel[]
   cityOptions: RefOptionsModel[]
@@ -125,7 +125,7 @@ const CustomerAddressForm = ({
             fieldName='houseNumber'
             error={''}
             value={address.houseNumber}
-            handleChange={handleAddressChange}
+            handleChange={(e: ChangeEvent<HTMLInputElement>) => handleAddressChange(e, index)}
           />
           <InputField
             label={'Номер квартиры'}
@@ -133,7 +133,7 @@ const CustomerAddressForm = ({
             type="number"
             error={''}
             value={address.flatNumber}
-            handleChange={handleAddressChange}
+            handleChange={(e: ChangeEvent<HTMLInputElement>) => handleAddressChange(e, index)}
           />
         </FormWrapper>
       </div>

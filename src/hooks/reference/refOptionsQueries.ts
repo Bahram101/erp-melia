@@ -179,3 +179,29 @@ export const useCityDistrictOptionsQuery = (str: string, enabled: boolean) => {
     { enabled:enabled },
   )
 }
+
+export const useMicroDistrictOptionsQuery = (str: string, enabled: boolean) => {
+  return useQuery<RefOptionsModel[]>(
+    ['get-reference-micro-districts-as-options'],
+    async () => {
+      if (str) {
+        const { data } = await request.get(`/reference/micro-districts/as-options?q=${str}`) 
+        return data
+      }
+    },
+    { enabled:enabled },
+  )
+}
+
+export const useStreetOptionsQuery = (str: string, enabled: boolean) => {
+  return useQuery<RefOptionsModel[]>(
+    ['get-reference-streets-as-options'],
+    async () => {
+      if (str) {
+        const { data } = await request.get(`/reference/streets/as-options?q=${str}`) 
+        return data
+      }
+    },
+    { enabled:enabled },
+  )
+}

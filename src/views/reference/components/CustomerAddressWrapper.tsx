@@ -5,7 +5,9 @@ import {
   useCityDistrictOptionsQuery,
   useCityOptionsQuery,
   useDistrictOptionsQuery,
+  useMicroDistrictOptionsQuery,
   useRegionOptionsQuery,
+  useStreetOptionsQuery,
   useVillageOptionsQuery,
 } from 'hooks/reference/refOptionsQueries'
 
@@ -31,6 +33,8 @@ const CustomerAddressWrapper = ({ index, errors, address, setModel }: Props) => 
   const cityOptionsQuery = useCityOptionsQuery(address.regionId, true)
   const villageOptionsQuery = useVillageOptionsQuery(address.village, true)
   const cityDistrictOptionsQuery = useCityDistrictOptionsQuery(address.cityDistrict, true)
+  const microDistrictOptionsQuery = useMicroDistrictOptionsQuery(address.microDistrict, true)
+  const streetOptionsQuery = useStreetOptionsQuery(address.street, true)
 
   useEffect(() => {
     if (address.regionId) {
@@ -44,38 +48,49 @@ const CustomerAddressWrapper = ({ index, errors, address, setModel }: Props) => 
   }, [address.regionId])
 
   useEffect(() => {
-    if (address.village && address.village?.length > 2) {
+    if (address.village?.length > 2) {
       villageOptionsQuery.refetch().then(({ data }) => {
         setAddressData((prev: any) => ({ ...prev, villages: data }))
       })
     }
-    if (address.cityDistrict && address.cityDistrict?.length > 1) {
+    if (address.cityDistrict?.length > 2) {
       cityDistrictOptionsQuery.refetch().then(({ data }) => {
         setAddressData((prev: any) => ({ ...prev, cityDistricts: data }))
+      })
+    } 
+    if (address.microDistrict?.length > 2) {
+      microDistrictOptionsQuery.refetch().then(({ data }) => {
+        setAddressData((prev: any) => ({ ...prev, microDistricts: data }))
+      })
+    } 
+    if (address.street?.length > 2) {
+      streetOptionsQuery.refetch().then(({ data }) => {
+        setAddressData((prev: any) => ({ ...prev, streets: data }))
       })
     } 
   }, [address.village, address.cityDistrict, address.microDistrict, address.street])
 
   const handleAddressChange = (
     e: any,
-    itemNumber: number,
+    index: number,
   ) => {
-    const { name, value } = e.target
+    const { name, value } = e.target 
+    console.log('name', name);
+    console.log('value', value);
+    
     setModel((prev: any) => ({
       ...prev,
       addresses: prev.addresses.map((el: CustomerAddressFormModel, i: number) =>
-        i === itemNumber ? { ...el, [name]: value } : el,
+        i === index ? { ...el, [name]: value } : el,
       ),
     }))
   }
 
-
-  console.log('addressData', addressData)
-  console.log('address', address)
-
   return (
     <CustomerAddressForm
       index={index}
+      errors={errors}
+      address={address}
       title={index === 0 ? 'Проживающий адрес' : 'Адрес регистрации'}
       regionOptions={regionOptionsQuery.data || []}
       districtOptions={addressData.districts || []}
@@ -83,9 +98,7 @@ const CustomerAddressWrapper = ({ index, errors, address, setModel }: Props) => 
       villageOptions={addressData.villages || []}
       cityDistrictOptions={addressData.cityDistricts || []}
       microDistrictOptions={addressData.microDistricts || []}
-      streetOptions={addressData.streetList || []}
-      errors={errors}
-      address={address}
+      streetOptions={addressData.streets || []}
       handleAddressChange={handleAddressChange}
     />
   )

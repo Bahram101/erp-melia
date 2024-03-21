@@ -2,6 +2,7 @@ import { useMutation, useQuery } from 'react-query'
 import { request } from '../../http'
 import {
   EmployeeDetailedModel,
+  EmployeeFormModel,
   EmployeePostFormModel,
   EmployeePostGridModel,
 } from '../../models/hr/HrModels'
@@ -67,5 +68,16 @@ export const useEmployeePostSaveMutation = (id: string, postId: string | undefin
   }
   return useMutation(({ form }: { form: EmployeePostFormModel }) =>
     request.post(`/hr/employees/${id}/posts`, form),
+  )
+}
+
+export const useEmployeeInfoSaveMutation = (id: string | undefined) => {
+  if (id) {
+    return useMutation(({ form }: { form: EmployeeFormModel }) =>
+      request.put(`/hr/employees/${id}`, form),
+    )
+  }
+  return useMutation(({ form }: { form: EmployeeFormModel }) =>
+    request.post(`/hr/employees`, form),
   )
 }
