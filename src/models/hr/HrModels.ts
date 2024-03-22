@@ -80,7 +80,6 @@ export interface StructureSearchParamModel {
 
 //EmployeeFormModel
 export interface EmployeeFormModel {
-  id?: string
   lastname: string
   firstname: string
   middlename: string
@@ -130,7 +129,6 @@ export const DefaultCustomerAddressFormModel: CustomerAddressFormModel = {
 }
 
 export const DefaultEmployeeFormModel: EmployeeFormModel = {
-  id: '',
   lastname: '',
   firstname: '',
   middlename: '',

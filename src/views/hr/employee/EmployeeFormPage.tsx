@@ -10,15 +10,28 @@ import {
   EmployeeFormModel,
 } from 'models/hr/HrModels'
 import CustomerAddressWrapper from 'views/reference/components/CustomerAddressWrapper'
-import { useEmployeeInfoSaveMutation } from 'hooks/hr/employeeQueries'
+import { useEmployeeDetailedQuery, useEmployeeInfoSaveMutation } from 'hooks/hr/employeeQueries'
 import { useParams } from 'react-router-dom'
 import { parseResponseFormErrors } from 'utils/ErrorUtil'
+import { useCustomerAdressesQuery } from 'hooks/reference/refCustomerQueries'
 
 const EmployeeFormPage = () => {
   const { id } = useParams()
   const [model, setModel] = useState<EmployeeFormModel>(DefaultEmployeeFormModel)
   const [errors, setErrors] = useState<any>({})
+  
+  const employeeFormQuery = useEmployeeDetailedQuery(id, true)
   const saveMutation = useEmployeeInfoSaveMutation(id)
+  const customerAddressesQuery = useCustomerAdressesQuery(
+    employeeFormQuery?.data?.customerId,
+    false,
+  )
+
+  useEffect(() => {
+    if (employeeFormQuery.data) {
+      customerAddressesQuery.refetch() 
+    }
+  }, [employeeFormQuery.data])
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
@@ -56,12 +69,17 @@ const EmployeeFormPage = () => {
         form: model,
       })
       .then(({ data }) => {
-        location.pathname = `/hr/employees/view`
+        location.pathname = `/hr/employees`
       })
       .catch((error) => {
         setErrors(parseResponseFormErrors(error))
       })
   }
+
+  console.log('model', model);
+  console.log('employeeFormQuery', employeeFormQuery.data);
+  console.log('customerAddressesQuery', customerAddressesQuery.data);
+  
 
   return (
     <>
