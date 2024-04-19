@@ -1,9 +1,17 @@
 import React, { Fragment } from 'react'
 import { CustomerAddressFormModel } from 'models/hr/HrModels'
 import CustomerAddressForm from './CustomerAddressForm'
-import { useRegionOptionsQuery } from 'hooks/reference/refOptionsQueries'
+import {
+  useCityDistrictOptionsQuery,
+  useCityOptionsQuery,
+  useDistrictOptionsQuery,
+  useMicroDistrictOptionsQuery,
+  useRegionOptionsQuery,
+  useStreetOptionsQuery,
+  useVillageOptionsQuery,
+} from 'hooks/reference/refOptionsQueries'
 
-type Props = {
+type Props = { 
   errors: any
   addresses: CustomerAddressFormModel[]
   handleChange: (e: any) => void
@@ -11,7 +19,6 @@ type Props = {
 
 const CustomerAddressWrapper = ({ handleChange, errors, addresses }: Props) => {
   const regionOptionsQuery = useRegionOptionsQuery(true)
-
 
   const handleAddressChange = (
     e: any,
