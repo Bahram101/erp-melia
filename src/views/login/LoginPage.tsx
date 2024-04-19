@@ -15,7 +15,8 @@ import { useNavigate } from 'react-router-dom'
 import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilUser } from '@coreui/icons'
 import { useLogin } from '../../hooks/login/loginQueries' 
-import { toast } from 'react-toastify' 
+import { toast } from 'react-toastify'
+import { parseResponseFormErrors } from '../../utils/ErrorUtil'
 
 const LoginPage = () => {
   const loginQuery = useLogin()

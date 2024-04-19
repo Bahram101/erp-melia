@@ -1,10 +1,16 @@
-import { useQuery } from 'react-query'
+import { useMutation, useQuery } from 'react-query'
 import { request } from '../../http'
-import { CustomerDetailedModel, CustomerGridModel } from '../../models/reference/RefModels'
+import {
+  CustomerAddressGridModel,
+  CustomerDetailedModel,
+  CustomerFormModel,
+  CustomerGridModel,
+} from '../../models/reference/RefModels'
 import { RefOptionsModel } from '../../models/CommonModels'
+import { CustomerAddressFormModel } from '../../models/hr/HrModels'
 
-export const useCustomerAdressesQuery = (customerId: string | undefined, enabled: boolean) => {
-  return useQuery<any>(
+export const useCustomerAdressesGridQuery = (customerId: string | undefined, enabled: boolean) => {
+  return useQuery<CustomerAddressGridModel[]>(
     ['ref-get-customer-addresses', customerId],
     async () => {
       if (customerId) {
@@ -51,14 +57,64 @@ export interface CustomerSearchParams {
 
 export const useCustomerSearchQuery = (params: CustomerSearchParams) => {
   return useQuery<CustomerGridModel[]>(
-    ["get-reference-customer-search"],
+    ['get-reference-customer-search'],
     async () => {
-      const { data } = await request.get("/reference/customers/search", {
-        params: params
-      });
+      const { data } = await request.get('/reference/customers/search', {
+        params: params,
+      })
 
-      return data;
+      return data
     },
-    { enabled: false }
-  );
-};
+    { enabled: false },
+  )
+}
+
+export const useCustomerGridQuery = (params: {}) => {
+  return useQuery<CustomerGridModel[]>(
+    ['get-reference-customer-grid'],
+    async () => {
+      const { data } = await request.get('/reference/customers', {
+        params: params,
+      })
+
+      return data
+    },
+    { enabled: false },
+  )
+}
+
+export const useCustomerMainDataFormQuery = (id: string, enabled: boolean) => {
+  return useQuery<CustomerFormModel>(
+    ['get-reference-customer-form'],
+    async () => {
+      const { data } = await request.get(`/reference/customers/${id}/main-data-form`)
+
+      return data
+    },
+    { enabled: enabled },
+  )
+}
+
+export const useCustomerMainDataSaveMutation = (id: string | undefined) => {
+  return useMutation(({ form }: { form: CustomerFormModel }) =>
+    request.put(`/reference/customers/${id}/main-data`, form),
+  )
+}
+
+export const useCustomerAddressFormQuery = (id: string, enabled: boolean) => {
+  return useQuery<CustomerAddressFormModel>(
+    ['get-reference-customer-form'],
+    async () => {
+      const { data } = await request.get(`/reference/customer-addresses/${id}/form`)
+
+      return data
+    },
+    { enabled: enabled },
+  )
+}
+
+export const useCustomerAddressSaveMutation = (customerId: string, id: string | undefined) => {
+  return useMutation(({ form }: { form: CustomerAddressFormModel }) =>
+    id ? request.put(`/reference/customer-addresses/${customerId}/${id}`, form) : request.post(`/reference/customer-addresses/${customerId}`, form),
+  )
+}

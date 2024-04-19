@@ -1,6 +1,9 @@
 import {
-  CommonRefModel, ContextDocGridModel,
+  CommonRefModel,
+  ContextDocGridModel,
+  ContractRefModel,
   CustomerRefModel,
+  DefaultPostRefModel,
   DocActionButton,
   DocStatus,
   Doctype,
@@ -78,13 +81,20 @@ export interface CashDocFormModel {
   branchId: string | null
   fromCashId: string | null
   toCashId: string | null
-  responsibleId: string | null
+  responsible: PostRefModel
   customerId: string | null
   docDate: string | null
   amount: number
   doctype: Doctype | null
   note: string
   items: CashDocItemFormModel[]
+}
+
+export interface MonthlyPaymentDocFormModel {
+  psId: string | null
+  cashId: string | null
+  paymentDate: string | ''
+  amount: number
 }
 
 export interface CashDocItemFormModel {
@@ -98,13 +108,63 @@ export const DefaultCashDocFormModel: CashDocFormModel = {
   branchId: null,
   fromCashId: null,
   toCashId: null,
-  responsibleId: null,
   customerId: null,
   amount: 0,
   docDate: null,
   doctype: null,
   items: [],
   note: '',
+  responsible: DefaultPostRefModel,
 }
 
 export const DefaultCashDocItemFormModel: CashDocItemFormModel = { amount: 0, itemId: null, note: '' }
+
+export const DefaultMonthlyPaymentDocFormModel: MonthlyPaymentDocFormModel = {
+  amount: 0,
+  cashId: null,
+  paymentDate: '',
+  psId: null,
+}
+
+export interface MonthlyPaymentDocGridModel {
+  id: string
+  regCode: string
+  customerName: string
+  dealerName: string
+  paymentDate: string
+  amount: number
+  remainAmount: number
+  paidAmount: number
+  overdue: boolean
+  _props: any
+}
+
+export interface RewardDocGridModel {
+  id: string
+  branchName: string
+  docDate: string
+  contractRegCode: string
+  targetContractRegCode: string
+  amount: number
+  doctypeName: string
+}
+
+export interface RewardDocDetailedModel {
+  id: string
+  doctype: DoctypeRefModel
+  docDate: string
+  regNumber: number
+  branch: CommonRefModel
+  fromCash: CommonRefModel
+  amount: number
+  status: StatusRefModel
+  contract: ContractRefModel
+  targetContract: ContractRefModel
+  contractAddress: string
+  targetContractAddress: string
+  contractPhones: string[]
+  targetContractPhones: string[]
+  createdAt: string
+  note: string
+  actions: DocActionButton[]
+}

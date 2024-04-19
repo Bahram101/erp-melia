@@ -4,7 +4,9 @@ import { RefOptionsField } from 'components/fields/RefOptionsField'
 import TextAreaField from 'components/fields/TextAreaField'
 import { Doctype, RefOptionsModel } from 'models/CommonModels'
 import { WhouseDocFormModel } from 'models/whouse/whouseModels'
+import ContractField from '../../../../components/fields/Contract/ContractField'
 import WhouseDocsItemForm from './WhouseDocItemForm'
+import WhouseReturnDocItemForm from './WhouseReturnDocItemForm'
 
 interface Props {
   model: WhouseDocFormModel
@@ -36,6 +38,15 @@ const WhouseDocForm = ({
   return (
     <CForm className="row g-3 needs-validation">
       <CCol md={4} className="pe-3">
+        {model.doctype === Doctype.RETURN && <div className="mb-3">
+          <ContractField
+            label={'Род. документ'}
+            fieldName={'contextDoc'}
+            handleChange={handleChange}
+            value={model.contextDoc}
+            error={errors.contextDoc}
+          />
+        </div>}
         {model.doctype === Doctype.SUPPLY && (
           <>
             <div className="mb-3">
@@ -98,13 +109,6 @@ const WhouseDocForm = ({
                 handleChange={handleChange}
               />
             </div>
-            <TextAreaField
-              label={'Род. документ'}
-              fieldName="note"
-              value={model.note}
-              handleChange={handleChange}
-              error={errors.note}
-            />
           </>
         )}
         {model.doctype === Doctype.WRITEOFF_LOST && (
@@ -139,16 +143,21 @@ const WhouseDocForm = ({
         />
       </CCol>
       <CCol md={8} className="goodsOptionsForm ">
-      <WhouseDocsItemForm
-        model={model}
-        errors={errors}
-        goodsOptions={goodsOptions || []}
-        hasSerialGoodsIds={hasSerialGoodsIds}
-        handleItemChange={handleItemChange}
-        addItemRow={addItemRow}
-        deleteItemRow={deleteItemRow}
-        showSnFormModal={showSnFormModal}
-      />
+        {model.doctype !== Doctype.RETURN && <WhouseDocsItemForm
+          model={model}
+          errors={errors}
+          goodsOptions={goodsOptions || []}
+          hasSerialGoodsIds={hasSerialGoodsIds}
+          handleItemChange={handleItemChange}
+          addItemRow={addItemRow}
+          deleteItemRow={deleteItemRow}
+          showSnFormModal={showSnFormModal}
+          showPriceField={model.doctype === Doctype.SUPPLY}
+        />}
+        {model.doctype === Doctype.RETURN && <WhouseReturnDocItemForm
+          removeItemRow={deleteItemRow}
+          items={model.items}
+        />}
       </CCol>
     </CForm>
   )

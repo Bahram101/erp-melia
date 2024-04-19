@@ -26,6 +26,7 @@ import ContractRestoreFormModal from './components/ContractRestoreFormModal'
 import ContractChangeCollectorModal from './components/actionmodals/ContractChangeCollectorModal'
 import ContractChangeRecoModal from './components/actionmodals/ContractChangeRecoModal'
 import ContractGiftFormModal from './components/actionmodals/ContractGiftFormModal'
+import ContractAddFirstPaymentModal from './components/actionmodals/ContractAddFirstPaymentModal'
 
 const TAB_MAIN_DATA = 'MAIN_DATA'
 const TAB_ADD_DATA = 'ADD_DATA'
@@ -70,6 +71,7 @@ const ContractViewPage = () => {
   const [changeCollectorModalVisible, setChangeCollectorModalVisible] = useState<boolean>(false)
   const [changeRecoModalVisible, setChangeRecoModalVisible] = useState<boolean>(false)
   const [giftFormModalVisible, setGiftFormModalVisible] = useState<boolean>(false)
+  const [firstPaymentModalVisible, setFirstPaymentModalVisible] = useState<boolean>(false)
 
   const detailedQuery = useContractDetailedQuery(id, false)
   const customerDetailedQuery = useCustomerDetailedQuery(model?.customer?.id, false)
@@ -136,6 +138,9 @@ const ContractViewPage = () => {
       return Promise.resolve()
     } else if (action === DocAction.ADD_GIFT) {
       setGiftFormModalVisible(true)
+      return Promise.resolve()
+    } else if (action === DocAction.ADDING_FIRST_PAYMENT) {
+      setFirstPaymentModalVisible(true)
       return Promise.resolve()
     }
 
@@ -208,6 +213,17 @@ const ContractViewPage = () => {
             setRestoreModalVisible(false)
           }}
           contractId={id || ''}
+        />
+        <ContractAddFirstPaymentModal
+          contract={model}
+          visible={firstPaymentModalVisible}
+          onClose={() => {
+            setFirstPaymentModalVisible(false)
+          }}
+          handleAfterSubmit={() => {
+            loadContract()
+            setFirstPaymentModalVisible(false)
+          }}
         />
         <CNav variant="tabs">
           {Tabs.map((tab) => <CNavItem key={tab.key}>

@@ -1,11 +1,12 @@
 import { CCol, CForm } from '@coreui/react-pro'
 import { CashDocFormModel } from '../../../../models/finance/FinModels'
-import { Doctype, RefOptionsModel } from '../../../../models/CommonModels'
+import { DefaultPostRefModel, Doctype, RefOptionsModel } from '../../../../models/CommonModels'
 import { RefOptionsField } from '../../../../components/fields/RefOptionsField'
 import TextAreaField from '../../../../components/fields/TextAreaField'
 import { DatePickerField } from '../../../../components/fields/DatePickerField'
 import CashDocItemForm from './CashDocItemForm'
 import CurrencyField from '../../../../components/fields/CurrencyField'
+import CurrPostsField from '../../../../components/fields/CurrPostsField'
 
 interface Props {
   model: CashDocFormModel
@@ -33,11 +34,13 @@ const CashDocForm = ({
 
   const hasItemDoc = () => {
     return model.doctype !== Doctype.CASH_DOC_MOVE_OUT
+      && model.doctype !== Doctype.CASH_DOC_PREPAYMENT_OUT
+      && model.doctype !== Doctype.CASH_DOC_SALARY_OUT
   }
 
   return (
     <CForm className="row g-3 needs-validation">
-      <CCol md={4} className="pe-3">
+      <CCol md={5} className="pe-3">
         <div className="mb-3">
           <RefOptionsField
             label={'Филиал'}
@@ -98,7 +101,7 @@ const CashDocForm = ({
           error={errors.note}
         />
       </CCol>
-      <CCol md={8}>
+      <CCol md={7}>
         {hasItemDoc() && <CashDocItemForm
           errors={errors}
           expenseItemOptions={expenseItemOptions}
@@ -106,6 +109,22 @@ const CashDocForm = ({
           addItemRow={addItemRow}
           deleteItemRow={deleteItemRow}
           items={model.items || []}
+        />}
+
+        {(model.doctype === Doctype.CASH_DOC_PREPAYMENT_OUT || model.doctype === Doctype.CASH_DOC_SALARY_OUT) && <CurrPostsField
+          label={'Сотрудник'}
+          fieldName={'responsible'}
+          handleChange={handleChange}
+          value={model.responsible}
+          error={errors.responsible}
+        />}
+
+        {(model.doctype === Doctype.CASH_DOC_PREPAYMENT_OUT || model.doctype === Doctype.CASH_DOC_SALARY_OUT) && <CurrencyField
+          label={'Сумма'}
+          fieldName={'amount'}
+          handleChange={handleChange}
+          value={model.amount}
+          error={errors.amount}
         />}
       </CCol>
     </CForm>

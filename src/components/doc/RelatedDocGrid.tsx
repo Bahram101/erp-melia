@@ -2,8 +2,8 @@ import { ContextDocGridModel } from '../../models/CommonModels'
 import { CTable, CTableBody, CTableDataCell, CTableHead, CTableHeaderCell, CTableRow } from '@coreui/react-pro'
 import React from 'react'
 import ActionButtonContent, { ActionButtonType } from '../button/ActionButtonContent'
-import { getCashDocUriPathFromDoctype } from '../../utils/UrlHelper'
-import { doctypeIsCashDoc } from '../../utils/DocUtils'
+import { getCashDocUriPathFromDoctype, getWhouseDocUriPathFromDoctype } from '../../utils/UrlHelper'
+import { doctypeIsCashDoc, doctypeIsWhouseDoc } from '../../utils/DocUtils'
 
 const RelatedDocGrid = ({ docs }: { docs: ContextDocGridModel[] }) => {
   return <CTable striped>
@@ -27,6 +27,10 @@ const RelatedDocGrid = ({ docs }: { docs: ContextDocGridModel[] }) => {
             {doctypeIsCashDoc(item.doctype) && <ActionButtonContent
               type={ActionButtonType.VIEW_LINK}
               href={`/finance/cash-docs/${getCashDocUriPathFromDoctype(item.doctype)}/view/${item.id}`}
+            />}
+            {doctypeIsWhouseDoc(item.doctype) && <ActionButtonContent
+              type={ActionButtonType.VIEW_LINK}
+              href={`/whouse/docs/${getWhouseDocUriPathFromDoctype(item.doctype)}/view/${item.id}`}
             />}
           </CTableDataCell>
         </CTableRow>

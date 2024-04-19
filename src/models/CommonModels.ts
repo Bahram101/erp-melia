@@ -16,6 +16,7 @@ export enum DocStatus {
 
 export enum Doctype {
   CONTRACT = 'CONTRACT',
+  //WhouseDocs
   SUPPLY = 'SUPPLY',
   SHIPMENT = 'SHIPMENT',
   MOVE_OUT = 'MOVE_OUT',
@@ -49,6 +50,8 @@ export enum DocAction {
   APPROVE = 'APPROVE',
   REJECT = 'REJECT',
   REGISTER = 'REGISTER',
+  WRITEOFF = 'WRITEOFF',
+  ADDING_FIRST_PAYMENT = 'ADDING_FIRST_PAYMENT',
 }
 
 export interface DocActionButton {
@@ -108,6 +111,7 @@ export const DeleteConfirmOptionsModel: SweetAlertOptions = {
 
 export interface ContractRefModel {
   id: string
+  regCode?: string | null
   customerName: string
   regNumber: number
   branchId: string
@@ -118,6 +122,7 @@ export const DefaultContractRefModel: ContractRefModel = {
   customerName: '',
   id: '',
   regNumber: 0,
+  regCode: ''
 }
 
 export const DoctypeTitles: { [key in Doctype]?: string } = {
@@ -133,6 +138,11 @@ export const DoctypeTitles: { [key in Doctype]?: string } = {
   [Doctype.CASH_DOC_MOVE_IN]: 'Постпуления в кассу',
   [Doctype.CASH_DOC_MOVE_OUT]: 'Отправки из кассы',
   [Doctype.CASH_DOC_FIRST_PAYMENT]: 'Первоначальные взносы',
+  [Doctype.CASH_DOC_MONTHLY_PAYMENT]: 'Ежемесячные взносы',
+  [Doctype.CASH_DOC_PREPAYMENT_OUT]: 'Авансы',
+  [Doctype.CASH_DOC_SALARY_OUT]: 'Зар. платы',
+  [Doctype.CASH_DOC_REWARD_OUT]: 'Оплаченные вознаграждения',
+  [Doctype.CASH_DOC_CONTRACT_CANCEL]: 'Возвраты контрагентам (при отмене договора)',
 }
 
 export const DocStatusTitles: { [key in DocStatus]?: string } = {
@@ -144,7 +154,8 @@ export const DocStatusTitles: { [key in DocStatus]?: string } = {
 export interface ContextDocRefModel {
   id: string
   doctype: DoctypeRefModel
-  regNumber?: string
+  regNumber?: string | null
+  displayName?: string
 }
 
 export interface ContextDocDetailedModel {

@@ -12,6 +12,7 @@ type Props = {
   handleChange: (e: any) => void
   loading: boolean
   loadData: () => void
+  responsibleOptions?: RefOptionsModel[]
 }
 const CashDocGridSearchPanel = ({
                                   doctype,
@@ -22,10 +23,12 @@ const CashDocGridSearchPanel = ({
                                   handleChange,
                                   loading,
                                   loadData,
+                                  responsibleOptions,
                                 }: Props) => {
   return <CRow className="mb-2">
     <>
-      {(doctype === Doctype.CASH_DOC_SERVICE_PAYMENT || doctype === Doctype.CASH_DOC_FIRST_PAYMENT) && <CCol>
+      {(doctype === Doctype.CASH_DOC_SERVICE_PAYMENT || doctype === Doctype.CASH_DOC_FIRST_PAYMENT
+        || doctype === Doctype.CASH_DOC_MONTHLY_PAYMENT) && <CCol>
         <RefOptionsField
           label={'Филиал'}
           fieldName={'branchId'}
@@ -33,6 +36,16 @@ const CashDocGridSearchPanel = ({
           options={branchOptions}
           handleChange={handleChange}
           value={model.branchId}
+        />
+      </CCol>}
+      {doctype === Doctype.CASH_DOC_MONTHLY_PAYMENT && <CCol>
+        <RefOptionsField
+          label={'Взносщик'}
+          fieldName={'responsibleId'}
+          error={errors.responsibleId}
+          options={responsibleOptions || []}
+          handleChange={handleChange}
+          value={model.responsibleId}
         />
       </CCol>}
       {(doctype === Doctype.CASH_DOC_MOVE_IN || doctype === Doctype.CASH_DOC_MOVE_OUT) && <>

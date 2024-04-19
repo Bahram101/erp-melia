@@ -73,12 +73,21 @@ const CashDocDetailedView = ({ model }: Props) => {
                 {model.branch?.displayName}
               </CTableHeaderCell>
             </CTableRow>
-            {getOutCashDoctypes().includes(model.doctype.name) || model.doctype.name === Doctype.CASH_DOC_MOVE_IN && <CTableRow>
+            {(getOutCashDoctypes().includes(model.doctype.name) || model.doctype.name === Doctype.CASH_DOC_MOVE_IN) && <CTableRow>
               <CTableDataCell style={{ textAlign: 'end' }}>
                 Из кассы
               </CTableDataCell>
               <CTableHeaderCell>
                 {model.fromCash?.displayName}
+              </CTableHeaderCell>
+            </CTableRow>}
+
+            {(model.doctype.name === Doctype.CASH_DOC_PREPAYMENT_OUT || model.doctype.name === Doctype.CASH_DOC_SALARY_OUT) && <CTableRow>
+              <CTableDataCell style={{ textAlign: 'end' }}>
+                Сотрудник
+              </CTableDataCell>
+              <CTableHeaderCell>
+                {model.responsible?.empName}
               </CTableHeaderCell>
             </CTableRow>}
 

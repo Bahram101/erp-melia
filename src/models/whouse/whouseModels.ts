@@ -1,4 +1,11 @@
-import { DocStatus, Doctype } from 'models/CommonModels'
+import {
+  CommonRefModel, ContextDocGridModel, ContextDocRefModel,
+  CustomerRefModel, DocActionButton,
+  DocStatus,
+  Doctype,
+  DoctypeRefModel,
+  StatusRefModel,
+} from 'models/CommonModels'
 
 export interface WhouseDocGridModel {
   id: string
@@ -16,6 +23,7 @@ export interface WhouseDocGridModel {
 export interface WhouseDocItemFormModel {
   id?: string
   goodsId: string | null
+  goodsName?: string
   quantity: number
   unitPrice: number
   serialNumbers: string[]
@@ -60,4 +68,33 @@ export interface WhouseDocFormModel {
   status: DocStatus
   note?: string
   items: WhouseDocItemFormModel[]
+  contextDoc?: ContextDocRefModel | null
+}
+
+export interface WhouseDocDetailedModel {
+  id: string
+  regNumber: number
+  branch?: CommonRefModel
+  toWhouse?: CommonRefModel
+  fromWhouse?: CommonRefModel
+  docDate: string
+  customer?: CustomerRefModel
+  amount: number
+  doctype: DoctypeRefModel
+  status: StatusRefModel
+  note: string
+  createdAt: string
+  updatedAt: string
+  items: WhouseDocDetailedItemGridModel[]
+  actions: DocActionButton[]
+  relatedDocs?: ContextDocGridModel[]
+  contextDoc?: ContextDocRefModel
+}
+
+export interface WhouseDocDetailedItemGridModel {
+  id: string
+  goodsName: string
+  quantity: number
+  unitPrice: number
+  serialNumbers: string[]
 }

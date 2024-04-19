@@ -1,5 +1,5 @@
 import {
-  CommonRefModel,
+  CommonRefModel, ContextDocRefModel,
   ContractRefModel,
   CustomerRefModel,
   DefaultContractRefModel,
@@ -12,6 +12,7 @@ import {
 } from '../CommonModels'
 
 export interface ContractDetailedModel {
+  id: string
   regCode: string;
   status: StatusRefModel;
   branch: CommonRefModel;
@@ -23,6 +24,7 @@ export interface ContractDetailedModel {
   collector: PostRefModel;
   price: number;
   firstPayment: number;
+  cashFirstPayment: number
   paidFirstPayment: number;
   customer: CustomerRefModel;
   address: string;
@@ -112,6 +114,7 @@ export interface SaleTypeDetailedModel {
   note: string;
   empPayments: SaleTypeEmpPaymentModel[];
   createdAt: string;
+  saleViaBank: boolean
 }
 
 export interface SaleTypeEmpPaymentModel {
@@ -141,7 +144,7 @@ export interface ContractFormModel {
   addressId: string | null;
   outCity: boolean;
   note: string;
-  recommender: ContractRefModel;
+  recommender: ContextDocRefModel | null;
   payments: PaymentScheduleFormModel[];
   gifts: ContractGiftFormModel[];
   hasDiscountFromRecommender: boolean;
@@ -193,7 +196,7 @@ export const DefaultContractFormModel: ContractFormModel = {
   outCity: false,
   payments: [],
   price: 0,
-  recommender: DefaultContractRefModel,
+  recommender: null,
   regNumber: '',
   saleTypeId: '',
   serialNumber: '',
@@ -334,4 +337,19 @@ export const DefaultSaleBonusFormModel: SaleBonusFormModel = {
   positionId: null,
   productId: null,
   year: 0,
+}
+
+export interface ContractSearchResultGridModel {
+  id: string;
+  address: string;
+  branchName: string;
+  customerName: string;
+  dealerName: string;
+  docDate: string;
+  regCode: string | null;
+  regNumber: number;
+  serialNumber: string;
+  status: string;
+  statusName: string;
+  branchId: string
 }

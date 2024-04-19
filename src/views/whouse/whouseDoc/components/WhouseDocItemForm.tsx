@@ -25,6 +25,7 @@ interface Props {
   addItemRow: () => void
   deleteItemRow: (e: any) => void
   showSnFormModal: (index: number, serialNumbers: string[]) => void
+  showPriceField?: boolean
 }
 
 const WhouseDocItemForm = ({
@@ -36,6 +37,7 @@ const WhouseDocItemForm = ({
                              addItemRow,
                              deleteItemRow,
                              showSnFormModal,
+                             showPriceField = false
                            }: Props) => {
   return <>
     <div className="mb-3 d-flex justify-content-between align-items-center">
@@ -52,7 +54,7 @@ const WhouseDocItemForm = ({
             <div style={{ minWidth: '10px' }}>#</div>
           </CTableHeaderCell>
           <CTableHeaderCell className="col-sm-4">Наименование</CTableHeaderCell>
-          <CTableHeaderCell className="col-sm-4">Цена</CTableHeaderCell>
+          {showPriceField && <CTableHeaderCell className="col-sm-4">Цена</CTableHeaderCell>}
           <CTableHeaderCell className="col-sm-4">Количество</CTableHeaderCell>
           <CTableHeaderCell className="col-sm-4">
             <div style={{ width: '45px' }}></div>
@@ -74,14 +76,14 @@ const WhouseDocItemForm = ({
                 handleChange={(e) => handleItemChange(e, index)}
               />
             </CTableDataCell>
-            <CTableDataCell>
+            {showPriceField && <CTableDataCell>
               <CurrencyField
                 error={errors[`items[${index}].unitPrice`]}
                 fieldName={'unitPrice'}
                 handleChange={(e: any) => handleItemChange(e, index)}
                 value={model.items && model.items[index].unitPrice}
               />
-            </CTableDataCell>
+            </CTableDataCell>}
             <CTableDataCell>
               {(item.goodsId && hasSerialGoodsIds.includes(item.goodsId)) || (item.serialNumbers && item.serialNumbers.length > 0) ? (
                 <div className="mt-1">

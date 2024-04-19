@@ -21,6 +21,13 @@ const CashDocGrid = ({ data, isLoading, doctype }: Props) => {
       _style: { width: '130px' },
     },
 
+    doctype === Doctype.CASH_DOC_MONTHLY_PAYMENT
+      ? [
+        { key: 'responsibleName', label: 'Взносщик' },
+        { key: 'toCashName', label: 'На кассу' },
+      ]
+      : [],
+
     doctype === Doctype.CASH_DOC_FIRST_PAYMENT
       ? [
         { key: 'responsibleName', label: 'SN' },
@@ -38,7 +45,7 @@ const CashDocGrid = ({ data, isLoading, doctype }: Props) => {
         { key: 'toCashName', label: 'На кассу' },
       ]
       : [],
-    doctype === Doctype.CASH_DOC_OUT
+    (doctype === Doctype.CASH_DOC_OUT || doctype === Doctype.CASH_DOC_REWARD_OUT || doctype === Doctype.CASH_DOC_CONTRACT_CANCEL)
       ? [
         { key: 'fromCashName', label: 'Из кассы' },
       ]
@@ -61,6 +68,12 @@ const CashDocGrid = ({ data, isLoading, doctype }: Props) => {
       ? [
         { key: 'fromWhouseName', label: 'Со склада' },
         { key: 'note', label: 'Примечание' },
+      ]
+      : [],
+    doctype === Doctype.CASH_DOC_PREPAYMENT_OUT
+      ? [
+        { key: 'responsibleName', label: 'Сотрудник' },
+        { key: 'fromCashName', label: 'Из кассы' },
       ]
       : [],
     {

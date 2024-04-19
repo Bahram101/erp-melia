@@ -1,7 +1,7 @@
 import React from 'react'
 import { useCurrentEmployeesQuery } from '../../../hooks/hr/employeeQueries'
-import { CCard, CCardHeader, CCardBody, CSmartTable, CButton } from '@coreui/react-pro'
-import { FaPen, FaEye } from 'react-icons/fa'
+import { CButton, CCard, CCardBody, CCardHeader, CSmartTable } from '@coreui/react-pro'
+import { FaEye } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 
 const EmployeeGridPage = () => {
@@ -65,11 +65,6 @@ const EmployeeGridPage = () => {
                     <FaEye />
                   </CButton>
                   &nbsp;
-                </Link>
-                <Link to={`/hr/employees/edit/${item.employeeId}`}>
-                  <CButton color={'primary'} variant="outline" shape="square" size="sm">
-                    <FaPen />
-                  </CButton>
                 </Link>
               </td>
             ),

@@ -5,7 +5,7 @@ import {
   ContractFormModel,
   ContractGridModel,
   ContractRenewFormModel,
-  ContractRewardGridModel,
+  ContractRewardGridModel, ContractSearchResultGridModel,
   DefaultSaleTypeFormModel,
   DistributeRenewFormModel,
   PaymentScheduleDetailedGridModel,
@@ -269,4 +269,18 @@ export const useSaleBonusSaveMutation = (id: string | undefined) => {
   return useMutation(({ form }: { form: SaleBonusFormModel }) =>
     request.post('/marketing/sale-bonuses', form),
   )
+}
+
+export const useContractSearchQuery = (params: any, enabled: boolean) => {
+  return useQuery<ContractSearchResultGridModel[]>(
+    ["mrk-get-contract-by-branch-id-and-reg-number"],
+    async () => {
+      const { data } = await request.get("/marketing/contracts/find-by-branchid-and-regnumber", {
+        params: params,
+      });
+
+      return data;
+    },
+    { enabled: enabled }
+  );
 }

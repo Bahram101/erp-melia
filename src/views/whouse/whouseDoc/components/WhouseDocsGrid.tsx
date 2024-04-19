@@ -3,7 +3,7 @@ import { CButton, CSmartTable } from '@coreui/react-pro'
 import { FaEye, FaPen } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 import { WhouseDocGridModel } from '../../../../models/whouse/whouseModels'
-import { Doctype } from '../../../../models/CommonModels'
+import { DocStatus, Doctype } from '../../../../models/CommonModels'
 import { getWhouseDocUriPathFromDoctype } from '../../../../utils/UrlHelper'
 import WhouseDocStatusBadge from './WhouseDocStatusBadge'
 
@@ -79,12 +79,12 @@ const WhouseDocsGrid = ({ data, isLoading, doctype }: Props) => {
       columnFilter
       loading={isLoading}
       scopedColumns={{
-        statusName: (item: any) => (
+        statusName: (item: WhouseDocGridModel) => (
           <td>
             <WhouseDocStatusBadge status={item.status} statusName={item.statusName} />
           </td>
         ),
-        actions: (item: any) => (
+        actions: (item: WhouseDocGridModel) => (
           <td>
             {doctype && <>
               <Link to={`/whouse/docs/${getWhouseDocUriPathFromDoctype(doctype)}/view/${item.id}`}>
@@ -93,11 +93,12 @@ const WhouseDocsGrid = ({ data, isLoading, doctype }: Props) => {
                 </CButton>
                 &nbsp;
               </Link>
-              <Link to={`/whouse/docs/${getWhouseDocUriPathFromDoctype(doctype)}/edit/${item.id}`}>
-                <CButton color={'primary'} variant="outline" shape="square" size="sm">
-                  <FaPen />
-                </CButton>
-              </Link>
+              {item.status === DocStatus.NEW && doctype !== Doctype.MOVE_IN &&
+                <Link to={`/whouse/docs/${getWhouseDocUriPathFromDoctype(doctype)}/edit/${item.id}`}>
+                  <CButton color={'primary'} variant="outline" shape="square" size="sm">
+                    <FaPen />
+                  </CButton>
+                </Link>}
             </>}
           </td>
         ),

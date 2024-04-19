@@ -1,14 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import {
-  CCard,
-  CCardHeader,
-  CButton,
-  CCardBody,
-  CNav,
-  CTabContent,
-  CSpinner,
-  CTabPane,
-} from '@coreui/react-pro'
+import { CButton, CCard, CCardBody, CCardHeader, CNav, CSpinner, CTabContent, CTabPane } from '@coreui/react-pro'
 import { Link, useParams } from 'react-router-dom'
 import { FaAngleLeft } from 'react-icons/fa6'
 import TabNavItem from '../../../components/TabNavItem'
@@ -19,10 +10,10 @@ import EmployeeDeposit from './components/EmployeeDeposit'
 import EmployeeUnPaidDeposits from './components/EmployeeUnPaidDeposits'
 import EmployeeUserBranches from './components/EmployeeUserBranches'
 import EmployeeHierarchy from './components/EmployeeUserHierarchy'
-import { useCustomerAdressesQuery } from '../../../hooks/reference/refCustomerQueries'
-import { useEmployeeDetailedQuery, useEmployeePostsQuery } from 'hooks/hr/employeeQueries'
+import { useCustomerAdressesGridQuery } from '../../../hooks/reference/refCustomerQueries'
+import { useEmployeeDetailedQuery } from 'hooks/hr/employeeQueries'
 import EmployeePosts from './components/EmployeePosts'
-import { useCustomerBalanceQuery } from 'hooks/report/reportQueries'
+import { useBranchOptionsQuery } from '../../../hooks/reference/refOptionsQueries'
 
 const EmployeeDetailedPage = () => {
   const [activeKey, setActiveKey] = useState('MAIN_DATA')
@@ -32,14 +23,15 @@ const EmployeeDetailedPage = () => {
   })
   const params = useParams()
   const employeeDetailedQuery = useEmployeeDetailedQuery(params.id, true)
-  const customerAddressesQuery = useCustomerAdressesQuery(
+  const branchOptionsQuery = useBranchOptionsQuery(true)
+  const customerAddressesQuery = useCustomerAdressesGridQuery(
     employeeDetailedQuery?.data?.customerId,
     false,
   )
 
   useEffect(() => {
     if (employeeDetailedQuery.data) {
-      customerAddressesQuery.refetch() 
+      customerAddressesQuery.refetch()
     }
   }, [employeeDetailedQuery.data])
 
@@ -122,7 +114,10 @@ const EmployeeDetailedPage = () => {
               aria-labelledby="main-tab-pane"
               visible={activeKey === 'MAIN_DATA'}
             >
-              <EmployeeMainData mainData={employeeDetailedQuery?.data} />
+              <EmployeeMainData
+                mainData={employeeDetailedQuery?.data}
+                reloadPage={() => employeeDetailedQuery.refetch()}
+              />
             </CTabPane>
 
             <CTabPane
@@ -130,7 +125,11 @@ const EmployeeDetailedPage = () => {
               aria-labelledby="contact-tab-pane"
               visible={activeKey === 'CONTACTS'}
             >
-              <EmployeeContacts addresses={customerAddressesQuery?.data || []} />
+              <EmployeeContacts
+                addresses={customerAddressesQuery?.data || []}
+                reloadPage={() => customerAddressesQuery.refetch()}
+                customerId={employeeDetailedQuery?.data?.customerId || ''}
+              />
             </CTabPane>
 
             <CTabPane
@@ -173,7 +172,7 @@ const EmployeeDetailedPage = () => {
               aria-labelledby="user-branches-tab-pane"
               visible={activeKey === 'USER_BRANCHES'}
             >
-              <EmployeeUserBranches userBranches={{}} />
+              <EmployeeUserBranches empId={params.id} branchOptions={branchOptionsQuery.data || []} />
             </CTabPane>
 
             <CTabPane

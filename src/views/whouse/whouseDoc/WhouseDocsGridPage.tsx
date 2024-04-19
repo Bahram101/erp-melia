@@ -1,22 +1,26 @@
 import React, { useEffect, useState } from 'react'
-import { CButton, CCard, CCardBody, CCardHeader, CCol, CNav, CRow, CTabContent, CTabPane } from '@coreui/react-pro'
+import { CButton, CCard, CCardBody, CCardHeader, CNav, CTabContent, CTabPane } from '@coreui/react-pro'
 import { Link, useParams } from 'react-router-dom'
-import { RefOptionsField } from 'components/fields/RefOptionsField'
 import TabNavItem from 'components/TabNavItem'
 import WhouseDocsGrid from './components/WhouseDocsGrid'
 import { useWhouseOptionsQuery } from 'hooks/reference/refOptionsQueries'
 import { useWhouseDocsListQuery } from 'hooks/whouse/whouseQueries'
 import { DocStatus, Doctype, DoctypeTitles } from 'models/CommonModels'
 import { getWhouseDoctypeFromUriPath, getWhouseDocUriPathFromDoctype } from '../../../utils/UrlHelper'
+import WhouseDocGridSearchPanel from './components/WhouseDocGridSearchPanel'
 
 const WhouseDocsGridPage = () => {
   let { whousedocpath } = useParams()
   const [errors, setErrors] = useState<any>({})
   const [activeKey, setActiveKey] = useState('NEW')
-  const [params, setParams] = useState<{ doctype: Doctype | null, status: DocStatus | null, fromWhouseId: string | null }>({
+  const [params, setParams] = useState<{
+    doctype: Doctype | null,
+    status: DocStatus | null,
+    fromWhouseId: string | null
+  }>({
     doctype: null,
     status: null,
-    fromWhouseId: null
+    fromWhouseId: null,
   })
   const [dataByTab, setDataByTab] = useState<{ [key: string]: any }>({
     NEW: null,
@@ -83,29 +87,13 @@ const WhouseDocsGridPage = () => {
         </div>
       </CCardHeader>
       <CCardBody>
-        <CRow className="mb-2">
-          <CCol>
-            <RefOptionsField
-              label={'Склад'}
-              fieldName={'whouse'}
-              error={errors.whouse}
-              options={whouseOptionsQuery.data || []}
-              handleChange={handleChange}
-              value={params.fromWhouseId}
-            />
-          </CCol>
-          <CCol>
-            <br />
-            <CButton
-              style={{ marginTop: '10px' }}
-              color={'secondary'}
-              onClick={loadData}
-              disabled={listQuery.isFetching}
-            >
-              Загрузить
-            </CButton>
-          </CCol>
-        </CRow>
+        <WhouseDocGridSearchPanel
+          doctype={params.doctype}
+          searchModel={params}
+          handleChange={handleChange}
+          loadData={loadData}
+          loading={listQuery.isFetching}
+        />
         <hr style={{ margin: '35px 0' }} />
         <div>
           <CNav variant="tabs" role="tablist" className="mb-3">

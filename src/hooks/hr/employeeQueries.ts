@@ -2,8 +2,9 @@ import { useMutation, useQuery } from 'react-query'
 import { request } from '../../http'
 import {
   EmployeeDetailedModel,
+  EmployeeFormModel, EmployeeMainDataFormModel,
   EmployeePostFormModel,
-  EmployeePostGridModel,
+  EmployeePostGridModel, EmpPostAccessBranch, EmpPostAccessBranchFormModel,
 } from '../../models/hr/HrModels'
 
 export const useCurrentEmployeesQuery = (params: {
@@ -26,7 +27,20 @@ export const useEmployeeDetailedQuery = (id: any, enabled: boolean) => {
   return useQuery<EmployeeDetailedModel>(
     ['hr-get-employee-detailed'],
     async () => {
-      const { data } = await request.get(`/hr/employees/${id}/detailed`)
+      if(id){
+        const { data } = await request.get(`/hr/employees/${id}/detailed`)
+        return data
+      }
+    },
+    { enabled: enabled },
+  )
+}
+
+export const useEmployeeFormQuery = (id: any, enabled: boolean) => {
+  return useQuery<EmployeeFormModel>(
+    ['hr-get-employee-form'],
+    async () => {
+      const { data } = await request.get(`/hr/employees/${id}/form`)
       return data
     },
     { enabled: enabled },
@@ -68,4 +82,44 @@ export const useEmployeePostSaveMutation = (id: string, postId: string | undefin
   return useMutation(({ form }: { form: EmployeePostFormModel }) =>
     request.post(`/hr/employees/${id}/posts`, form),
   )
+}
+
+export const useEmployeeInfoSaveMutation = (id: string | undefined) => {
+  if (id) {
+    return useMutation(({ form }: { form: EmployeeFormModel }) =>
+      request.put(`/hr/employees/${id}`, form),
+    )
+  }
+  return useMutation(({ form }: { form: EmployeeFormModel }) =>
+    request.post(`/hr/employees`, form),
+  )
+}
+
+export const useEmployeeUpdateMutation = (id: string | undefined) => {
+  return useMutation(({ form }: { form: EmployeeMainDataFormModel }) =>
+    request.put(`/hr/employees/${id}`, form),
+  )
+}
+
+export const useEmpPostAccessBranchesQuery = (empId: string | undefined, enabled: boolean) => {
+  return useQuery<EmpPostAccessBranch[]>(
+    ["hr-get-emp-post-access-branches", empId],
+    async () => {
+      if (empId) {
+        const {data} = await request.get(
+          `/hr/post-access-branches/${empId}`
+        );
+
+        return data;
+      }
+      return []
+    },
+    {enabled: enabled}
+  );
+}
+
+export const useEmpPostAccessBranchFormSaveMutation = (empId: string) => {
+  return useMutation(({form}: { form: EmpPostAccessBranchFormModel }) =>
+    request.put(`/hr/post-access-branches/${empId}`, form)
+  );
 }

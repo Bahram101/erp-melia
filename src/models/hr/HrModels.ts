@@ -8,6 +8,18 @@ export interface EmployeeDetailedModel {
   firstname: string
   lastname: string
   middlename: string
+  user: EmployeeUserModel
+}
+
+export interface EmployeeUserModel {
+  username: string
+  status: 'ACTIVE' | 'BLOCKED'
+}
+
+export interface EmployeeUserFormModel {
+  username: string
+  status: 'ACTIVE' | 'BLOCKED' | null
+  password: string
 }
 
 export interface EmployeePostGridModel {
@@ -78,16 +90,18 @@ export interface StructureSearchParamModel {
   month: string
 }
 
-//EmployeeFormModel
-export interface EmployeeFormModel {
-  id?: string
+export interface EmployeeMainDataFormModel {
   lastname: string
   firstname: string
   middlename: string
   iin: string
-  gender: string
-  birthDate: string
-  phoneNumbers: EmployeePhoneFormModel[]
+  gender: string | null
+  birthDate: string | null
+}
+
+//EmployeeFormModel
+export interface EmployeeFormModel extends EmployeeMainDataFormModel {
+  phoneNumbers: string[]
   addresses: CustomerAddressFormModel[]
 }
 
@@ -130,13 +144,23 @@ export const DefaultCustomerAddressFormModel: CustomerAddressFormModel = {
 }
 
 export const DefaultEmployeeFormModel: EmployeeFormModel = {
-  id: '',
   lastname: '',
   firstname: '',
   middlename: '',
   iin: '',
-  gender: '',
-  birthDate: '',
-  phoneNumbers: [DefaultEmployeePhoneFormModel],
+  gender: null,
+  birthDate: null,
+  phoneNumbers: [''],
   addresses: [DefaultCustomerAddressFormModel],
+}
+
+export interface EmpPostAccessBranch {
+  postId: string
+  postName: string
+  branchIds: string[]
+}
+
+export interface EmpPostAccessBranchFormModel {
+  postId: string
+  branchIds: string[]
 }

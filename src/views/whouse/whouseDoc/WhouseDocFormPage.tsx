@@ -11,13 +11,18 @@ import {
 } from '../../../models/whouse/whouseModels'
 import {
   useGoodsOptionsQuery,
+  useRemainGoodsOptionsQuery,
   useSupplierOptionsQuery,
   useWhouseOptionsQuery,
 } from '../../../hooks/reference/refOptionsQueries'
-import { useWhouseDocFormQuery, useWhouseDocSaveMutation } from '../../../hooks/whouse/whouseQueries'
+import {
+  useContractOutGoodsQuery,
+  useWhouseDocFormQuery,
+  useWhouseDocSaveMutation,
+} from '../../../hooks/whouse/whouseQueries'
 import { parseResponseFormErrors } from '../../../utils/ErrorUtil'
 import { getWhouseDoctypeFromUriPath, getWhouseDocUriPathFromDoctype } from '../../../utils/UrlHelper'
-import { DoctypeTitles, RefOptionsModel } from '../../../models/CommonModels'
+import { Doctype, DoctypeTitles, RefOptionsModel } from '../../../models/CommonModels'
 import ItemSerialNumberFormModal from './components/ItemSerialNumberFormModal'
 
 const WhouseDocFormPage = () => {
@@ -31,15 +36,21 @@ const WhouseDocFormPage = () => {
   const [model, setModel] = useState<WhouseDocFormModel>(DefaultWhouseDocFormModel)
   const [errors, setErrors] = useState<any>({})
   const [hasSerialGoodsIds, setHasSerialGoodsIds] = useState<string[]>([])
+  const [goodsOptions, setGoodsOptions] = useState<RefOptionsModel[]>([])
 
   const whouseOptionsQuery = useWhouseOptionsQuery(true)
   const supplierOptionsQuery = useSupplierOptionsQuery(true)
-  const goodsOptionsQuery = useGoodsOptionsQuery({}, true)
+  const goodsOptionsQuery = useGoodsOptionsQuery({}, false)
+  const remainGoodsOptionsQuery = useRemainGoodsOptionsQuery(false, model.docDate, model.fromWhouseId, undefined)
 
   const goodsHasSerialsQuery = useGoodsOptionsQuery({ hasSerial: true }, false)
 
   const whouseDocFormQuery = useWhouseDocFormQuery(id, false)
   const saveMutation = useWhouseDocSaveMutation(id)
+  const outGoodsQuery = useContractOutGoodsQuery({
+    contextDoctype: model.contextDoc?.doctype?.name || null,
+    contextDocId: model.contextDoc?.id || null,
+  }, false)
 
   useEffect(() => {
     const doctype = getWhouseDoctypeFromUriPath(whousedocpath || '')
@@ -49,8 +60,18 @@ const WhouseDocFormPage = () => {
           .refetch()
           .then(({ data }) => setModel(data || { ...DefaultWhouseDocFormModel, doctype: doctype }))
       } else {
-        setModel({ ...DefaultWhouseDocFormModel, doctype: doctype })
+        if (doctype === Doctype.RETURN) {
+          setModel({ ...DefaultWhouseDocFormModel, doctype: doctype, items: [] })
+        } else {
+          setModel({ ...DefaultWhouseDocFormModel, doctype: doctype })
+        }
       }
+
+      if (doctype !== Doctype.MOVE_OUT && doctype !== Doctype.WRITEOFF_LOST) {
+        goodsOptionsQuery.refetch()
+          .then(({ data }) => setGoodsOptions(data || []))
+      }
+
     } else {
       //ToDo show error
     }
@@ -63,6 +84,30 @@ const WhouseDocFormPage = () => {
       })
 
   }, [])
+
+  useEffect(() => {
+    if (model.doctype === Doctype.MOVE_OUT || model.doctype === Doctype.WRITEOFF_LOST) {
+      if (model.docDate && model.fromWhouseId) {
+        remainGoodsOptionsQuery.refetch()
+          .then(({ data }) => setGoodsOptions(data || []))
+      } else {
+        setGoodsOptions([])
+      }
+    }
+  }, [model.doctype, model.docDate, model.fromWhouseId])
+
+  useEffect(() => {
+    if (model.doctype === Doctype.RETURN) {
+      if (model.contextDoc?.id) {
+        outGoodsQuery.refetch()
+          .then(({ data }) => {
+            setModel({ ...model, doctype: Doctype.RETURN, items: data || [] })
+          })
+      } else {
+        setModel({ ...model, doctype: Doctype.RETURN, items: [] })
+      }
+    }
+  }, [model.contextDoc, model.doctype])
 
   const handleSubmit = () => {
     saveMutation
@@ -145,7 +190,7 @@ const WhouseDocFormPage = () => {
               errors={errors}
               whouseOptions={whouseOptionsQuery.data || []}
               supplierOptions={supplierOptionsQuery.data || []}
-              goodsOptions={goodsOptionsQuery.data || []}
+              goodsOptions={goodsOptions}
               hasSerialGoodsIds={hasSerialGoodsIds || []}
               addItemRow={addItemRow}
               deleteItemRow={deleteItemRow}

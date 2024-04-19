@@ -64,6 +64,35 @@ export const getMonthOptions = () => [
   },
 ]
 
+
+export const getCallResultOptions = () => {
+  return [
+    {
+      id: 'NO_ANSWER',
+      label: 'Не отвечает'
+    },
+    {
+      id: 'NOT_AVAILABLE',
+      label: 'Не доступен'
+    },
+    {
+      id: 'RECALL',
+      label: 'Перезвонить'
+    },
+    {
+      id: 'POSITIVE',
+      label: 'Положительный'
+    },
+    {
+      id: 'NEGATIVE',
+      label: 'Отрицательный'
+    },
+    {
+      id: 'WRONG_NUMBER',
+      label: 'Ошиблись номером'
+    },
+  ]
+}
 export const getGenderOptions  = [
   {
     id: 'MALE',
@@ -72,5 +101,16 @@ export const getGenderOptions  = [
   {
     id: 'FEMALE',
     label: 'Жен.',
+  },
+]
+
+export const getUserStatusOptions  = [
+  {
+    id: 'ACTIVE',
+    label: 'ACTIVE',
+  },
+  {
+    id: 'BLOCKED',
+    label: 'BLOCKED',
   },
 ]

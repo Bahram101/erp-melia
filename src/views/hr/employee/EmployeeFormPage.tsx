@@ -1,57 +1,56 @@
-import { ChangeEvent, Fragment, useEffect } from 'react'
+import { ChangeEvent, Fragment, useEffect, useState } from 'react'
 import DocFormPageWrapper from 'components/doc/DocFormPageWrapper'
-import EmployeeForm from './components/EmployeeForm'
+import EmployeeMainDataForm from './components/EmployeeMainDataForm'
 import CustomSpinner from 'components/spinner/CustomSpinner'
-import { CForm } from '@coreui/react-pro'
-import { useState } from 'react'
-import {
-  DefaultEmployeeFormModel,
-  DefaultEmployeePhoneFormModel,
-  EmployeeFormModel,
-} from 'models/hr/HrModels'
+import { CCol, CForm } from '@coreui/react-pro'
+import { DefaultEmployeeFormModel, EmployeeFormModel } from 'models/hr/HrModels'
 import CustomerAddressWrapper from 'views/reference/components/CustomerAddressWrapper'
+import { useEmployeeFormQuery, useEmployeeInfoSaveMutation } from 'hooks/hr/employeeQueries'
+import { useParams } from 'react-router-dom'
+import { parseResponseFormErrors } from 'utils/ErrorUtil'
+import PhoneNumbersBlock from '../../../components/fields/PhoneNumbersBlock'
 
 const EmployeeFormPage = () => {
+  const { id } = useParams()
   const [model, setModel] = useState<EmployeeFormModel>(DefaultEmployeeFormModel)
   const [errors, setErrors] = useState<any>({})
+
+  const employeeFormQuery = useEmployeeFormQuery(id, false)
+  const saveMutation = useEmployeeInfoSaveMutation(id)
+
+  useEffect(() => {
+    if (id) {
+      employeeFormQuery.refetch()
+        .then(({ data }) => setModel(data || DefaultEmployeeFormModel))
+    } else {
+      setModel(DefaultEmployeeFormModel)
+    }
+  }, [id])
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
     setModel({ ...model, [name]: value })
     setErrors({ ...errors, [name]: null })
-  }  
-
-  const handlePhoneChange = (e: ChangeEvent<HTMLInputElement>, itemNumber: number) => {
-    const { name, value } = e.target
-    setModel((prev) => ({
-      ...prev,
-      phoneNumbers: prev.phoneNumbers.map((el, i) =>
-        i === itemNumber ? { ...el, [name]: value } : el,
-      ),
-    }))
   }
 
-  const addPhoneRow = () => {
-    setModel((prev: EmployeeFormModel) => ({
-      ...prev,
-      phoneNumbers: [...prev.phoneNumbers, DefaultEmployeePhoneFormModel],
-    }))
+  const handleSubmit = () => {
+    saveMutation
+      .mutateAsync({
+        form: model,
+      })
+      .then(({ data }) => {
+        location.pathname = data ? `/hr/employees/view/${data.id}` : '/hr/employees'
+      })
+      .catch((error) => {
+        setErrors(parseResponseFormErrors(error))
+      })
   }
-
-  const removePhoneRow = (removeItem: number) => {
-    setModel((prev: EmployeeFormModel) => ({
-      ...prev,
-      phoneNumbers: prev.phoneNumbers.filter((item, index) => index !== removeItem),
-    }))
-  }
-
-  // console.log('model', model)
 
   return (
     <>
       <DocFormPageWrapper
-        saving={false}
-        handleSubmit={() => {}}
+        saving={saveMutation.isLoading}
+        handleSubmit={handleSubmit}
         cancelUrl={``}
         title={`Создание сотрудника`}
         children={
@@ -59,24 +58,33 @@ const EmployeeFormPage = () => {
             <CustomSpinner />
           ) : (
             <CForm className="row">
-              <EmployeeForm
-                model={model}
-                errors={errors}
-                handleChange={handleChange}
-                handlePhoneChange={handlePhoneChange}
-                addPhoneRow={addPhoneRow}
-                removePhoneRow={removePhoneRow}
-              />
-              {model.addresses.map((address: any, index: number) => (
-                <Fragment key={index}>
-                  <CustomerAddressWrapper
-                    index={index} 
-                    setModel={setModel}
-                    errors={errors}
-                    address={address}
-                  />
-                </Fragment>
-              ))}
+              <CCol xl={4} lg={6} md={6} className="mb-4">
+                <h6>Данные сотрудника</h6>
+                <hr />
+                <EmployeeMainDataForm
+                  model={model}
+                  errors={errors}
+                  handleChange={handleChange}
+                />
+
+                <hr />
+                <PhoneNumbersBlock
+                  values={model.phoneNumbers}
+                  handleChange={handleChange}
+                  errors={errors}
+                  fieldName={'phoneNumbers'}
+                />
+              </CCol>
+
+              <CCol>
+                <h6>Адреса</h6>
+                <hr />
+                <CustomerAddressWrapper
+                  handleChange={handleChange}
+                  errors={errors}
+                  addresses={model.addresses}
+                />
+              </CCol>
             </CForm>
           )
         }

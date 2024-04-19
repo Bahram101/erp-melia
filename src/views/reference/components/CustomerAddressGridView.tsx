@@ -50,6 +50,8 @@ const CustomerAddressGridView = ({ addresses }: { addresses: CustomerAddressDeta
           <CTableDataCell>
             {renderAddress(ad)}
           </CTableDataCell>
+          <CTableDataCell>
+          </CTableDataCell>
         </CTableRow>
       })}
     </CTableBody>

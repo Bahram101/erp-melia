@@ -142,6 +142,37 @@ const _nav = [
         name: 'Перв. взносы',
         to: '/finance/cash-docs/first-payments',
       },
+      {
+        component: CNavItem,
+        name: 'Ежем. взносы',
+        to: '/finance/cash-docs/monthly-payments',
+      },
+      //ToDo - Начисления
+      {
+        component: CNavItem,
+        name: 'Авансы',
+        to: '/finance/cash-docs/prepayments',
+      },
+      {
+        component: CNavItem,
+        name: 'Зар. платы',
+        to: '/finance/cash-docs/salaries',
+      },
+      {
+        component: CNavItem,
+        name: 'Вознаграждения',
+        to: '/finance/reward-docs',
+      },
+      {
+        component: CNavItem,
+        name: 'Оплаченные вознаграждения',
+        to: '/finance/cash-docs/reward-outs',
+      },
+      {
+        component: CNavItem,
+        name: 'Возврат денег контрагенту',
+        to: '/finance/cash-docs/customer-returns',
+      },
     ],
   },
   {
@@ -164,12 +195,8 @@ const _nav = [
     items: [
       {
         component: CNavItem,
-        name: 'CoreUI Free',
-        to: '/icons/coreui-icons',
-        badge: {
-          color: 'success',
-          text: 'NEW',
-        },
+        name: 'Звонки после продаж',
+        to: '/crm/calls',
       },
     ],
   },
@@ -184,8 +211,18 @@ const _nav = [
     items: [
       {
         component: CNavItem,
-        name: 'Login',
-        to: '/login',
+        name: 'Остатки',
+        to: '/report/whouse/goods-in-whouses',
+      },
+      {
+        component: CNavItem,
+        name: 'Поиск по сер. номеру',
+        to: '/report/whouse/goods-findby-sernumber',
+      },
+      {
+        component: CNavItem,
+        name: 'Движение товаров',
+        to: '/report/whouse/goods-flow',
       },
     ],
   },
@@ -196,8 +233,13 @@ const _nav = [
     items: [
       {
         component: CNavItem,
-        name: 'Login',
+        name: 'Отчет по продажам',
         to: '/login',
+      },
+      {
+        component: CNavItem,
+        name: 'Отчет по продажам-2',
+        to: '/report/marketing/sales-2',
       },
     ],
   },
@@ -236,8 +278,13 @@ const _nav = [
     items: [
       {
         component: CNavItem,
-        name: 'Login',
-        to: '/login',
+        name: 'Группа товаров',
+        to: '/reference/goods-groups',
+      },
+      {
+        component: CNavItem,
+        name: 'Товары',
+        to: '/reference/goods',
       },
     ],
   },
@@ -248,8 +295,18 @@ const _nav = [
     items: [
       {
         component: CNavItem,
-        name: 'Login',
-        to: '/login',
+        name: 'Контрагенты',
+        to: '/reference/customers',
+      },
+      {
+        component: CNavItem,
+        name: 'Статьи',
+        to: '/reference/exp-in-items',
+      },
+      {
+        component: CNavItem,
+        name: 'Кассы',
+        to: '/reference/cashes',
       },
     ],
   },

@@ -99,7 +99,7 @@ const ContractDetailedView = ({ contract }: Props) => {
           </CTableBody>
         </CTable>
         <hr />
-        <ContractGiftGrid gifts={contract.gifts} />
+        <ContractGiftGrid gifts={contract.gifts || []} />
       </CCol>
       <CCol md>
         <CTable className={'table table-striped item-detailed'}>
@@ -180,7 +180,7 @@ const ContractDetailedView = ({ contract }: Props) => {
                 Вид продажи
               </CTableDataCell>
               <CTableHeaderCell>
-                {contract?.saleType.displayName}
+                {contract?.saleType?.displayName}
               </CTableHeaderCell>
             </CTableRow>
 

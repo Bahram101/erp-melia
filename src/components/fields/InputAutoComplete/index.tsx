@@ -1,32 +1,31 @@
-import React, { ChangeEvent } from 'react'
+import React, { ChangeEvent, useState } from 'react'
 import { RefOptionsModel } from 'models/CommonModels'
 import './style.scss'
 
 type Props = {
   label: string
   placeholder: string
-  index: number
   fieldName: string
   options: RefOptionsModel[]
   value: string
-  handleAddressChange: (
-    e: any,
-    index: number,
-  ) => void
+  handleChange: (e: any) => void
 }
 
 export const InputAutoComplete = ({
-  label,
-  placeholder,
-  options,
-  handleAddressChange,
-  index,
-  fieldName,
-  value,
-}: Props) => {
+                                    label,
+                                    placeholder,
+                                    options,
+                                    handleChange,
+                                    fieldName,
+                                    value,
+                                  }: Props) => {
+
+  const [hideList, setHideList] = useState(false)
+
+
   return (
     <div className="form-group" style={{ position: 'relative' }}>
-      <label>{label}</label>
+      <label style={{ marginBottom: 3 }}>{label}</label>
       <input
         type="text"
         placeholder={placeholder}
@@ -35,9 +34,13 @@ export const InputAutoComplete = ({
         id="input-datalist"
         name={fieldName}
         value={value}
-        onChange={(e: ChangeEvent<HTMLInputElement>) => handleAddressChange(e, index)}
+        onChange={(e: ChangeEvent<HTMLInputElement>) => {
+          handleChange(e)
+          setHideList(false)
+        }
+        }
       />
-      <div id="list" className={`${options.length > 0 && 'list'}`}>
+      <div className={`${options.length > 0 && 'list'} ${hideList && 'd-none'}`}>
         {options.map((item: any, i) => (
           <div
             className="item"
@@ -49,8 +52,8 @@ export const InputAutoComplete = ({
                   value: item.label,
                 },
               }
-              handleAddressChange(obj, i)
-
+              handleChange(obj)
+              setHideList(true)
             }}
           >
             {item.label}

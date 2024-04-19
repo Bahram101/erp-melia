@@ -9,11 +9,13 @@ import { getCashDocUriPathFromDoctype } from '../../../utils/UrlHelper'
 import CashDocDetailedView from './components/CashDocDetailedView'
 import CustomSpinner from '../../../components/spinner/CustomSpinner'
 import MoveInRegisterFormModal from './components/actionmodals/MoveInRegisterFormModal'
+import CashDocWriteoffFormModal from './components/actionmodals/CashDocWriteoffFormModal'
 
 const CashDocViewPage = () => {
   const { id } = useParams()
   const [model, setModel] = useState<CashDocDetailedModel | undefined>(undefined)
   const [moveInRegisterModalVisible, setMoveInRegisterModalVisible] = useState<boolean>(false)
+  const [writeoffModalVisible, setWriteoffModalVisible] = useState<boolean>(false)
 
   const detailedQuery = useCashDocDetailedQuery(id, false)
   const handleActionQuery = useCashDocHandleActionQuery()
@@ -59,6 +61,11 @@ const CashDocViewPage = () => {
       return Promise.resolve()
     }
 
+    if (model?.doctype && model.doctype.name === Doctype.CASH_DOC_CONTRACT_CANCEL && action === DocAction.WRITEOFF) {
+      setWriteoffModalVisible(true)
+      return Promise.resolve()
+    }
+
     return handleActionQuery.mutateAsync({ form: form })
       .then(() => {
         loadDoc()
@@ -85,6 +92,15 @@ const CashDocViewPage = () => {
           onClose={() => setMoveInRegisterModalVisible(false)}
           handleAfterSubmit={() => {
             setMoveInRegisterModalVisible(false)
+            loadDoc()
+          }}
+          docId={id}
+        />}
+        {id && <CashDocWriteoffFormModal
+          visible={writeoffModalVisible}
+          onClose={() => setWriteoffModalVisible(false)}
+          handleAfterSubmit={() => {
+            setWriteoffModalVisible(false)
             loadDoc()
           }}
           docId={id}

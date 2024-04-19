@@ -13,6 +13,7 @@ const WhouseDocsGridPage = React.lazy(() => import('./views/whouse/whouseDoc/Who
 const WhouseDocFormPage = React.lazy(
   () => import('./views/whouse/whouseDoc/WhouseDocFormPage'),
 )
+const WhouseDocDetailedPage = React.lazy(() => import('./views/whouse/whouseDoc/WhouseDocDetailedPage'))
 const SaleTypeGridPage = React.lazy(() => import('./views/marketing/saletype/SaleTypeGridPage'))
 const SaleTypeFormPage = React.lazy(() => import('./views/marketing/saletype/SaleTypeFormPage'))
 const ApproveDocGridPage = React.lazy(() => import('./views/docflow/ApproveDocGridPage'))
@@ -24,9 +25,28 @@ const SaleBonusFormPage = React.lazy(() => import('./views/marketing/salebonus/S
 const CashDocGridPage = React.lazy(() => import('./views/finance/cashdoc/CashDocGridPage'))
 const CashDocViewPage = React.lazy(() => import('./views/finance/cashdoc/CashDocViewPage'))
 const CashDocFormPage = React.lazy(() => import('./views/finance/cashdoc/CashDocFormPage'))
+const CashDocMonthlyPaymentGridPage = React.lazy(() => import('./views/finance/cashdoc/CashDocMonthlyPaymentGridPage'))
+
+const RewardDocGridPage = React.lazy(() => import('./views/finance/rewarddoc/RewardDocGridPage'))
+const RewardDocViewPage = React.lazy(() => import('./views/finance/rewarddoc/RewardDocViewPage'))
 
 //References
 const RefGiftGridPage = React.lazy(() => import('./views/reference/gift/RefGiftGridPage'))
+const RefCustomerGridPage = React.lazy(() => import('./views/reference/customer/RefCustomerGridPage'))
+const RefCustomerViewPage = React.lazy(() => import('./views/reference/customer/RefCustomerViewPage'))
+const RefExpInItemGridPage = React.lazy(() => import('./views/reference/expinitem/RefExpInItemGridPage'))
+const RefCashGridPage = React.lazy(() => import('./views/reference/cash/RefCashGridPage'))
+const RefGoodsGroupGridPage = React.lazy(() => import('./views/reference/goodsgroup/RefGoodsGroupGridPage'))
+const RefGoodsGridPage = React.lazy(() => import('./views/reference/goods/RefGoodsGridPage'))
+
+//CRM
+const CallGridPage = React.lazy(() => import('./views/crm/CallGridPage'))
+
+//Reports
+const RepGoodsInWhousePage = React.lazy(() => import('./views/report/whouse/RepGoodsInWhousePage'))
+const RepGoodsBySernumPage = React.lazy(() => import('./views/report/whouse/RepGoodsBySernumPage'))
+const RepGoodsFlowPage = React.lazy(() => import('./views/report/whouse/RepGoodsFlowPage'))
+const RepSales2Page = React.lazy(() => import('./views/report/marketing/RepSales2Page'))
 
 const routes = [
   { path: '/', exact: true, name: 'Home' },
@@ -55,6 +75,11 @@ const routes = [
     path: '/whouse/docs/:whousedocpath/edit/:id?',
     name: 'Документы склада редактирование',
     element: WhouseDocFormPage,
+  },
+  {
+    path: '/whouse/docs/:whousedocpath/view/:id',
+    name: 'Просмотр складского документа',
+    element: WhouseDocDetailedPage,
   },
   {
     path: '/marketing/sale-types',
@@ -101,7 +126,26 @@ const routes = [
     name: 'Список подарков',
     element: RefGiftGridPage,
   },
+  {
+    path: '/reference/customers',
+    name: 'Список контрагентов',
+    element: RefCustomerGridPage,
+  },
+  {
+    path: '/reference/customers/view/:id',
+    name: 'Карточка контрагента',
+    element: RefCustomerViewPage,
+  },
 
+  { path: '/reference/exp-in-items', name: 'Список статьи', element: RefExpInItemGridPage },
+  { path: '/reference/cashes', name: 'Список касс', element: RefCashGridPage },
+  { path: '/reference/goods-groups', name: 'Список груп товаров', element: RefGoodsGroupGridPage },
+  { path: '/reference/goods', name: 'Список товаров', element: RefGoodsGridPage },
+
+  { path: '/finance/reward-docs', name: 'Документы вознограждения', element: RewardDocGridPage },
+  { path: '/finance/reward-docs/view/:id', name: 'Документ вознограждения', element: RewardDocViewPage },
+
+  { path: '/finance/cash-docs/monthly-payments', name: 'Ежемесячные взносы', element: CashDocMonthlyPaymentGridPage },
   { path: '/finance/cash-docs/:cashdoctype', name: 'Список документов кассы', element: CashDocGridPage },
   { path: '/finance/cash-docs/:cashdoctype/create', name: 'Добавление документа кассы', element: CashDocFormPage },
   {
@@ -110,6 +154,13 @@ const routes = [
     element: CashDocFormPage,
   },
   { path: '/finance/cash-docs/:cashdoctype/view/:id', name: 'Просмотр кассового документа', element: CashDocViewPage },
+
+  { path: '/crm/calls', name: 'Звонки после продаж', element: CallGridPage },
+
+  { path: '/report/whouse/goods-in-whouses', name: 'Остатки на складах', element: RepGoodsInWhousePage },
+  { path: '/report/whouse/goods-findby-sernumber', name: 'Поиск по сер. номеру', element: RepGoodsBySernumPage },
+  { path: '/report/whouse/goods-flow', name: 'Движение товаров', element: RepGoodsFlowPage },
+  {path: '/report/marketing/sales-2', name: 'Отчет по продажам-2', element: RepSales2Page}
 ]
 
 export default routes

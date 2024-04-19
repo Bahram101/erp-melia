@@ -1,94 +1,62 @@
-import React, { ChangeEvent, useCallback, useEffect, useState } from 'react'
-import { CustomerAddressFormModel, EmployeeFormModel } from 'models/hr/HrModels'
+import React, { Fragment } from 'react'
+import { CustomerAddressFormModel } from 'models/hr/HrModels'
 import CustomerAddressForm from './CustomerAddressForm'
-import {
-  useCityDistrictOptionsQuery,
-  useCityOptionsQuery,
-  useDistrictOptionsQuery,
-  useRegionOptionsQuery,
-  useVillageOptionsQuery,
-} from 'hooks/reference/refOptionsQueries'
+import { useRegionOptionsQuery } from 'hooks/reference/refOptionsQueries'
 
 type Props = {
-  index: number
   errors: any
-  setModel: (val: any) => void
-  address: CustomerAddressFormModel
+  addresses: CustomerAddressFormModel[]
+  handleChange: (e: any) => void
 }
 
-const CustomerAddressWrapper = ({ index, errors, address, setModel }: Props) => {
-  const [addressData, setAddressData] = useState<any>({
-    districts: [],
-    cities: [],
-    villages: [],
-    cityDistricts: [],
-    microDistricts: [],
-    streets: [],
-  })
-
+const CustomerAddressWrapper = ({ handleChange, errors, addresses }: Props) => {
   const regionOptionsQuery = useRegionOptionsQuery(true)
-  const districtOptionsQuery = useDistrictOptionsQuery(address.regionId, true)
-  const cityOptionsQuery = useCityOptionsQuery(address.regionId, true)
-  const villageOptionsQuery = useVillageOptionsQuery(address.village, true)
-  const cityDistrictOptionsQuery = useCityDistrictOptionsQuery(address.cityDistrict, true)
 
-  useEffect(() => {
-    if (address.regionId) {
-      districtOptionsQuery.refetch().then(({ data }) => {
-        setAddressData((prev: any) => ({ ...prev, districts: data }))
-      })
-      cityOptionsQuery.refetch().then(({ data }) => {
-        setAddressData((prev: any) => ({ ...prev, cities: data }))
-      })
-    }
-  }, [address.regionId])
-
-  useEffect(() => {
-    if (address.village && address.village?.length > 2) {
-      villageOptionsQuery.refetch().then(({ data }) => {
-        setAddressData((prev: any) => ({ ...prev, villages: data }))
-      })
-    }
-    if (address.cityDistrict && address.cityDistrict?.length > 1) {
-      cityDistrictOptionsQuery.refetch().then(({ data }) => {
-        setAddressData((prev: any) => ({ ...prev, cityDistricts: data }))
-      })
-    } 
-  }, [address.village, address.cityDistrict, address.microDistrict, address.street])
 
   const handleAddressChange = (
     e: any,
-    itemNumber: number,
+    index: number,
   ) => {
     const { name, value } = e.target
-    setModel((prev: any) => ({
-      ...prev,
-      addresses: prev.addresses.map((el: CustomerAddressFormModel, i: number) =>
-        i === itemNumber ? { ...el, [name]: value } : el,
-      ),
-    }))
+
+    handleChange({
+      target: {
+        name: 'addresses',
+        value: addresses.map((el: CustomerAddressFormModel, i: number) =>
+          i === index ? { ...el, [name]: value } : el,
+        ),
+      },
+    })
   }
 
+  const getParseAddressErrors = (idx: number): any => {
+    const out = {
+      name: null,
+      regionId: null,
+    }
+    if (errors[`addresses[${idx}].name`]) {
+      out['name'] = errors[`addresses[${idx}].name`]
+    }
 
-  console.log('addressData', addressData)
-  console.log('address', address)
+    if (errors[`addresses[${idx}].regionId`]) {
+      out['regionId'] = errors[`addresses[${idx}].regionId`]
+    }
 
-  return (
-    <CustomerAddressForm
-      index={index}
-      title={index === 0 ? 'Проживающий адрес' : 'Адрес регистрации'}
-      regionOptions={regionOptionsQuery.data || []}
-      districtOptions={addressData.districts || []}
-      cityOptions={addressData.cities || []}
-      villageOptions={addressData.villages || []}
-      cityDistrictOptions={addressData.cityDistricts || []}
-      microDistrictOptions={addressData.microDistricts || []}
-      streetOptions={addressData.streetList || []}
-      errors={errors}
-      address={address}
-      handleAddressChange={handleAddressChange}
-    />
-  )
+    return out
+  }
+
+  return <>
+    {addresses.map((address: any, index: number) => (
+      <Fragment key={index}>
+        <CustomerAddressForm
+          errors={getParseAddressErrors(index)}
+          address={address}
+          regionOptions={regionOptionsQuery.data || []}
+          handleChange={(e: any) => handleAddressChange(e, index)}
+        />
+      </Fragment>
+    ))}
+  </>
 }
 
 export default CustomerAddressWrapper

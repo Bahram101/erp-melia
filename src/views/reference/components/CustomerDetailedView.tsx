@@ -4,8 +4,16 @@ import CustomerAddressGridView from './CustomerAddressGridView'
 import CustomerPhoneGridView from './CustomerPhoneGridView'
 import CustomerMainDataView from './CustomerMainDataView'
 import CustomerDocGridView from './CustomerDocGridView'
+import ActionButtonContent, { ActionButtonType } from '../../../components/button/ActionButtonContent'
+import CustomerMainDataFormModal from '../customer/components/CustomerMainDataFormModal'
+import { useState } from 'react'
 
-const CustomerDetailedView = ({ customer }: { customer: CustomerDetailedModel | undefined }) => {
+const CustomerDetailedView = ({ customer, editable = false, reloadPage }: {
+  customer: CustomerDetailedModel | undefined
+  editable?: boolean
+  reloadPage?: () => void
+}) => {
+  const [formModalVisible, setFormModalVisible] = useState<boolean>(false)
   if (!customer) {
     return null
   }
@@ -14,9 +22,26 @@ const CustomerDetailedView = ({ customer }: { customer: CustomerDetailedModel | 
     <CRow className="align-items-start">
       <CCol>
         <CCardHeader>
-          <h5>Основные данные</h5>
+          <h5 style={{ float: 'left' }}>Основные данные</h5>
+          {editable && <div style={{ float: 'right' }}>
+            <ActionButtonContent
+              type={ActionButtonType.EDIT}
+              onClick={() => setFormModalVisible(true)}
+            />
+          </div>}
         </CCardHeader>
         <CCardBody>
+          {editable && <CustomerMainDataFormModal
+            id={customer.id}
+            visible={formModalVisible}
+            onClose={() => setFormModalVisible(false)}
+            handleAfterSubmit={() => {
+              if (reloadPage) {
+                reloadPage()
+              }
+              setFormModalVisible(false)
+            }}
+          />}
           <CustomerMainDataView customer={customer} />
         </CCardBody>
       </CCol>

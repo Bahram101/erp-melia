@@ -179,3 +179,63 @@ export const useCityDistrictOptionsQuery = (str: string, enabled: boolean) => {
     { enabled:enabled },
   )
 }
+
+export const useMicroDistrictOptionsQuery = (str: string, enabled: boolean) => {
+  return useQuery<RefOptionsModel[]>(
+    ['get-reference-micro-districts-as-options'],
+    async () => {
+      if (str) {
+        const { data } = await request.get(`/reference/micro-districts/as-options?q=${str}`) 
+        return data
+      }
+    },
+    { enabled:enabled },
+  )
+}
+
+export const useStreetOptionsQuery = (str: string, enabled: boolean) => {
+  return useQuery<RefOptionsModel[]>(
+    ['get-reference-streets-as-options'],
+    async () => {
+      if (str) {
+        const { data } = await request.get(`/reference/streets/as-options?q=${str}`) 
+        return data
+      }
+    },
+    { enabled:enabled },
+  )
+}
+
+export const useRemainGoodsOptionsQuery = (
+  enabled: boolean,
+  toDate?: string,
+  whouseId?: string | null,
+  hasSerial?: boolean | undefined
+) => {
+  return useQuery<RefOptionsModel[]>(
+    ["get-whouse-goods-remain-goods-options"],
+    async () => {
+      const {data} = await request.get(`/whouse-goods/remains/as-options`, {
+        params: {
+          whouseId: whouseId,
+          toDate: toDate,
+          hasSerial: hasSerial,
+        },
+      });
+
+      return data;
+    },
+    {enabled: enabled}
+  );
+}
+
+export const useGoodsGroupOptionsQuery = (enabled: boolean) => {
+  return useQuery<RefOptionsModel[]>(
+    ['get-reference-goods-group-as-options'],
+    async () => {
+      const { data } = await request.get('/reference/goods-groups/as-options')
+      return data
+    },
+    { enabled: enabled },
+  )
+}

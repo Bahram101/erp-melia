@@ -111,6 +111,7 @@ const CashDocGridPage = () => {
     return params.doctype
       && params.doctype !== Doctype.CASH_DOC_SERVICE_PAYMENT
       && params.doctype !== Doctype.CASH_DOC_MOVE_IN
+      && params.doctype !== Doctype.CASH_DOC_REWARD_OUT
   }
 
   return (
